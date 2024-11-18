@@ -1,5 +1,7 @@
 package com.example.schoolink.ui.screens.authentication.screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -25,11 +27,16 @@ import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.PasswordInputField
 import com.example.schoolink.ui.screens.authentication.overlay.ForgotPasswordOverlay
 import com.example.schoolink.ui.theme.*
+import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
 fun LoginScreen(
+    viewModel: ProfessorViewModel,
+    context: Context,
     onBack: () -> Unit,
-    onNavigateToCreateAccount: () -> Unit
+    onNavigateToCreateAccount: () -> Unit,
+    onSetupAccount: (String) -> Unit,
+    onLogin: (String) -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -64,7 +71,9 @@ fun LoginScreen(
             ) {
                 item {
                     HeaderBack(
-                        onBackClick = onBack,
+                        onBackClick = {
+                            onBack()
+                        },
                         title = "Welcome Back",
                         description = "Enter your email address and password to access your account."
                     )
@@ -106,7 +115,27 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /*ToDo: Handle login click */ },
+                    onClick = {
+                        viewModel.getProfessorByEmail(email) { existingProfessor ->
+                            if (existingProfessor != null) {
+                                if (existingProfessor.password == password) {
+                                    if(existingProfessor.firstName.isNullOrEmpty()) {
+                                        focusManager.clearFocus()
+                                        onSetupAccount(existingProfessor.email)
+                                    } else {
+                                        focusManager.clearFocus()
+                                        onLogin(email)
+                                    }
+                                } else {
+                                    focusManager.clearFocus()
+                                    Toast.makeText(context, "Incorrect password", Toast.LENGTH_LONG).show()
+                                }
+                            } else {
+                                focusManager.clearFocus()
+                                Toast.makeText(context, "User not found", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    },
                     enabled = isFormValid,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -155,14 +184,4 @@ fun LoginScreen(
             )
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-private fun LoginScreenPreview() {
-    LoginScreen(
-        onBack = {},
-        onNavigateToCreateAccount = {}
-    )
 }

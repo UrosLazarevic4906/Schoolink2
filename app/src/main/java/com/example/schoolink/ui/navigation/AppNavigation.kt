@@ -18,6 +18,7 @@
     import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
     import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
     import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
+    import com.example.schoolink.ui.screens.main.HomeScreen
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
@@ -71,12 +72,21 @@
                     )
                 }
             ) {
+                val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
                 LoginScreen(
+                    viewModel = viewModel,
+                    context = context,
                     onBack = {
                         navController.popBackStack()
                     },
                     onNavigateToCreateAccount = {
                         navController.navigateSingleTopTo("createAccount")
+                    },
+                    onLogin = {email ->
+                        navController.navigateSingleTopTo("homeScreen/${Uri.encode(email)}")
+                    },
+                    onSetupAccount = { email ->
+                        navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
                     }
                 )
             }
@@ -159,6 +169,46 @@
                     context = context,
                     viewModel = viewModel,
                     onBack = { navController.popBackStack() },
+                )
+            }
+
+            composable(
+                route = "homeScreen/{email}",
+                arguments = listOf(
+                    navArgument("email") { type = NavType.StringType}
+                ),
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(1000)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                },
+                popEnterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                }
+            ) {backStackEntry ->
+
+                val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+                val email = backStackEntry.arguments?.getString("email") ?: ""
+                Log.d("Email", "Email passed: $email")
+                HomeScreen(
+                    email = email,
+                    viewModel = viewModel
                 )
             }
         }
