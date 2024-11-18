@@ -22,10 +22,12 @@
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
+    import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
 
     @Composable
     fun AppNavigation(
         professorViewModelFactory: ProfessorViewModelFactory,
+        studentViewModelFactory: StudentViewModelFactory
     ) {
         val navController = rememberNavController()
         val context = LocalContext.current

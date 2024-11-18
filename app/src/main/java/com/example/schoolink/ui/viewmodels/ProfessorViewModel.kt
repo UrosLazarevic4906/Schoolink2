@@ -42,11 +42,17 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
     }
 
     fun getProfessorWithStudents(professorId: Int, onResult: (ProfessorWithStudents?) -> Unit) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getProfessorWithStudents(professorId)
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) {
+                repository.getProfessorWithStudents(professorId)
+            }
             onResult(result)
         }
     }
 
-
+    fun removeStudentFromProfessor(professorId: Int, studentId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.removeStudentFromProfessor(professorId, studentId)
+        }
+    }
 }

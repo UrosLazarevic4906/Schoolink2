@@ -7,6 +7,7 @@ import com.example.schoolink.data.database.AppDatabase
 import com.example.schoolink.domain.repository.ProfessorRepository
 import com.example.schoolink.domain.repository.StudentRepository
 import com.example.schoolink.ui.navigation.AppNavigation
+import com.example.schoolink.ui.screens.management.StudentListScreen
 import com.example.schoolink.ui.theme.SchoolinkTheme
 import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
@@ -15,17 +16,22 @@ import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val database = AppDatabase.getInstance(this)
 
         val professorRepository = ProfessorRepository(database.professorDao())
+        val studentRepository = StudentRepository(database.studentDao())
 
         val professorViewModelFactory = ProfessorViewModelFactory(professorRepository)
+        val studentViewModelFactory = StudentViewModelFactory(studentRepository)
 
         setContent {
             SchoolinkTheme {
-                AppNavigation(
-                    professorViewModelFactory = professorViewModelFactory,
-                )
+//                AppNavigation(
+//                    professorViewModelFactory = professorViewModelFactory,
+//                    studentViewModelFactory = studentViewModelFactory
+//                )
+            StudentListScreen()
             }
         }
     }
