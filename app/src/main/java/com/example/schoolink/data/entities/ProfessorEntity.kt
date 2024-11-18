@@ -11,7 +11,7 @@ import com.example.schoolink.domain.models.Gender
 )
 data class ProfessorEntity(
     val email: String,
-    val password: String? = null,
+    val password: String,
     val profilePicturePath: String?,
     val firstName: String? = null,
     val lastName: String? = null,
