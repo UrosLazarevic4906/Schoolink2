@@ -110,7 +110,7 @@ fun CreateAccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /* TODO: Handle create account click */
+                    onClick = {
                         viewModel.getProfessorByEmail(email) { existingProfessor ->
 
                             if (existingProfessor == null) {
