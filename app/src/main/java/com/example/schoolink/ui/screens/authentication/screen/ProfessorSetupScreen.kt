@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.authentication
+package com.example.schoolink.ui.screens.authentication.screen
 
 import android.content.Context
 import android.net.Uri
@@ -30,7 +30,7 @@ import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
 import com.example.schoolink.ui.components.inputs.OutlinedInputField
-import com.example.schoolink.ui.components.HeaderBack
+import com.example.schoolink.ui.components.header.HeaderBack
 import com.example.schoolink.ui.theme.DissabledButton
 import com.example.schoolink.ui.theme.SchoolinkTheme
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel

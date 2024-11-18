@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.authentication
+package com.example.schoolink.ui.screens.authentication.screen
 
 import android.content.Context
 import android.net.Uri

@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 fun InteractionText(
     text: String,
     onClick: () -> Unit,
-    color: Color =  MaterialTheme.colorScheme.primary
+    color: Color =  MaterialTheme.colorScheme.primary,
 ) {
     Text(
         text = text,
