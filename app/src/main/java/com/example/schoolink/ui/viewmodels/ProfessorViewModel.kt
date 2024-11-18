@@ -2,6 +2,7 @@ package com.example.schoolink.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.repository.ProfessorRepository
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,19 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
     fun createProfessor(professor: ProfessorModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createProfessor(professor)
+        }
+    }
+
+    fun addStudentToProfessor(professorId: Int, studentId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.addStudentToProfessor(professorId, studentId)
+        }
+    }
+
+    fun getProfessorWithStudents(professorId: Int, onResult: (ProfessorWithStudents?) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = repository.getProfessorWithStudents(professorId)
+            onResult(result)
         }
     }
 
