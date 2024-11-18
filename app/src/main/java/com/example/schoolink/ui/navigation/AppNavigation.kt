@@ -15,9 +15,9 @@
     import androidx.navigation.compose.composable
     import androidx.navigation.compose.rememberNavController
     import androidx.navigation.navArgument
-    import com.example.schoolink.ui.screens.authentication.CreateAccountScreen
-    import com.example.schoolink.ui.screens.authentication.LoginScreen
-    import com.example.schoolink.ui.screens.authentication.ProfessorSetupScreen
+    import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
+    import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
+    import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory

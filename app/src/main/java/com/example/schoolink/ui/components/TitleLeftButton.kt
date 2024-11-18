@@ -11,9 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -22,7 +20,7 @@ import com.example.schoolink.R
 import com.example.schoolink.ui.theme.Black
 
 @Composable
-fun TitleButton(
+fun TitleLeftButton(
     icon: Painter,
     title: String,
     onClick: () -> Unit
@@ -48,7 +46,7 @@ fun TitleButton(
             text = title,
             style = MaterialTheme.typography.headlineSmall,
             color = Black,
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
         )
     }
@@ -57,8 +55,8 @@ fun TitleButton(
 
 @Preview
 @Composable
-private fun TitleButtonPreview() {
-    TitleButton(
+private fun TitleLeftButtonPreview() {
+    TitleLeftButton(
         onClick = {},
         title = "Help & Support",
         icon = painterResource(R.drawable.ic_chevron_left)

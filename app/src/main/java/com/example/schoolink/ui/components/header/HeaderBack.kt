@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.components
+package com.example.schoolink.ui.components.header
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
