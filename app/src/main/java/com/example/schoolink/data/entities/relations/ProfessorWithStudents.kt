@@ -10,9 +10,18 @@ import com.example.schoolink.data.entities.StudentEntity
 data class ProfessorWithStudents(
     @Embedded val professor: ProfessorEntity,
     @Relation(
-        parentColumn = "id",
-        entityColumn = "id",
+        parentColumn = "professorId",
+        entityColumn = "studentId",
         associateBy = Junction(ProfessorStudentCrossRef::class)
     )
     val students: List<StudentEntity>
 )
+
+
+//
+//data class StudentWithProfessors(
+//    @Embedded val student: StudentEntity,
+//    @Relation(
+//
+//    )
+//)

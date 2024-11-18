@@ -14,11 +14,6 @@ class ProfessorRepository(
         professorDao.createProfessor(entity)
     }
 
-
-    suspend fun addStudentToProfessor(professorId: Int, studentId: Int) {
-        professorDao.insertProfessorStudentCrossRef(ProfessorStudentCrossRef(professorId, studentId))
-    }
-
     suspend fun updateProfessor(professorModel: ProfessorModel) {
         val entity = ProfessorMapper.fromModelToEntity(professorModel)
         professorDao.updateProfessor(entity)
@@ -29,7 +24,15 @@ class ProfessorRepository(
         return entity?.let { ProfessorMapper.fromEntityToModel(it) }
     }
 
+    suspend fun addStudentToProfessor(professorId: Int, studentId: Int) {
+        professorDao.insertProfessorStudentCrossRef(ProfessorStudentCrossRef(professorId, studentId))
+    }
+
     suspend fun getProfessorWithStudents(professorId: Int): ProfessorWithStudents? {
         return professorDao.getProfessorWithStudents(professorId)
+    }
+
+    suspend fun removeStudentFromProfessor(professorId: Int, studentId: Int) {
+        professorDao.removeStudentFromProfessor(professorId, studentId)
     }
 }

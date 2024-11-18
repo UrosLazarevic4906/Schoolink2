@@ -10,14 +10,14 @@ import com.example.schoolink.domain.models.Gender
     indices = [Index(value = ["email"], unique = true)]
 )
 data class ProfessorEntity(
+    @PrimaryKey(autoGenerate = true)
+    val professorId: Int = 0,  // Ensure the primary key name is 'professorId' to match the cross-reference
     val email: String,
     val password: String?,
     val profilePicturePath: String?,
     val firstName: String? = null,
     val lastName: String? = null,
     val gender: Gender? = null,
-    val dateOfBirth: String? = null,
-
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    val dateOfBirth: String? = null
 )
+
