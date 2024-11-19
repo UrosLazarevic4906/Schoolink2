@@ -84,21 +84,21 @@ fun CreateAccountScreen(
                     EmailInputField(
                         value = email,
                         isValid = { isEmailValid = it },
-                        onValueChange = { email = it })
+                        onValueChange = { email = it.trim() })
                 }
 
                 item {
                     PasswordInputField(
                         value = password,
                         isValid = { isPasswordValid = it },
-                        onValueChange = { password = it })
+                        onValueChange = { password = it.trim() })
                 }
 
                 item {
                     ConfirmPasswordInputField(
                         password = password,
                         confirmPassword = confirmPassword,
-                        onConfirmPasswordChange = { confirmPassword = it }
+                        onConfirmPasswordChange = { confirmPassword = it.trim() }
                     )
                 }
 

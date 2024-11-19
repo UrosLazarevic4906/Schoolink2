@@ -82,7 +82,7 @@ fun ForgotPasswordOverlay(
                 EmailInputField(
                     value = email,
                     isValid = { isEmailValid = it },
-                    onValueChange = { email = it },
+                    onValueChange = { email = it.trim() },
                 )
             }
 

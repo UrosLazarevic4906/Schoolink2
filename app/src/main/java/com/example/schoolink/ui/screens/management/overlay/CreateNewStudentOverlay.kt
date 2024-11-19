@@ -98,7 +98,7 @@ fun CreateNewStudentOverlay(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 24.dp, vertical = 12.dp)
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -120,11 +120,11 @@ fun CreateNewStudentOverlay(
                         EmailInputField(
                             value = email,
                             isValid = { isEmailValid = it },
-                            onValueChange = { email = it },
+                            onValueChange = { email = it.trim() },
                         )
                         OutlinedInputField(
                             value = firstName,
-                            onValueChange = { firstName = it },
+                            onValueChange = { firstName = it.trim() },
                             label = "First name *",
                             isValid = { isNameValid = it },
                             onDoneAction = {
@@ -133,7 +133,7 @@ fun CreateNewStudentOverlay(
                         )
                         OutlinedInputField(
                             value = lastName,
-                            onValueChange = { lastName = it },
+                            onValueChange = { lastName = it.trim() },
                             label = "Last name *",
                             isValid = { isLastNameValid = it },
                             onDoneAction = {
@@ -164,7 +164,6 @@ fun CreateNewStudentOverlay(
                                 .height(120.dp),
                             maxLines = 5,
                             singleLine = false,
-                            
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.secondary,
                                 unfocusedBorderColor = Smoke,

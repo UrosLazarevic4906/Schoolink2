@@ -82,14 +82,14 @@ fun LoginScreen(
                     EmailInputField(
                         value = email,
                         isValid = { isEmailValid = it },
-                        onValueChange = { email = it })
+                        onValueChange = { email = it.trim() })
                 }
 
                 item {
                     PasswordInputField(
                         value = password,
                         isValid = { isPasswordValid = it },
-                        onValueChange = { password = it })
+                        onValueChange = { password = it.trim() })
                 }
 
                 item {
