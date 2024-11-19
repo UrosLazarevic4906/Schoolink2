@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import com.example.schoolink.data.entities.StudentEntity
 import com.example.schoolink.R
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
+import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
 import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
 import com.example.schoolink.ui.theme.*
 
@@ -97,7 +98,7 @@ fun StudentListScreen(
                 .padding(innerPadding)
         ) {
             TitleCard(
-                icon = painterResource(R.drawable.ic_chevron_left),
+                //icon = painterResource(R.drawable.ic_chevron_left),
                 title = "Students",
                 onClick = {}
             )
@@ -158,6 +159,23 @@ fun StudentListScreen(
             focusManager = LocalFocusManager.current,
             onDismiss = { showCreateStudentDialog = false },
             onCreateNewStudent = {}
+        )
+    }
+
+    AnimatedVisibility(
+        visible = showAddExistingStudentDialog,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(1000)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(1000)
+        )
+    ) {
+        AddExistingStudentOverlay(
+            onDismiss = { showAddExistingStudentDialog = false },
+            onAddExistingStudent = {}
         )
     }
 }
