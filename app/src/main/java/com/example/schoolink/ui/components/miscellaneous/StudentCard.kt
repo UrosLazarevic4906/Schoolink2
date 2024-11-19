@@ -82,7 +82,7 @@ fun StudentCard(
                 Icon(
                     painter = it,
                     contentDescription = "Trailing icon",
-                    tint = Black
+                    tint = Black,
                 )
             }
         }

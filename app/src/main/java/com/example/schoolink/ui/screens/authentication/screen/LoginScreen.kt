@@ -19,10 +19,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.ui.components.header.HeaderBack
-import com.example.schoolink.ui.components.InteractionText
+import com.example.schoolink.ui.components.inputs.InteractionText
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.PasswordInputField
 import com.example.schoolink.ui.screens.authentication.overlay.ForgotPasswordOverlay

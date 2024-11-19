@@ -25,7 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.schoolink.ui.components.TitleLeftButton
+import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.R
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.theme.*
@@ -59,7 +59,7 @@ fun ForgotPasswordOverlay(
                 .background(Cream),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            TitleLeftButton(
+            TitleCard(
                 icon = painterResource(R.drawable.ic_close),
                 onClick = onDismiss,
                 title = "Forgot Password"

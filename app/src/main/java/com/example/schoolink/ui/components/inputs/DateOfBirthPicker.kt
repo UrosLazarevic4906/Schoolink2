@@ -43,7 +43,7 @@ fun DateOfBirthPicker(
         onValueChange = {},
         readOnly = true,
         enabled = false,
-        label = { Text("Date of Birth") },
+        label = { Text("Date of Birth *") },
         trailingIcon = {
             Icon(
                 painter = painterResource(id = R.drawable.ic_calendar),
@@ -56,7 +56,7 @@ fun DateOfBirthPicker(
             disabledTextColor = Black,
             disabledLabelColor = if(dateText == "") Smoke else Green,
             disabledBorderColor = Smoke,
-            disabledContainerColor = White
+//            disabledContainerColor = White
         ),
         modifier = Modifier
             .fillMaxWidth()

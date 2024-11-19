@@ -1,5 +1,9 @@
 package com.example.schoolink.ui.screens.management.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
@@ -23,6 +28,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -30,7 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.data.entities.StudentEntity
 import com.example.schoolink.R
-import com.example.schoolink.ui.components.TitleLeftButton
+import com.example.schoolink.ui.components.miscellaneous.TitleCard
+import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
 import com.example.schoolink.ui.theme.*
 
 @Composable
@@ -54,7 +62,8 @@ fun StudentListScreen(
                     Icon(
                         painter = painterResource(R.drawable.ic_add),
                         contentDescription = "Add Student",
-                        tint = White
+                        tint = White,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
                 DropdownMenu(
@@ -87,7 +96,7 @@ fun StudentListScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            TitleLeftButton(
+            TitleCard(
                 icon = painterResource(R.drawable.ic_chevron_left),
                 title = "Students",
                 onClick = {}
@@ -131,6 +140,25 @@ fun StudentListScreen(
                 }
             }
         }
+    }
+
+    AnimatedVisibility(
+        visible = showCreateStudentDialog,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(1000)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(1000)
+        )
+    ) {
+        CreateNewStudentOverlay(
+            context = LocalContext.current,
+            focusManager = LocalFocusManager.current,
+            onDismiss = { showCreateStudentDialog = false },
+            onCreateNewStudent = {}
+        )
     }
 }
 

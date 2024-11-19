@@ -39,7 +39,7 @@ fun EmailInputField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(text = "Email Address", color = labelColor) },
+        label = { Text(text = "Email Address *", color = labelColor) },
         singleLine = true,
         modifier = modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions.Default.copy(

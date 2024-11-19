@@ -188,11 +188,4 @@ fun ProfessorSetupScreen(
     }
 
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun ProfessorSetupScreenPreview() {
-//    ProfessorSetupScreen(
-////        onProfileComplete = {}
-//    )
-//}
+
