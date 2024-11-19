@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.management
+package com.example.schoolink.ui.screens.management.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

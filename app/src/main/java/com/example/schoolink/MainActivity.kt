@@ -6,8 +6,7 @@ import androidx.activity.compose.setContent
 import com.example.schoolink.data.database.AppDatabase
 import com.example.schoolink.domain.repository.ProfessorRepository
 import com.example.schoolink.domain.repository.StudentRepository
-import com.example.schoolink.ui.navigation.AppNavigation
-import com.example.schoolink.ui.screens.management.StudentListScreen
+import com.example.schoolink.ui.screens.management.screen.StudentListScreen
 import com.example.schoolink.ui.theme.SchoolinkTheme
 import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
