@@ -89,12 +89,15 @@ fun CreateNewStudentOverlay(
                 .background(Cream),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            TitleCard(
-                icon = painterResource(R.drawable.ic_close),
-                onClick = onDismiss,
-                title = "Create a new student"
-            )
-
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                TitleCard(
+                    icon = painterResource(R.drawable.ic_close),
+                    onClick = onDismiss,
+                    title = "Create student"
+                )
+            }
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()

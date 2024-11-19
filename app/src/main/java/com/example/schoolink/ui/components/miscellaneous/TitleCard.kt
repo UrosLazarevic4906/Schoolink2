@@ -29,7 +29,7 @@ fun TitleCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+//            .clickable { onClick() }
             .padding(8.dp)
     ) {
         if (icon != null) {

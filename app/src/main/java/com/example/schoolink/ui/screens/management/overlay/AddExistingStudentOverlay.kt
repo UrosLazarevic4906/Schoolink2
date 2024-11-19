@@ -50,7 +50,6 @@ fun AddExistingStudentOverlay(
     }
 
 
-
     val labelColor = when {
         credentials.isEmpty() -> Smoke
         areCredentialsValid -> Green
@@ -75,11 +74,16 @@ fun AddExistingStudentOverlay(
                 .background(Cream),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            TitleCard(
-                icon = painterResource(R.drawable.ic_close),
-                onClick = onDismiss,
-                title = "Add an existing student"
-            )
+
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                TitleCard(
+                    icon = painterResource(R.drawable.ic_close),
+                    onClick = onDismiss,
+                    title = "Add student"
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -100,7 +104,7 @@ fun AddExistingStudentOverlay(
                     onValueChange = {
                         credentials = it.trim()
                     },
-                    label = { Text("Student Code or Email") },
+                    label = { Text("Student code or email") },
                     modifier = Modifier.fillMaxWidth(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = MaterialTheme.colorScheme.secondary,

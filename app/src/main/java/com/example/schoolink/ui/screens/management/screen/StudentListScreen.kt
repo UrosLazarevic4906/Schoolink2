@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -97,11 +98,17 @@ fun StudentListScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            TitleCard(
-                //icon = painterResource(R.drawable.ic_chevron_left),
-                title = "Students",
-                onClick = {}
-            )
+
+            Column (
+                modifier = Modifier.padding(12.dp)
+            ){
+                TitleCard(
+                    icon = painterResource(R.drawable.ic_chevron_left),
+                    title = "Students",
+                    onClick = {}
+                )
+            }
+
 
             if (studentList.isEmpty()) {
                 Column(
