@@ -18,6 +18,6 @@ interface StudentDao {
     @Query("SELECT * FROM students WHERE studentCode = :studentCode")
     suspend fun getStudentByCode(studentCode: String): StudentEntity?
 
-    @Query("SELECT MAX(studentCode) FROM students")
-    suspend fun getMaxStudentCode(): String?
+    @Query("SELECT EXISTS(SELECT 1 FROM students WHERE studentCode = :studentCode)")
+    suspend fun studentWithCodeExists(studentCode: String): Boolean
 }

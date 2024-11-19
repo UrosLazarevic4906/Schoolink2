@@ -10,10 +10,21 @@ class StudentRepository(
     private val studentDao: StudentDao
 ) {
 
-    private var nextStudentCode = 1000000
+    private val charset = ('A'..'Z') + ('0'..'9')
+
+    private suspend fun generateStudentCode(): String {
+        var newCode: String
+        do {
+            newCode = (1..8)
+                .map { charset.random() }
+                .joinToString("" )
+        } while (studentDao.studentWithCodeExists(newCode))
+        return newCode
+    }
 
     suspend fun insertStudent(studentModel: StudentModel) {
-        val entity = StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
+        val entity =
+            StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
         studentDao.insertStudent(entity)
     }
 
@@ -21,15 +32,11 @@ class StudentRepository(
         val entity = studentDao.getStudentByEmail(email)
         return entity?.let { StudentMapper.fromEntityToModel(it) }
     }
+
     suspend fun getStudentByCode(code: String): StudentModel? {
         val entity = studentDao.getStudentByCode(code)
         return entity?.let { StudentMapper.fromEntityToModel(it) }
     }
 
-    private suspend fun generateStudentCode(): String {
-        return withContext(Dispatchers.IO) {
-            val currentMaxCode = studentDao.getMaxStudentCode()?.toIntOrNull() ?: (nextStudentCode - 1)
-            (currentMaxCode + 1).coerceAtMost(9999999).toString()
-        }
-    }
+
 }
