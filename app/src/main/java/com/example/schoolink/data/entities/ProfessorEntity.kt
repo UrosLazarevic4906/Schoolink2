@@ -11,7 +11,7 @@ import com.example.schoolink.domain.models.Gender
 )
 data class ProfessorEntity(
     @PrimaryKey(autoGenerate = true)
-    val professorId: Int = 0,  // Ensure the primary key name is 'professorId' to match the cross-reference
+    val professorId: Int = 0,
     val email: String,
     val password: String?,
     val profilePicturePath: String?,

@@ -2,7 +2,7 @@ package com.example.schoolink.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.schoolink.data.entities.ProfessorStudentCrossRef
+import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.domain.repository.ProfessorStudentRepository
 import kotlinx.coroutines.Dispatchers

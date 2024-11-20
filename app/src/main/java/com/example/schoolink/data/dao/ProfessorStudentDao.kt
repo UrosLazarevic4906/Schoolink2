@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.schoolink.data.entities.ProfessorStudentCrossRef
+import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 
 @Dao
