@@ -42,7 +42,8 @@ fun ProfessorSetupScreen(
     email: String,
     onBack: () -> Unit,
     viewModel: ProfessorViewModel,
-    context: Context
+    context: Context,
+    onAddStudents: () -> Unit
 ) {
 
     var profilePictureUri by remember { mutableStateOf<Uri?>(null) }
@@ -152,7 +153,7 @@ fun ProfessorSetupScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = {/* TODO: */
+                    onClick = {
                         viewModel.getProfessorByEmail(email) { existingProfessor ->
                             existingProfessor?.let {
                                 val professor = it.copy(
@@ -165,8 +166,8 @@ fun ProfessorSetupScreen(
                                     }
                                 )
                                 viewModel.updateProfessor(professor)
+                                onAddStudents()
                             }
-
                         }
                     },
                     enabled = isFormValid,

@@ -170,11 +170,15 @@
 
                 val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
                 val email = backStackEntry.arguments?.getString("email") ?: ""
+
                 ProfessorSetupScreen(
                     email = email,
                     context = context,
                     viewModel = viewModel,
                     onBack = { navController.popBackStack() },
+                    onAddStudents = {
+                        navController.navigateSingleTopTo("studentListScreen/${Uri.encode(email)}")
+                    }
                 )
             }
 
@@ -246,7 +250,10 @@
                     context = context,
                     professorViewModel = professorViewModel,
                     studentViewModel = studentViewModel,
-                    professorStudentViewModel = professorStudentViewModel
+                    professorStudentViewModel = professorStudentViewModel,
+                    onNext = {
+
+                    }
                 )
             }
         }

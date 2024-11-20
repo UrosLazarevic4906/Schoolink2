@@ -1,45 +1,34 @@
 package com.example.schoolink.ui.screens.management.screen
 
 import android.content.Context
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import com.example.schoolink.R
@@ -48,7 +37,7 @@ import com.example.schoolink.data.mappers.StudentMapper
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.EmptyState
-import com.example.schoolink.ui.components.miscellaneous.StudentCard
+import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
 import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
@@ -63,6 +52,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun StudentListScreen(
+    onNext: () -> Unit,
     email: String,
     context: Context,
     professorViewModel: ProfessorViewModel,
@@ -136,10 +126,12 @@ fun StudentListScreen(
         ) {
 
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
                 TitleCard(
                     title = "Students",
+                    clickableText = "Next",
+                    onTextClick = onNext
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
@@ -150,8 +142,12 @@ fun StudentListScreen(
                     )
                 } else {
                     LazyColumn {
-                        items(professorWithStudents!!.students) { student ->
-                            StudentCard(student = StudentMapper.fromEntityToModel(student))
+                        itemsIndexed(professorWithStudents!!.students) { index, student ->
+                            StudentCardEdit(
+                                student = StudentMapper.fromEntityToModel(student),
+                                trailingIcon = painterResource(R.drawable.ic_pencil),
+                                showTopLine = index > 0
+                            )
                         }
                     }
                 }
@@ -208,7 +204,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
                             }
@@ -242,7 +238,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
 
@@ -270,7 +266,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
 

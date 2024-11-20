@@ -82,7 +82,7 @@ fun AddExistingStudentOverlay(
             ) {
                 TitleCard(
                     icon = painterResource(R.drawable.ic_close),
-                    onClick = onDismiss,
+                    onButtonClick = onDismiss,
                     title = "Add student"
                 )
             }
