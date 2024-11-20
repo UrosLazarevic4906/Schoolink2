@@ -95,7 +95,7 @@ fun CreateNewStudentOverlay(
             ) {
                 TitleCard(
                     icon = painterResource(R.drawable.ic_close),
-                    onClick = onDismiss,
+                    onButtonClick = onDismiss,
                     title = "Create student"
                 )
             }
