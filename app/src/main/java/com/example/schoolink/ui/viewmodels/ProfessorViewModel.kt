@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
@@ -32,27 +33,6 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
     fun createProfessor(professor: ProfessorModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createProfessor(professor)
-        }
-    }
-
-    fun addStudentToProfessor(professorId: Int, studentId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.addStudentToProfessor(professorId, studentId)
-        }
-    }
-
-    fun getProfessorWithStudents(professorId: Int, onResult: (ProfessorWithStudents?) -> Unit) {
-        viewModelScope.launch {
-            val result = withContext(Dispatchers.IO) {
-                repository.getProfessorWithStudents(professorId)
-            }
-            onResult(result)
-        }
-    }
-
-    fun removeStudentFromProfessor(professorId: Int, studentId: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.removeStudentFromProfessor(professorId, studentId)
         }
     }
 }
