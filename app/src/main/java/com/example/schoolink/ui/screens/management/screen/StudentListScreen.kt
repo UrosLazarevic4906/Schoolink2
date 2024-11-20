@@ -81,9 +81,7 @@ fun StudentListScreen(
         floatingActionButton = {
             Box(contentAlignment = Alignment.BottomEnd) {
                 FloatingActionButton(
-                    onClick = {
-                        showOptions = true
-                    },
+                    onClick = { showOptions = true },
                     shape = CircleShape,
                     containerColor = Green
                 ) {
@@ -104,9 +102,7 @@ fun StudentListScreen(
                             showOptions = false
                             showCreateStudentDialog = true
                         },
-                        text = {
-                            Text(text = "Create a new student")
-                        }
+                        text = { Text(text = "Create a new student") }
                     )
                     DropdownMenuItem(
                         onClick = {
@@ -124,7 +120,6 @@ fun StudentListScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-
             Column(
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
@@ -155,67 +150,32 @@ fun StudentListScreen(
         }
     }
 
+    // Create New Student Dialog
     AnimatedVisibility(
         visible = showCreateStudentDialog,
-        enter = slideInVertically(
-            initialOffsetY = { it },
-            animationSpec = tween(1000)
-        ),
-        exit = slideOutVertically(
-            targetOffsetY = { it },
-            animationSpec = tween(1000)
-        )
+        enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
+        exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
     ) {
         CreateNewStudentOverlay(
             context = context,
             focusManager = LocalFocusManager.current,
             onDismiss = { showCreateStudentDialog = false },
             onCreateNewStudent = { student ->
-                studentViewModel.getStudentByEmail(student.email) { existingStudent ->
-                    if (existingStudent != null) {
-                        Toast.makeText(
-                            context,
-                            "Student with this email already exists",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-
-                        studentViewModel.viewModelScope.launch {
-                            withContext(Dispatchers.IO) {
-                                studentViewModel.addStudent(student)
-                            }
-
-                            var studentToCheck: StudentModel? = null
-                            while (studentToCheck == null) {
-                                delay(500)
-                                studentToCheck = withContext(Dispatchers.IO) {
-                                    studentViewModel.getStudentByEmailSync(student.email)
-                                }
-                            }
-
-                            professor?.let { prof ->
-                                professorStudentViewModel.addStudentToProfessor(
-                                    prof.id,
-                                    studentToCheck.id
-                                )
-                                Toast.makeText(
-                                    context,
-                                    "Student added succesfully!",
-                                    Toast.LENGTH_LONG
-                                ).show()
-
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
-                                    professorWithStudents = data
-                                }
-                            }
-                            showCreateStudentDialog = false
+                studentViewModel.addStudent(student) { studentId ->
+                    professor?.let { prof ->
+                        professorStudentViewModel.addStudentToProfessor(prof.id, studentId.toInt())
+                        Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                        professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                            professorWithStudents = data
                         }
                     }
+                    showCreateStudentDialog = false
                 }
             }
         )
     }
 
+    // Add Existing Student Dialog
     AnimatedVisibility(
         visible = showAddExistingStudentDialog,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
@@ -224,68 +184,19 @@ fun StudentListScreen(
         AddExistingStudentOverlay(
             onDismiss = { showAddExistingStudentDialog = false },
             onAddExistingStudent = { credentials ->
-                if (Patterns.EMAIL_ADDRESS.matcher(credentials).matches()) {
-                    studentViewModel.getStudentByEmail(credentials) { existingStudent ->
-                        if (existingStudent != null) {
-                            professor?.let { prof ->
-                                professorStudentViewModel.addStudentToProfessor(
-                                    prof.id,
-                                    existingStudent.id
-                                )
-                                Toast.makeText(
-                                    context,
-                                    "Student added successfully!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
-                                    professorWithStudents = data
-                                }
-
-                                showAddExistingStudentDialog = false
+                studentViewModel.getStudentByEmail(credentials) { existingStudent ->
+                    if (existingStudent != null) {
+                        professor?.let { prof ->
+                            professorStudentViewModel.addStudentToProfessor(prof.id, existingStudent.id)
+                            Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                            professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                                professorWithStudents = data
                             }
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "No student found with the provided email!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            showAddExistingStudentDialog = false
                         }
+                    } else {
+                        Toast.makeText(context, "No student found with the provided email or code!", Toast.LENGTH_SHORT).show()
                     }
-                } else if (credentials.length == 8 && credentials.all { char -> char.isDigit() || char.isUpperCase() }) {
-                    studentViewModel.getStudentByCode(credentials) { existingStudent ->
-                        if (existingStudent != null) {
-                            professor?.let { prof ->
-                                professorStudentViewModel.addStudentToProfessor(
-                                    prof.id,
-                                    existingStudent.id
-                                )
-                                Toast.makeText(
-                                    context,
-                                    "Student added successfully!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
-                                    professorWithStudents = data
-                                }
-
-                                showAddExistingStudentDialog = false
-                            }
-                        } else {
-                            Toast.makeText(
-                                context,
-                                "No student found with the provided code!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(
-                        context,
-                        "Invalid input. Please enter a valid email or student code.",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         )
