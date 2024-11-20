@@ -2,10 +2,12 @@ package com.example.schoolink.ui.components.miscellaneous
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,19 +27,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.R
 import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.ui.theme.*
 @Composable
-fun StudentCard(
+fun StudentCardEdit(
     student: StudentModel,
     trailingIcon: Painter? = null,
     showTopLine: Boolean = false
 ) {
+
     Surface(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth().clickable {  },
         color = White,
     ) {
         Column {
@@ -55,8 +59,9 @@ fun StudentCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
         ){
-            val profilePicture = if(student.profilePicturePath != null) {
-                painterResource(id = R.drawable.ic_user) // TODO: promeniti u sliku usera
+
+            val profilePicture = if(!student.profilePicturePath.isNullOrEmpty()) {
+                rememberAsyncImagePainter(model = student.profilePicturePath)
             } else {
                 painterResource(id = R.drawable.ic_user)
             }
@@ -65,7 +70,7 @@ fun StudentCard(
                 painter = profilePicture,
                 contentDescription =  "${student.studentCode} profile picture",
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(52.dp)
                     .clip(CircleShape),
                 contentScale = ContentScale.Crop
             )
@@ -94,6 +99,7 @@ fun StudentCard(
                     painter = it,
                     contentDescription = "Trailing icon",
                     tint = Black,
+                    modifier = Modifier.size(30.dp)
                 )
             }
         }
@@ -116,7 +122,7 @@ private fun StudentCardPreview() {
         studentCode = "A2D53AC"
     )
 
-    StudentCard(
+    StudentCardEdit(
         student = dummyStudent,
         trailingIcon = painterResource(R.drawable.ic_pen)
     )
