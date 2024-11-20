@@ -11,7 +11,7 @@ import com.example.schoolink.data.dao.StudentDao
 import com.example.schoolink.data.entities.ProfessorEntity
 import com.example.schoolink.data.entities.StudentEntity
 import com.example.schoolink.data.database.converters.GenderTypeConverter
-import com.example.schoolink.data.entities.ProfessorStudentCrossRef
+import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
 
 @Database(
     entities = [ProfessorEntity::class, StudentEntity::class, ProfessorStudentCrossRef::class],
