@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
@@ -136,7 +137,7 @@ fun StudentListScreen(
         ) {
 
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 24.dp)
             ) {
                 TitleCard(
                     title = "Students",
@@ -150,8 +151,11 @@ fun StudentListScreen(
                     )
                 } else {
                     LazyColumn {
-                        items(professorWithStudents!!.students) { student ->
-                            StudentCard(student = StudentMapper.fromEntityToModel(student))
+                        itemsIndexed(professorWithStudents!!.students) { index, student ->
+                            StudentCard(
+                                student = StudentMapper.fromEntityToModel(student),
+                                showTopLine = index > 0
+                            )
                         }
                     }
                 }
@@ -208,7 +212,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
                             }
@@ -242,7 +246,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
 
@@ -270,7 +274,7 @@ fun StudentListScreen(
                                     Toast.LENGTH_SHORT
                                 ).show()
 
-                                professorStudentViewModel.getProfessorWithStudent(prof.id) {data ->
+                                professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                     professorWithStudents = data
                                 }
 

@@ -2,10 +2,12 @@ package com.example.schoolink.ui.components.miscellaneous
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -30,16 +32,25 @@ import com.example.schoolink.ui.theme.*
 @Composable
 fun StudentCard(
     student: StudentModel,
-    trailingIcon: Painter? = null
+    trailingIcon: Painter? = null,
+    showTopLine: Boolean = false
 ) {
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-            .background(MaterialTheme.colorScheme.background),
-        shape = MaterialTheme.shapes.medium,
-        tonalElevation = 2.dp
+            .fillMaxWidth(),
+        color = White,
     ) {
+        Column {
+            if(showTopLine) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                        .height(0.5.dp)
+                        .align(Alignment.CenterHorizontally)
+                        .background(Gravel),
+                )
+            }
+        }
         Row (
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)

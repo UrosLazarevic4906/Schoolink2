@@ -24,7 +24,7 @@ fun TitleCard(
     icon: Painter? = null,
     title: String,
     clickableText: String? = null,
-    onButtonClickClick: () -> Unit = {},
+    onButtonClick: () -> Unit = {},
     onTextClick: () -> Unit = {}
 ) {
     Box(
@@ -35,7 +35,7 @@ fun TitleCard(
     ) {
         if (icon != null) {
             IconButton(
-                onClick = onButtonClickClick,
+                onClick = onButtonClick,
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
 
