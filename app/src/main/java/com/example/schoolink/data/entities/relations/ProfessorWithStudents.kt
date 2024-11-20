@@ -18,10 +18,3 @@ data class ProfessorWithStudents(
 )
 
 
-//
-//data class StudentWithProfessors(
-//    @Embedded val student: StudentEntity,
-//    @Relation(
-//
-//    )
-//)
