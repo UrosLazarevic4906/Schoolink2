@@ -1,5 +1,7 @@
-package com.example.schoolink.ui.screens.authentication.overlay
+package com.example.schoolink.ui.screens.management.overlay
 
+import android.util.Log
+import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,19 +31,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.R
-import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.theme.DissabledButton
 
 @Composable
-fun ForgotPasswordOverlay(
+fun AddExistingStudentOverlay(
     onDismiss: () -> Unit,
-    onResetPassword: (String) -> Unit,
-) {
-    var email by remember { mutableStateOf("") }
-    var isEmailValid by remember { mutableStateOf(false) }
+    onAddExistingStudent: (String) -> Unit,
+    //TODO: dodati vrednosti isEmail i isCode. uraditi validaciju za svaki pojedinacno. podesiti areCredentialsValid po tome
+    ) {
+    var credentials by remember { mutableStateOf("") }
+    var areCredentialsValid by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
+    LaunchedEffect(credentials) {
+        areCredentialsValid = Patterns.EMAIL_ADDRESS.matcher(credentials).matches() ||
+                (credentials.length == 8 && credentials.all { char ->
+                    char.isDigit() || char.isUpperCase()
+                })
+    }
+
+
+    val labelColor = when {
+        credentials.isEmpty() -> Smoke
+        areCredentialsValid -> Green
+        else -> Red
+    }
 
     Surface(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
@@ -59,30 +76,47 @@ fun ForgotPasswordOverlay(
                 .background(Cream),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            TitleCard(
-                icon = painterResource(R.drawable.ic_close),
-                onClick = onDismiss,
-                title = "Forgot Password"
-            )
+
+            Column(
+                modifier = Modifier.padding(12.dp)
+            ) {
+                TitleCard(
+                    icon = painterResource(R.drawable.ic_close),
+                    onClick = onDismiss,
+                    title = "Add student"
+                )
+            }
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 24.dp)
+                    .padding(horizontal = 24.dp, vertical = 12.dp)
                     .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Text(
-                    text = "Enter the email address associated with your account, and we'll send you an email with a recovery code.",
+                    text = "Enter the student code or email of the student you want to add.",
                     color = Ash,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Light,
                     modifier = Modifier.padding(vertical = 8.dp)
                 )
-                EmailInputField(
-                    value = email,
-                    isValid = { isEmailValid = it },
-                    onValueChange = { email = it.trim() },
+                OutlinedTextField(
+                    value = credentials,
+                    onValueChange = {
+                        credentials = it.trim()
+                    },
+                    label = { Text("Student code or email") },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.secondary,
+                        unfocusedBorderColor = Smoke,
+                        focusedLabelColor = labelColor,
+                        unfocusedLabelColor = labelColor,
+                        cursorColor = MaterialTheme.colorScheme.secondary,
+                        focusedLeadingIconColor = MaterialTheme.colorScheme.secondary,
+                        focusedTrailingIconColor = MaterialTheme.colorScheme.secondary
+                    )
                 )
             }
 
@@ -94,7 +128,8 @@ fun ForgotPasswordOverlay(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Button(
-                    onClick = { onResetPassword(email) },
+                    onClick = {
+                        onAddExistingStudent(credentials) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -104,22 +139,20 @@ fun ForgotPasswordOverlay(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    enabled = isEmailValid,
+                    enabled = areCredentialsValid,
                 ) {
-                    Text(text = "Reset password")
+                    Text(text = "Add a student")
                 }
             }
         }
     }
 }
 
-
-
 @Preview
 @Composable
-private fun ForgotPasswordOverlayPreview() {
-    ForgotPasswordOverlay(
+private fun AddExistingStudentOverlayPreview() {
+    AddExistingStudentOverlay(
         onDismiss = {},
-        onResetPassword = {},
+        onAddExistingStudent = {}
     )
 }

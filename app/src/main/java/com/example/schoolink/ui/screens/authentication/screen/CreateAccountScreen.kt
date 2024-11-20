@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.header.HeaderBack
-import com.example.schoolink.ui.components.InteractionText
+import com.example.schoolink.ui.components.inputs.InteractionText
 import com.example.schoolink.ui.components.inputs.ConfirmPasswordInputField
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.PasswordInputField
@@ -84,21 +84,21 @@ fun CreateAccountScreen(
                     EmailInputField(
                         value = email,
                         isValid = { isEmailValid = it },
-                        onValueChange = { email = it })
+                        onValueChange = { email = it.trim() })
                 }
 
                 item {
                     PasswordInputField(
                         value = password,
                         isValid = { isPasswordValid = it },
-                        onValueChange = { password = it })
+                        onValueChange = { password = it.trim() })
                 }
 
                 item {
                     ConfirmPasswordInputField(
                         password = password,
                         confirmPassword = confirmPassword,
-                        onConfirmPasswordChange = { confirmPassword = it }
+                        onConfirmPasswordChange = { confirmPassword = it.trim() }
                     )
                 }
 
