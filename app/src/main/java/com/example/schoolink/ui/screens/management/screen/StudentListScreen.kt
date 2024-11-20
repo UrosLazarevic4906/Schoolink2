@@ -52,6 +52,7 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun StudentListScreen(
+    onNext: () -> Unit,
     email: String,
     context: Context,
     professorViewModel: ProfessorViewModel,
@@ -125,10 +126,12 @@ fun StudentListScreen(
         ) {
 
             Column(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 24.dp)
+                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
                 TitleCard(
                     title = "Students",
+                    clickableText = "Next",
+                    onTextClick = onNext
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
