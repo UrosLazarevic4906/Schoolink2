@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.components
+package com.example.schoolink.ui.components.inputs
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource

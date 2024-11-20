@@ -19,15 +19,20 @@
     import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
     import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
     import com.example.schoolink.ui.screens.main.HomeScreen
+    import com.example.schoolink.ui.screens.management.screen.StudentListScreen
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
+    import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
+    import com.example.schoolink.ui.viewmodels.StudentViewModel
+    import com.example.schoolink.ui.viewmodels.factory.ProfessorStudentViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
 
     @Composable
     fun AppNavigation(
         professorViewModelFactory: ProfessorViewModelFactory,
-        studentViewModelFactory: StudentViewModelFactory
+        studentViewModelFactory: StudentViewModelFactory,
+        professorStudentViewModelFactory: ProfessorStudentViewModelFactory
     ) {
         val navController = rememberNavController()
         val context = LocalContext.current
@@ -84,8 +89,8 @@
                     onNavigateToCreateAccount = {
                         navController.navigateSingleTopTo("createAccount")
                     },
-                    onLogin = {email ->
-                        navController.navigateSingleTopTo("homeScreen/${Uri.encode(email)}")
+                    onLogin = { email ->
+                        navController.navigateSingleTopTo("studentListScreen/${Uri.encode(email)}")
                     },
                     onSetupAccount = { email ->
                         navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -165,7 +170,6 @@
 
                 val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
                 val email = backStackEntry.arguments?.getString("email") ?: ""
-                Log.d("Email", "Email passed: $email")
                 ProfessorSetupScreen(
                     email = email,
                     context = context,
@@ -207,13 +211,47 @@
 
                 val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
                 val email = backStackEntry.arguments?.getString("email") ?: ""
-                Log.d("Email", "Email passed: $email")
                 HomeScreen(
                     email = email,
                     viewModel = viewModel
                 )
             }
+
+            composable(
+                route = "studentListScreen/{email}",
+                arguments = listOf(
+                    navArgument("email") { type = NavType.StringType }
+                ),
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(1000)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                }
+            ) { backStackEntry ->
+                val email = backStackEntry.arguments?.getString("email") ?: ""
+
+                val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+                val studentViewModel: StudentViewModel = viewModel(factory = studentViewModelFactory)
+                val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
+
+                StudentListScreen(
+                    email = email,
+                    context = context,
+                    professorViewModel = professorViewModel,
+                    studentViewModel = studentViewModel,
+                    professorStudentViewModel = professorStudentViewModel
+                )
+            }
         }
+
+
     }
 
     fun NavController.navigateSingleTopTo(route: String) {

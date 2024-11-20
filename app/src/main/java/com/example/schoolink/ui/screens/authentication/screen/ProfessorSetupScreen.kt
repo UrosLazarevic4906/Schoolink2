@@ -109,7 +109,7 @@ fun ProfessorSetupScreen(
                     ) {
                         OutlinedInputField(
                             value = firstName,
-                            onValueChange = { firstName = it },
+                            onValueChange = { firstName = it.trim() },
                             label = "First name",
                             isValid = { isNameValid = it },
                             onDoneAction = {
@@ -118,7 +118,7 @@ fun ProfessorSetupScreen(
                         )
                         OutlinedInputField(
                             value = lastName,
-                            onValueChange = { lastName = it },
+                            onValueChange = { lastName = it.trim() },
                             label = "Last name",
                             isValid = { isLastNameValid = it },
 
@@ -188,11 +188,4 @@ fun ProfessorSetupScreen(
     }
 
 }
-//
-//@Preview(showBackground = true)
-//@Composable
-//private fun ProfessorSetupScreenPreview() {
-//    ProfessorSetupScreen(
-////        onProfileComplete = {}
-//    )
-//}
+

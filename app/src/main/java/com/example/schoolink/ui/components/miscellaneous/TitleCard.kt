@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.components
+package com.example.schoolink.ui.components.miscellaneous
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -20,26 +20,31 @@ import com.example.schoolink.R
 import com.example.schoolink.ui.theme.Black
 
 @Composable
-fun TitleLeftButton(
-    icon: Painter,
+fun TitleCard(
+    icon: Painter? = null,
     title: String,
-    onClick: () -> Unit
+    clickableText: String? = null,
+    onButtonClickClick: () -> Unit = {},
+    onTextClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+//            .clickable { onClick() }
             .padding(8.dp)
     ) {
-        IconButton(
-            onClick = onClick,
-            modifier = Modifier.align(Alignment.CenterStart)
-        ) {
-            Icon(
-                painter = icon,
-                contentDescription = "Icon",
-                tint = Black
-            )
+        if (icon != null) {
+            IconButton(
+                onClick = onButtonClickClick,
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+
+                Icon(
+                    painter = icon,
+                    contentDescription = "Icon",
+                    tint = Black
+                )
+            }
         }
 
         Text(
@@ -49,6 +54,10 @@ fun TitleLeftButton(
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
         )
+
+        if(clickableText != null){
+            //TODO: ADD CLICKABLE TEXT AT ENDS
+        }
     }
 }
 
@@ -56,8 +65,7 @@ fun TitleLeftButton(
 @Preview
 @Composable
 private fun TitleLeftButtonPreview() {
-    TitleLeftButton(
-        onClick = {},
+    TitleCard(
         title = "Help & Support",
         icon = painterResource(R.drawable.ic_chevron_left)
     )
