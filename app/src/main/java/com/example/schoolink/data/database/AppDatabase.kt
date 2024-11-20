@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.schoolink.data.dao.ProfessorDao
+import com.example.schoolink.data.dao.ProfessorStudentDao
 import com.example.schoolink.data.dao.StudentDao
 import com.example.schoolink.data.entities.ProfessorEntity
 import com.example.schoolink.data.entities.StudentEntity
@@ -14,13 +15,14 @@ import com.example.schoolink.data.entities.ProfessorStudentCrossRef
 
 @Database(
     entities = [ProfessorEntity::class, StudentEntity::class, ProfessorStudentCrossRef::class],
-    version = 4,
+    version = 6,
     exportSchema = false
 )
 @TypeConverters(GenderTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun professorDao(): ProfessorDao
     abstract fun studentDao(): StudentDao
+    abstract fun professorStudentDao(): ProfessorStudentDao
 
     companion object {
         @Volatile
@@ -31,7 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "schoolink-db"
+                    "schuolinko-db"
                 ).
                 fallbackToDestructiveMigration()
                     .build()
