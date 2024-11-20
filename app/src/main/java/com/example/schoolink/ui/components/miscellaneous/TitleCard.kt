@@ -17,7 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.schoolink.R
+import com.example.schoolink.ui.components.inputs.InteractionText
 import com.example.schoolink.ui.theme.Black
+import com.example.schoolink.ui.theme.Green
 
 @Composable
 fun TitleCard(
@@ -30,7 +32,6 @@ fun TitleCard(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-//            .clickable { onClick() }
             .padding(8.dp)
     ) {
         if (icon != null) {
@@ -55,8 +56,13 @@ fun TitleCard(
             modifier = Modifier.align(Alignment.Center)
         )
 
-        if(clickableText != null){
-            //TODO: ADD CLICKABLE TEXT AT ENDS
+        if (clickableText != null) {
+            InteractionText(
+                text = clickableText,
+                onClick = onTextClick,
+                color = Green,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            )
         }
     }
 }
@@ -67,6 +73,7 @@ fun TitleCard(
 private fun TitleLeftButtonPreview() {
     TitleCard(
         title = "Help & Support",
-        icon = painterResource(R.drawable.ic_chevron_left)
+        icon = painterResource(R.drawable.ic_chevron_left),
+        clickableText = "Next"
     )
 }
