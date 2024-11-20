@@ -19,7 +19,6 @@ fun HomeScreen(
 ) {
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
-    // Fetch professor details based on the email
     LaunchedEffect(email) {
         viewModel.getProfessorByEmail(email) { fetchedProfessor ->
             professor = fetchedProfessor

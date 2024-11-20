@@ -70,7 +70,7 @@ fun CreateNewStudentOverlay(
     var isLastNameValid by remember { mutableStateOf(false) }
     var isEmailValid by remember { mutableStateOf(false) }
 
-    var isLoading by remember { mutableStateOf(false) } // Loading state
+    var isLoading by remember { mutableStateOf(false) }
 
     val isFormValid =
         isEmailValid && isNameValid && isLastNameValid && gender != null && dateOfBirth.isNotEmpty()
@@ -198,6 +198,7 @@ fun CreateNewStudentOverlay(
             ) {
                 Button(
                     onClick = {
+                        isLoading = true
                         val student = StudentModel(
                             email = email,
                             firstName = firstName,
@@ -225,20 +226,10 @@ fun CreateNewStudentOverlay(
                     Text(text = "Create a new student")
                 }
             }
-            // Loading Indicator
-            if (isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Black.copy(alpha = 0.5f)), // Semi-transparent overlay
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
         }
     }
 }
+
 
 @Preview
 @Composable

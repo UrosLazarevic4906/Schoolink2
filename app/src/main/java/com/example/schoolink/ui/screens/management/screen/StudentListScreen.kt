@@ -1,7 +1,6 @@
 package com.example.schoolink.ui.screens.management.screen
 
 import android.content.Context
-import android.util.Patterns
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -30,12 +29,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
 import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.StudentMapper
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.EmptyState
 import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
@@ -45,10 +42,6 @@ import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 import com.example.schoolink.ui.viewmodels.StudentViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun StudentListScreen(
@@ -150,7 +143,6 @@ fun StudentListScreen(
         }
     }
 
-    // Create New Student Dialog
     AnimatedVisibility(
         visible = showCreateStudentDialog,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
@@ -175,7 +167,6 @@ fun StudentListScreen(
         )
     }
 
-    // Add Existing Student Dialog
     AnimatedVisibility(
         visible = showAddExistingStudentDialog,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
