@@ -31,6 +31,12 @@ class StudentViewModel(private val repository: StudentRepository) : ViewModel() 
         }
     }
 
+    suspend fun getStudentByEmailSync(email: String): StudentModel? {
+        return withContext(Dispatchers.IO) {
+            repository.getStudentByEmail(email)
+        }
+    }
+
     fun getStudentByCode(
         code: String,
         onResult: (StudentModel?) -> Unit
