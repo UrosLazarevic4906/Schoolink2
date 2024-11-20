@@ -24,7 +24,8 @@ fun TitleCard(
     icon: Painter? = null,
     title: String,
     clickableText: String? = null,
-    onClick: () -> Unit
+    onButtonClickClick: () -> Unit = {},
+    onTextClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -34,7 +35,7 @@ fun TitleCard(
     ) {
         if (icon != null) {
             IconButton(
-                onClick = onClick,
+                onClick = onButtonClickClick,
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
 
@@ -65,7 +66,6 @@ fun TitleCard(
 @Composable
 private fun TitleLeftButtonPreview() {
     TitleCard(
-        onClick = {},
         title = "Help & Support",
         icon = painterResource(R.drawable.ic_chevron_left)
     )

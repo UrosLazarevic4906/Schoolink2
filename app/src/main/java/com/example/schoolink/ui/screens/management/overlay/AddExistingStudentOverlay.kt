@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.screens.management.overlay
 
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -37,14 +38,15 @@ import com.example.schoolink.ui.theme.DissabledButton
 fun AddExistingStudentOverlay(
     onDismiss: () -> Unit,
     onAddExistingStudent: (String) -> Unit,
-) {
+    //TODO: dodati vrednosti isEmail i isCode. uraditi validaciju za svaki pojedinacno. podesiti areCredentialsValid po tome
+    ) {
     var credentials by remember { mutableStateOf("") }
     var areCredentialsValid by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(credentials) {
         areCredentialsValid = Patterns.EMAIL_ADDRESS.matcher(credentials).matches() ||
-                (credentials.length == 7 && credentials.all { char ->
+                (credentials.length == 8 && credentials.all { char ->
                     char.isDigit() || char.isUpperCase()
                 })
     }
@@ -126,7 +128,8 @@ fun AddExistingStudentOverlay(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Button(
-                    onClick = { onAddExistingStudent(credentials) },
+                    onClick = {
+                        onAddExistingStudent(credentials) },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary,
