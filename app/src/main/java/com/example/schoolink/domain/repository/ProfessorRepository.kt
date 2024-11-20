@@ -1,9 +1,6 @@
 package com.example.schoolink.domain.repository
 
-import android.util.Log
 import com.example.schoolink.data.dao.ProfessorDao
-import com.example.schoolink.data.entities.ProfessorStudentCrossRef
-import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.ProfessorMapper
 import com.example.schoolink.domain.models.ProfessorModel
 

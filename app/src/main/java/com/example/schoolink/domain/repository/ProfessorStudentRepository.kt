@@ -1,7 +1,7 @@
 package com.example.schoolink.domain.repository
 
 import com.example.schoolink.data.dao.ProfessorStudentDao
-import com.example.schoolink.data.entities.ProfessorStudentCrossRef
+import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 
 class ProfessorStudentRepository(private val professorStudentDao: ProfessorStudentDao) {

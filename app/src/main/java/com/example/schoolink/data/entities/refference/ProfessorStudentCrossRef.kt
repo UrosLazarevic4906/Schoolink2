@@ -1,8 +1,10 @@
-package com.example.schoolink.data.entities
+package com.example.schoolink.data.entities.refference
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import com.example.schoolink.data.entities.ProfessorEntity
+import com.example.schoolink.data.entities.StudentEntity
 
 @Entity(
     tableName = "professor_students",
