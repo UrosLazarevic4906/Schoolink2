@@ -24,6 +24,9 @@
     import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.StudentViewModel
+    import com.example.schoolink.ui.viewmodels.factory.GroupProfessorViewModelFactory
+    import com.example.schoolink.ui.viewmodels.factory.GroupStudentViewModelFactory
+    import com.example.schoolink.ui.viewmodels.factory.GroupViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.ProfessorStudentViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
@@ -32,7 +35,10 @@
     fun AppNavigation(
         professorViewModelFactory: ProfessorViewModelFactory,
         studentViewModelFactory: StudentViewModelFactory,
-        professorStudentViewModelFactory: ProfessorStudentViewModelFactory
+        professorStudentViewModelFactory: ProfessorStudentViewModelFactory,
+        groupViewModelFactory: GroupViewModelFactory,
+        groupProfessorViewModelFactory: GroupProfessorViewModelFactory,
+        groupStudentViewModelFactory: GroupStudentViewModelFactory
     ) {
         val navController = rememberNavController()
         val context = LocalContext.current
