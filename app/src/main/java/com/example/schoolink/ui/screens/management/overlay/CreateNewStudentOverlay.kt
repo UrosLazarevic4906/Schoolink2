@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -69,6 +70,8 @@ fun CreateNewStudentOverlay(
     var isLastNameValid by remember { mutableStateOf(false) }
     var isEmailValid by remember { mutableStateOf(false) }
 
+    var isLoading by remember { mutableStateOf(false) }
+
     val isFormValid =
         isEmailValid && isNameValid && isLastNameValid && gender != null && dateOfBirth.isNotEmpty()
 
@@ -95,7 +98,10 @@ fun CreateNewStudentOverlay(
             ) {
                 TitleCard(
                     icon = painterResource(R.drawable.ic_close),
-                    onButtonClick = onDismiss,
+                    onButtonClick = {
+                        if (!isLoading)
+                            onDismiss()
+                    },
                     title = "Create student"
                 )
             }
@@ -192,6 +198,7 @@ fun CreateNewStudentOverlay(
             ) {
                 Button(
                     onClick = {
+                        isLoading = true
                         val student = StudentModel(
                             email = email,
                             firstName = firstName,
@@ -222,6 +229,7 @@ fun CreateNewStudentOverlay(
         }
     }
 }
+
 
 @Preview
 @Composable

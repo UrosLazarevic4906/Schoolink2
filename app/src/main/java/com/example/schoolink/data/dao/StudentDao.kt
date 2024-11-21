@@ -10,7 +10,7 @@ import com.example.schoolink.data.entities.StudentEntity
 interface StudentDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertStudent(student: StudentEntity)
+    suspend fun insertStudent(student: StudentEntity): Long
 
     @Query("SELECT * FROM students WHERE email = :email")
     suspend fun getStudentByEmail(email: String): StudentEntity?

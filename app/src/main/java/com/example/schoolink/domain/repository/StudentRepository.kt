@@ -22,10 +22,10 @@ class StudentRepository(
         return newCode
     }
 
-    suspend fun insertStudent(studentModel: StudentModel) {
+    suspend fun insertStudent(studentModel: StudentModel): Long {
         val entity =
             StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
-        studentDao.insertStudent(entity)
+        return studentDao.insertStudent(entity)
     }
 
     suspend fun getStudentByEmail(email: String): StudentModel? {
