@@ -1,6 +1,5 @@
 package com.example.schoolink.ui.components.miscellaneous
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,26 +22,28 @@ import com.example.schoolink.ui.theme.Green
 
 @Composable
 fun TitleCard(
-    icon: Painter? = null,
     title: String,
+    startIcon: Painter? = null,
+    endIcon: Painter? = null,
     clickableText: String? = null,
-    onButtonClick: () -> Unit = {},
-    onTextClick: () -> Unit = {}
+    onStartIcon: () -> Unit = {},
+    onEndIcon: () -> Unit = {},
+    onText: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        if (icon != null) {
+        if (startIcon != null) {
             IconButton(
-                onClick = onButtonClick,
+                onClick = onStartIcon,
                 modifier = Modifier.align(Alignment.CenterStart)
             ) {
 
                 Icon(
-                    painter = icon,
-                    contentDescription = "Icon",
+                    painter = startIcon,
+                    contentDescription = "Start Icon",
                     tint = Black
                 )
             }
@@ -59,10 +60,25 @@ fun TitleCard(
         if (clickableText != null) {
             InteractionText(
                 text = clickableText,
-                onClick = onTextClick,
+                onClick = onText,
                 color = Green,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.align(Alignment.CenterEnd)
             )
+        }
+
+        if(endIcon != null) {
+            IconButton(
+                onClick = onEndIcon,
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
+
+                Icon(
+                    painter = endIcon,
+                    contentDescription = "End Icon",
+                    tint = Black
+                )
+            }
         }
     }
 }
@@ -73,7 +89,7 @@ fun TitleCard(
 private fun TitleLeftButtonPreview() {
     TitleCard(
         title = "Help & Support",
-        icon = painterResource(R.drawable.ic_chevron_left),
+        startIcon = painterResource(R.drawable.ic_chevron_left),
         clickableText = "Next"
-    )
+        )
 }

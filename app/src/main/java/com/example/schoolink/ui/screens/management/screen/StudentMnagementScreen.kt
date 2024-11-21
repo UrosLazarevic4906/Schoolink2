@@ -27,8 +27,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import com.example.schoolink.R
@@ -51,8 +53,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun StudentListScreen(
-    onNext: () -> Unit,
+fun StudentManagementScreen(
+    isOnMain: Boolean,
+    onNext: () -> Unit = {},
+    onBack: () -> Unit = {},
     email: String,
     context: Context,
     professorViewModel: ProfessorViewModel,
@@ -128,11 +132,20 @@ fun StudentListScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
-                TitleCard(
-                    title = "Students",
-                    clickableText = "Next",
-                    onTextClick = onNext
-                )
+                if(isOnMain){
+                    TitleCard(
+                        title = "Students",
+                        startIcon = painterResource(R.drawable.ic_chevron_left),
+                        onStartIcon = onBack
+                    )
+                } else {
+                    TitleCard(
+                        title = "Students",
+                        clickableText = "Next",
+                        onText = onNext
+                    )
+                }
+
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
                     EmptyState(

@@ -29,7 +29,7 @@ import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
-import com.example.schoolink.ui.components.inputs.OutlinedInputField
+import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.components.header.HeaderBack
 import com.example.schoolink.ui.theme.DissabledButton
 import com.example.schoolink.ui.theme.SchoolinkTheme
@@ -108,7 +108,7 @@ fun ProfessorSetupScreen(
                             .padding(horizontal = 14.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        OutlinedInputField(
+                        CredentialsOutlinedInputField(
                             value = firstName,
                             onValueChange = { firstName = it.trim() },
                             label = "First name",
@@ -117,7 +117,7 @@ fun ProfessorSetupScreen(
                                 focusManager.clearFocus()
                             }
                         )
-                        OutlinedInputField(
+                        CredentialsOutlinedInputField(
                             value = lastName,
                             onValueChange = { lastName = it.trim() },
                             label = "Last name",

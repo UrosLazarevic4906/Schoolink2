@@ -1,7 +1,6 @@
     package com.example.schoolink.ui.navigation
 
     import android.net.Uri
-    import android.util.Log
     import androidx.compose.animation.AnimatedContentTransitionScope
     import androidx.compose.animation.EnterTransition
     import androidx.compose.animation.ExitTransition
@@ -19,7 +18,8 @@
     import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
     import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
     import com.example.schoolink.ui.screens.main.HomeScreen
-    import com.example.schoolink.ui.screens.management.screen.StudentListScreen
+    import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
+    import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
     import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
@@ -39,7 +39,7 @@
 
         NavHost(
             navController = navController,
-            startDestination = "onboarding"
+            startDestination = "groupManagementScreen"
         ) {
             composable(
                 "onboarding",
@@ -90,7 +90,7 @@
                         navController.navigateSingleTopTo("createAccount")
                     },
                     onLogin = { email ->
-                        navController.navigateSingleTopTo("studentListScreen/${Uri.encode(email)}")
+                        navController.navigateSingleTopTo("studentManagementScreen/${Uri.encode(email)}")
                     },
                     onSetupAccount = { email ->
                         navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -177,7 +177,7 @@
                     viewModel = viewModel,
                     onBack = { navController.popBackStack() },
                     onAddStudents = {
-                        navController.navigateSingleTopTo("studentListScreen/${Uri.encode(email)}")
+                        navController.navigateSingleTopTo("studentManagementScreen/${Uri.encode(email)}")
                     }
                 )
             }
@@ -222,7 +222,7 @@
             }
 
             composable(
-                route = "studentListScreen/{email}",
+                route = "studentManagementScreen/{email}",
                 arguments = listOf(
                     navArgument("email") { type = NavType.StringType }
                 ),
@@ -245,13 +245,53 @@
                 val studentViewModel: StudentViewModel = viewModel(factory = studentViewModelFactory)
                 val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
 
-                StudentListScreen(
+                StudentManagementScreen(
+                    isOnMain = false,
                     email = email,
                     context = context,
                     professorViewModel = professorViewModel,
                     studentViewModel = studentViewModel,
                     professorStudentViewModel = professorStudentViewModel,
                     onNext = {
+                    },
+                )
+            }
+
+            composable(
+                route = "groupManagementScreen",
+//                arguments = listOf(
+//                    navArgument("email") { type = NavType.StringType }
+//                ),
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(1000)
+                    )
+                },
+                exitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                }
+            ) {
+//                backStackEntry ->
+//                val email = backStackEntry.arguments?.getString("email") ?: ""
+
+//                val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+//                val studentViewModel: StudentViewModel = viewModel(factory = studentViewModelFactory)
+//                val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
+
+                GroupManagementScreen(
+                    isOnMain = false,
+//                    email = email,
+                    context = context,
+//                    professorViewModel = professorViewModel,
+//                    studentViewModel = studentViewModel,
+//                    professorStudentViewModel = professorStudentViewModel,
+                    onNext = {
+                    },
+                    onBack = {
 
                     }
                 )
