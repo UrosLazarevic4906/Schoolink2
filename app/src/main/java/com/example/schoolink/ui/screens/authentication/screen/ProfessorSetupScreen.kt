@@ -29,7 +29,7 @@ import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
-import com.example.schoolink.ui.components.inputs.OutlinedInputField
+import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.components.header.HeaderBack
 import com.example.schoolink.ui.theme.DissabledButton
 import com.example.schoolink.ui.theme.SchoolinkTheme
@@ -80,12 +80,60 @@ fun ProfessorSetupScreen(
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+<<<<<<< HEAD
                         item {
                             HeaderBack(
                                 onBackClick = onBack,
                                 title = "First things first",
                                 description = "Upload your photo and tell us your name, gender, and when you were born"
                             )
+=======
+                        ImagePicker(
+                            imageUri = profilePictureUri,
+                            onImagePicked = { selectedUri -> profilePictureUri = selectedUri }
+                        )
+                    }
+                }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 14.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        CredentialsOutlinedInputField(
+                            value = firstName,
+                            onValueChange = { firstName = it.trim() },
+                            label = "First name",
+                            isValid = { isNameValid = it },
+                            onDoneAction = {
+                                focusManager.clearFocus()
+                            }
+                        )
+                        CredentialsOutlinedInputField(
+                            value = lastName,
+                            onValueChange = { lastName = it.trim() },
+                            label = "Last name",
+                            isValid = { isLastNameValid = it },
+
+                            onDoneAction = {
+                                focusManager.clearFocus()
+                            }
+
+                        )
+                        GenderSelectDropdown(
+                            selectedGender = gender,
+                            onGenderSelected = {
+                                gender = it
+                                focusManager.clearFocus()
+                            }
+                        )
+                        DateOfBirthPicker(
+                            dateOfBirth = dateOfBirth
+                        ) { selectedDate ->
+                            dateOfBirth = selectedDate
+                            focusManager.clearFocus()
+>>>>>>> front
                         }
 
                         item {

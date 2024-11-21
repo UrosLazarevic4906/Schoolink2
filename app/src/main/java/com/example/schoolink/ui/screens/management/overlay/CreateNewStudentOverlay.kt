@@ -2,7 +2,6 @@ package com.example.schoolink.ui.screens.management.overlay
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,7 +32,6 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,7 +43,7 @@ import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
-import com.example.schoolink.ui.components.inputs.OutlinedInputField
+import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.utils.saveImageToInternalStorage
 
@@ -97,11 +93,16 @@ fun CreateNewStudentOverlay(
                 modifier = Modifier.padding(12.dp)
             ) {
                 TitleCard(
+<<<<<<< HEAD
                     icon = painterResource(R.drawable.ic_close),
                     onButtonClick = {
                         if (!isLoading)
                             onDismiss()
                     },
+=======
+                    startIcon = painterResource(R.drawable.ic_close),
+                    onStartIcon = onDismiss,
+>>>>>>> front
                     title = "Create student"
                 )
             }
@@ -132,7 +133,7 @@ fun CreateNewStudentOverlay(
                             isValid = { isEmailValid = it },
                             onValueChange = { email = it.trim() },
                         )
-                        OutlinedInputField(
+                        CredentialsOutlinedInputField(
                             value = firstName,
                             onValueChange = { firstName = it.trim() },
                             label = "First name *",
@@ -141,7 +142,7 @@ fun CreateNewStudentOverlay(
                                 focusManager.clearFocus()
                             }
                         )
-                        OutlinedInputField(
+                        CredentialsOutlinedInputField(
                             value = lastName,
                             onValueChange = { lastName = it.trim() },
                             label = "Last name *",
