@@ -3,11 +3,12 @@ package com.example.schoolink.domain.repository
 import com.example.schoolink.data.dao.GroupDao
 import com.example.schoolink.data.dao.GroupProfessorDao
 import com.example.schoolink.data.dao.GroupStudentDao
-import com.example.schoolink.data.entities.GroupEntity
 import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 import com.example.schoolink.data.entities.refference.GroupStudentCrossRef
 import com.example.schoolink.data.entities.relations.GroupWithProfessor
 import com.example.schoolink.data.entities.relations.GroupWithStudents
+import com.example.schoolink.data.mappers.GroupMapper
+import com.example.schoolink.domain.models.GroupModel
 
 class GroupRepository(
     private val groupDao: GroupDao,
@@ -15,8 +16,8 @@ class GroupRepository(
     private val groupStudentDao: GroupStudentDao
 ) {
 
-    suspend fun createGroup(group: GroupEntity): Long {
-        return groupDao.createGroup(group)
+    suspend fun createGroup(group: GroupModel): Long {
+        return groupDao.createGroup(GroupMapper.fromModelToEntity(group))
     }
 
     suspend fun linkGroupWithProfessor(groupId: Int, professorId: Int) {

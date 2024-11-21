@@ -60,8 +60,8 @@ fun ForgotPasswordOverlay(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             TitleCard(
-                icon = painterResource(R.drawable.ic_close),
-                onButtonClick = onDismiss,
+                startIcon = painterResource(R.drawable.ic_close),
+                onStartIcon = onDismiss,
                 title = "Forgot Password"
             )
 

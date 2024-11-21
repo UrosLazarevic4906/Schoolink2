@@ -29,7 +29,7 @@ import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
-import com.example.schoolink.ui.components.inputs.OutlinedInputField
+import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.components.header.HeaderBack
 import com.example.schoolink.ui.theme.DissabledButton
 import com.example.schoolink.ui.theme.SchoolinkTheme
@@ -45,6 +45,7 @@ fun ProfessorSetupScreen(
     context: Context,
     onAddStudents: () -> Unit
 ) {
+
     var profilePictureUri by remember { mutableStateOf<Uri?>(null) }
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -55,10 +56,12 @@ fun ProfessorSetupScreen(
     var isLastNameValid by remember { mutableStateOf(false) }
     val isFormValid = isNameValid && isLastNameValid && gender != null && dateOfBirth.isNotEmpty()
 
+
     val focusManager = LocalFocusManager.current
 
+
     SchoolinkTheme {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
@@ -68,118 +71,122 @@ fun ProfessorSetupScreen(
                     onClick = { focusManager.clearFocus() },
                     indication = null,
                     interactionSource = remember { MutableInteractionSource() }
-                )
+                ),
         ) {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween
-                ) {
-                    LazyColumn(
+
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                item {
+                    HeaderBack(
+                        onBackClick = onBack,
+                        title = "First things first",
+                        description = "Upload your photo and tell us your name, gender and when you were born"
+                    )
+                }
+
+                item {
+                    Box(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        verticalArrangement = Arrangement.spacedBy(24.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .size(150.dp)
                     ) {
-                        item {
-                            HeaderBack(
-                                onBackClick = onBack,
-                                title = "First things first",
-                                description = "Upload your photo and tell us your name, gender, and when you were born"
-                            )
-                        }
-
-                        item {
-                            Box(
-                                modifier = Modifier
-                                    .size(150.dp)
-                            ) {
-                                ImagePicker(
-                                    imageUri = profilePictureUri,
-                                    onImagePicked = { selectedUri -> profilePictureUri = selectedUri }
-                                )
-                            }
-                        }
-
-                        item {
-                            Column(
-                                modifier = Modifier
-                                    .padding(horizontal = 14.dp),
-                                verticalArrangement = Arrangement.spacedBy(10.dp)
-                            ) {
-                                OutlinedInputField(
-                                    value = firstName,
-                                    onValueChange = { firstName = it.trim() },
-                                    label = "First name",
-                                    isValid = { isNameValid = it },
-                                    onDoneAction = {
-                                        focusManager.clearFocus()
-                                    }
-                                )
-                                OutlinedInputField(
-                                    value = lastName,
-                                    onValueChange = { lastName = it.trim() },
-                                    label = "Last name",
-                                    isValid = { isLastNameValid = it },
-                                    onDoneAction = {
-                                        focusManager.clearFocus()
-                                    }
-                                )
-                                GenderSelectDropdown(
-                                    selectedGender = gender,
-                                    onGenderSelected = {
-                                        gender = it
-                                        focusManager.clearFocus()
-                                    }
-                                )
-                                DateOfBirthPicker(
-                                    dateOfBirth = dateOfBirth
-                                ) { selectedDate ->
-                                    dateOfBirth = selectedDate
-                                    focusManager.clearFocus()
-                                }
-                            }
-                        }
-                    }
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Button(
-                            onClick = {
-                                viewModel.getProfessorByEmail(email) { existingProfessor ->
-                                    existingProfessor?.let {
-                                        val professor = it.copy(
-                                            firstName = firstName,
-                                            lastName = lastName,
-                                            gender = gender,
-                                            dateOfBirth = dateOfBirth,
-                                            profilePicturePath = profilePictureUri?.let { uri ->
-                                                saveImageToInternalStorage(context, uri)
-                                            }
-                                        )
-                                        viewModel.updateProfessorAsync(professor) {
-                                            onAddStudents()
-                                        }
-                                    }
-                                }
-                            },
-                            enabled = isFormValid,
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onPrimary,
-                                disabledContainerColor = DissabledButton,
-                                disabledContentColor = MaterialTheme.colorScheme.onPrimary
-                            ),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(48.dp)
-                        ) {
-                            Text(text = "Add some students")
-                        }
+                        ImagePicker(
+                            imageUri = profilePictureUri,
+                            onImagePicked = { selectedUri -> profilePictureUri = selectedUri }
+                        )
                     }
                 }
+
+                item {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 14.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        CredentialsOutlinedInputField(
+                            value = firstName,
+                            onValueChange = { firstName = it.trim() },
+                            label = "First name",
+                            isValid = { isNameValid = it },
+                            onDoneAction = {
+                                focusManager.clearFocus()
+                            }
+                        )
+                        CredentialsOutlinedInputField(
+                            value = lastName,
+                            onValueChange = { lastName = it.trim() },
+                            label = "Last name",
+                            isValid = { isLastNameValid = it },
+
+                            onDoneAction = {
+                                focusManager.clearFocus()
+                            }
+
+                        )
+                        GenderSelectDropdown(
+                            selectedGender = gender,
+                            onGenderSelected = {
+                                gender = it
+                                focusManager.clearFocus()
+                            }
+                        )
+                        DateOfBirthPicker(
+                            dateOfBirth = dateOfBirth
+                        ) { selectedDate ->
+                            dateOfBirth = selectedDate
+                            focusManager.clearFocus()
+                        }
+                    }
+
+                }
+
             }
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Button(
+                    onClick = {
+                        viewModel.getProfessorByEmail(email) { existingProfessor ->
+                            existingProfessor?.let {
+                                val professor = it.copy(
+                                    firstName = firstName,
+                                    lastName = lastName,
+                                    gender = gender,
+                                    dateOfBirth = dateOfBirth,
+                                    profilePicturePath = profilePictureUri?.let { uri ->
+                                        saveImageToInternalStorage(context, uri)
+                                    }
+                                )
+                                viewModel.updateProfessor(professor)
+                                onAddStudents()
+                            }
+                        }
+                    },
+                    enabled = isFormValid,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        disabledContainerColor = DissabledButton,
+                        disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Text(text = "Add some students")
+                }
+            }
+
         }
     }
+
+}
+
