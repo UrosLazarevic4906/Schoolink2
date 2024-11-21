@@ -14,9 +14,12 @@ class GroupViewModel(
 
     var currentGroup: GroupModel? = null
 
-    fun createGroup(group: GroupModel){
+    fun createGroup(group: GroupModel, onGroupCreated: (Long) -> Unit){
         viewModelScope.launch(Dispatchers.IO){
-            repository.createGroup(group)
+            val groupId = withContext(Dispatchers.IO){
+                repository.createGroup(group)
+            }
+            onGroupCreated(groupId)
         }
     }
 

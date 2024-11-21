@@ -21,6 +21,9 @@
     import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
     import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
     import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
+    import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
+    import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
+    import com.example.schoolink.ui.viewmodels.GroupViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.StudentViewModel
@@ -45,7 +48,7 @@
 
         NavHost(
             navController = navController,
-            startDestination = "groupManagementScreen"
+            startDestination = "onboarding"
         ) {
             composable(
                 "onboarding",
@@ -252,22 +255,23 @@
                 val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
 
                 StudentManagementScreen(
-                    isOnMain = false,
+                    //isOnMain = false,
                     email = email,
                     context = context,
                     professorViewModel = professorViewModel,
                     studentViewModel = studentViewModel,
                     professorStudentViewModel = professorStudentViewModel,
                     onNext = {
+
                     },
                 )
             }
 
             composable(
-                route = "groupManagementScreen",
-//                arguments = listOf(
-//                    navArgument("email") { type = NavType.StringType }
-//                ),
+                route = "groupManagementScreen/{email}",
+                arguments = listOf(
+                    navArgument("email") { type = NavType.StringType }
+                ),
                 enterTransition = {
                     slideIntoContainer(
                         AnimatedContentTransitionScope.SlideDirection.Left,
@@ -280,26 +284,27 @@
                         animationSpec = tween(1000)
                     )
                 }
-            ) {
-//                backStackEntry ->
-//                val email = backStackEntry.arguments?.getString("email") ?: ""
+            ) { backStackEntry ->
+                val email = backStackEntry.arguments?.getString("email") ?: ""
 
-//                val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
-//                val studentViewModel: StudentViewModel = viewModel(factory = studentViewModelFactory)
-//                val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
+                val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+                val groupViewModel: GroupViewModel = viewModel(factory = groupViewModelFactory)
+                val groupProfessorViewModel: GroupProfessorViewModel = viewModel(factory = groupProfessorViewModelFactory)
+                val groupStudentViewModel: GroupStudentViewModel = viewModel(factory = groupStudentViewModelFactory)
 
                 GroupManagementScreen(
                     isOnMain = false,
-//                    email = email,
+                    email = email,
                     context = context,
-//                    professorViewModel = professorViewModel,
-//                    studentViewModel = studentViewModel,
-//                    professorStudentViewModel = professorStudentViewModel,
                     onNext = {
                     },
                     onBack = {
-
-                    }
+                        navController.popBackStack()
+                    },
+                    professorViewModel = professorViewModel,
+                    groupViewModel = groupViewModel,
+                    groupProfessorViewModel = groupProfessorViewModel,
+                    groupStudentViewModel = groupStudentViewModel
                 )
             }
         }

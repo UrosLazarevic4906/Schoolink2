@@ -29,23 +29,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
+import com.example.schoolink.domain.models.GroupModel
 import com.example.schoolink.domain.models.GroupType
 import com.example.schoolink.ui.components.inputs.ImagePicker
 import com.example.schoolink.ui.components.inputs.GroupTypePicker
 import com.example.schoolink.ui.components.inputs.OutlinedInputField
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.theme.*
+import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
+import com.example.schoolink.ui.viewmodels.GroupViewModel
+import com.example.schoolink.utils.saveImageToInternalStorage
 
 @Composable
 fun CreateNewGroupOverlay(
+    groupViewModel: GroupViewModel,
+    groupStudentViewModel: GroupStudentViewModel,
     onDismiss: () -> Unit,
-    onCreateGroup: () -> Unit,
+    onCreateGroup: (GroupModel) -> Unit,
     focusManager: FocusManager,
     context: Context
 ) {
@@ -134,7 +137,18 @@ fun CreateNewGroupOverlay(
             ) {
                 Button(
                     onClick = {
-
+                        val group = GroupModel(
+                            groupName = name,
+                            groupType =  groupType,
+                            groupPicturePath = groupPictureUri?.let { uri ->
+                                saveImageToInternalStorage(context, uri)
+                            }
+                        )
+                        groupViewModel.createGroup(group) { groupId ->
+//                            groupStudentViewModel.addStudentToGroup(groupId, studentId)
+                        }
+                        // TODO napraviti da se grupa dodeli studentu u group_student tabeli
+                        onCreateGroup(group)//vraza grupu da bi se dodelila profesoru
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -152,15 +166,4 @@ fun CreateNewGroupOverlay(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun GroupOverlayPreview() {
-    CreateNewGroupOverlay(
-        context = LocalContext.current,
-        focusManager = LocalFocusManager.current,
-        onCreateGroup = {},
-        onDismiss = {}
-    )
 }

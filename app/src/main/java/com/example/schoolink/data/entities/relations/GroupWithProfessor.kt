@@ -14,5 +14,5 @@ data class GroupWithProfessor(
         entityColumn = "groupId",
         associateBy = Junction(GroupProfessorCrossRef::class)
     )
-    val professors: List<GroupEntity>
+    val groups: List<GroupEntity>
 )

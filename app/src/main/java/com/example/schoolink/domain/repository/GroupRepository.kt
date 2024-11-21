@@ -7,9 +7,9 @@ import com.example.schoolink.domain.models.GroupModel
 class GroupRepository(
     private val groupDao: GroupDao
 ) {
-    suspend fun createGroup(groupModel: GroupModel) {
+    suspend fun createGroup(groupModel: GroupModel): Long {
         val entity = GroupMapper.fromModelToEntity(groupModel)
-        groupDao.insertGroup(entity)
+        return groupDao.insertGroup(entity)
     }
 
     suspend fun getGroupById(groupId: Int): GroupModel? {
