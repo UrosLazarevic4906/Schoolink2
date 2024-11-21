@@ -4,15 +4,15 @@ import androidx.room.Embedded
 import androidx.room.Junction
 import androidx.room.Relation
 import com.example.schoolink.data.entities.GroupEntity
-import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 import com.example.schoolink.data.entities.ProfessorEntity
+import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 
 data class GroupWithProfessor(
-    @Embedded val group: GroupEntity,
+    @Embedded val professor: ProfessorEntity,
     @Relation(
-        parentColumn = "groupId",
-        entityColumn = "professorId",
+        parentColumn = "professorId",
+        entityColumn = "groupId",
         associateBy = Junction(GroupProfessorCrossRef::class)
     )
-    val professors: List<ProfessorEntity>
+    val professors: List<GroupEntity>
 )
