@@ -5,9 +5,8 @@ import androidx.room.ForeignKey
 import com.example.schoolink.data.entities.GroupEntity
 import com.example.schoolink.data.entities.ProfessorEntity
 
-
 @Entity(
-    tableName = "group_professors",
+    tableName = "group_professor",
     primaryKeys = ["groupId", "professorId"],
     foreignKeys = [
         ForeignKey(

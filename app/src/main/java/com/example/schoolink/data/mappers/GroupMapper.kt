@@ -1,11 +1,11 @@
 package com.example.schoolink.data.mappers
 
+import androidx.compose.ui.graphics.vector.Group
 import com.example.schoolink.data.entities.GroupEntity
-import com.example.schoolink.data.entities.ProfessorEntity
 import com.example.schoolink.domain.models.GroupModel
-import com.example.schoolink.domain.models.ProfessorModel
 
 object GroupMapper {
+
     fun fromEntityToModel(entity: GroupEntity): GroupModel {
         return GroupModel(
             groupId = entity.groupId,

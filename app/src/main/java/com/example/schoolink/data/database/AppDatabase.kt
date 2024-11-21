@@ -26,8 +26,9 @@ import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
         ProfessorStudentCrossRef::class,
         GroupEntity::class,
         GroupProfessorCrossRef::class,
-        GroupStudentCrossRef::class],
-    version = 1,
+        GroupStudentCrossRef::class
+    ],
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(GenderTypeConverter::class)
@@ -38,7 +39,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun groupProfessorDao(): GroupProfessorDao
     abstract fun groupStudentDao(): GroupStudentDao
-
 
     companion object {
         @Volatile
