@@ -35,4 +35,14 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
             repository.createProfessor(professor)
         }
     }
+
+    fun updateProfessorAsync(professor: ProfessorModel, onComplete: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateProfessor(professor)
+            withContext(Dispatchers.Main) {
+                onComplete()
+            }
+        }
+    }
+
 }

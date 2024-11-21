@@ -12,9 +12,12 @@ class StudentViewModel(private val repository: StudentRepository) : ViewModel() 
 
     var currentStudent: StudentModel? = null
 
-    fun addStudent(student: StudentModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.insertStudent(student)
+    fun addStudent(student: StudentModel, onStudentAdded: (Long) -> Unit) {
+        viewModelScope.launch {
+            val studentId = withContext(Dispatchers.IO) {
+                repository.insertStudent(student)
+            }
+            onStudentAdded(studentId)
         }
     }
 

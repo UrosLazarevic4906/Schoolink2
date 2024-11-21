@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -65,6 +66,8 @@ fun CreateNewStudentOverlay(
     var isLastNameValid by remember { mutableStateOf(false) }
     var isEmailValid by remember { mutableStateOf(false) }
 
+    var isLoading by remember { mutableStateOf(false) }
+
     val isFormValid =
         isEmailValid && isNameValid && isLastNameValid && gender != null && dateOfBirth.isNotEmpty()
 
@@ -90,8 +93,16 @@ fun CreateNewStudentOverlay(
                 modifier = Modifier.padding(12.dp)
             ) {
                 TitleCard(
+<<<<<<< HEAD
+                    icon = painterResource(R.drawable.ic_close),
+                    onButtonClick = {
+                        if (!isLoading)
+                            onDismiss()
+                    },
+=======
                     startIcon = painterResource(R.drawable.ic_close),
                     onStartIcon = onDismiss,
+>>>>>>> front
                     title = "Create student"
                 )
             }
@@ -188,6 +199,7 @@ fun CreateNewStudentOverlay(
             ) {
                 Button(
                     onClick = {
+                        isLoading = true
                         val student = StudentModel(
                             email = email,
                             firstName = firstName,
@@ -218,6 +230,7 @@ fun CreateNewStudentOverlay(
         }
     }
 }
+
 
 @Preview
 @Composable
