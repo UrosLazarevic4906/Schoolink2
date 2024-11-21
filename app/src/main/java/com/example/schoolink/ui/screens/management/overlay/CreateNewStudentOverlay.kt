@@ -93,16 +93,8 @@ fun CreateNewStudentOverlay(
                 modifier = Modifier.padding(12.dp)
             ) {
                 TitleCard(
-<<<<<<< HEAD
-                    icon = painterResource(R.drawable.ic_close),
-                    onButtonClick = {
-                        if (!isLoading)
-                            onDismiss()
-                    },
-=======
                     startIcon = painterResource(R.drawable.ic_close),
                     onStartIcon = onDismiss,
->>>>>>> front
                     title = "Create student"
                 )
             }

@@ -2,8 +2,8 @@ package com.example.schoolink.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.schoolink.data.entities.GroupEntity
 import com.example.schoolink.data.entities.relations.GroupWithStudents
+import com.example.schoolink.domain.models.GroupModel
 import com.example.schoolink.domain.repository.GroupRepository
 import kotlinx.coroutines.launch
 
@@ -12,7 +12,7 @@ class GroupViewModel(
 ) : ViewModel(){
 
     fun createGroup(
-        group: GroupEntity,
+        group: GroupModel,
         professorId: Int,
         studentIds: List<Int>,
     ) {

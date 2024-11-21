@@ -24,19 +24,13 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
         }
     }
 
-    fun updateProfessor(professor: ProfessorModel) {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.updateProfessor(professor)
-        }
-    }
-
     fun createProfessor(professor: ProfessorModel) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.createProfessor(professor)
         }
     }
 
-    fun updateProfessorAsync(professor: ProfessorModel, onComplete: () -> Unit) {
+    fun updateProfessor(professor: ProfessorModel, onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateProfessor(professor)
             withContext(Dispatchers.Main) {
