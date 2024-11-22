@@ -28,7 +28,7 @@ import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
         GroupProfessorCrossRef::class,
         GroupStudentCrossRef::class
     ],
-    version = 3,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(GenderTypeConverter::class)
@@ -49,7 +49,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "schuolinko-db"
+                    "sc-db"
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance

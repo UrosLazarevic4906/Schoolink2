@@ -20,31 +20,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
-import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.R
-import com.example.schoolink.domain.models.Gender
+import com.example.schoolink.domain.models.GroupModel
+import com.example.schoolink.domain.models.GroupType
 import com.example.schoolink.ui.theme.*
-@Composable
-fun StudentCardEdit(
-    student: StudentModel,
-    trailingIcon: Painter? = null,
-    showTopLine: Boolean = false
-) {
 
+@Composable
+fun GroupCard(
+    group: GroupModel,
+    showTopLine: Boolean = false,
+    onClick: () -> Unit
+) {
     Surface(
         modifier = Modifier
-            .fillMaxWidth().clickable {  },
+            .fillMaxWidth()
+            .clickable { onClick() },
         color = White,
     ) {
         Column {
-            if(showTopLine) {
+            if (showTopLine) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.85f)
@@ -54,20 +54,19 @@ fun StudentCardEdit(
                 )
             }
         }
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
-        ){
-
-            val profilePicture = if(!student.profilePicturePath.isNullOrEmpty()) {
-                rememberAsyncImagePainter(model = student.profilePicturePath)
+        ) {
+            val groupImage = if (!group.groupPicturePath.isNullOrEmpty()) {
+                rememberAsyncImagePainter(model = group.groupPicturePath)
             } else {
-                painterResource(id = R.drawable.ic_user)
+                painterResource(id = R.drawable.ic_group)
             }
 
             Image(
-                painter = profilePicture,
-                contentDescription =  "${student.studentCode} profile picture",
+                painter = groupImage,
+                contentDescription = "${group.groupName} group picture",
                 modifier = Modifier
                     .size(52.dp)
                     .clip(CircleShape),
@@ -80,49 +79,52 @@ fun StudentCardEdit(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = "${student.firstName} ${student.lastName}",
+                    text = group.groupName,
                     color = Black,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = student.studentCode,
+                    text = group.groupType!!.name,
                     color = Ash,
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Medium
                 )
             }
 
-            trailingIcon?.let {
-                Icon(
-                    painter = it,
-                    contentDescription = "Trailing icon",
-                    tint = Black,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
+            Icon(
+                painter = painterResource(R.drawable.ic_chevron_right),
+                contentDescription = "Trailing icon",
+                tint = Black,
+                modifier = Modifier.size(30.dp)
+            )
         }
     }
 }
 
+
 @Preview
 @Composable
-private fun StudentCardEditPreview() {
+private fun GroupCardPreview() {
 
-    val dummyStudent = StudentModel(
-        id = 0,
-        email = "asd",
-        firstName = "Uros",
-        lastName = "Lazarevic",
-        dateOfBirth = "14/12/1999",
-        description = "description",
-        gender = Gender.MALE,
-        profilePicturePath = null,
-        studentCode = "A2D53AC"
+//    val dummyStudent = StudentModel(
+//        id = 0,
+//        email = "asd",
+//        firstName = "Uros",
+//        lastName = "Lazarevic",
+//        dateOfBirth = "14/12/1999",
+//        description = "description",
+//        gender = Gender.MALE,
+//        profilePicturePath = null,
+//        studentCode = "A2D53AC"
+//    )
+    val dummyGroup = GroupModel(
+        groupId = 0,
+        groupName = "Name of group",
+        groupType = GroupType.ADVANCED,
     )
-
-    StudentCardEdit(
-        student = dummyStudent,
-        trailingIcon = painterResource(R.drawable.ic_pen)
+    GroupCard(
+        dummyGroup,
+        onClick = {}
     )
 }

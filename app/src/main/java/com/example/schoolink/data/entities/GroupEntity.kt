@@ -11,6 +11,6 @@ data class GroupEntity(
     @PrimaryKey(autoGenerate = true)
     val groupId: Int = 0,
     val groupName: String,
-    val groupType: GroupType,
+    val groupType: GroupType?,
     val groupPicturePath: String?
 )

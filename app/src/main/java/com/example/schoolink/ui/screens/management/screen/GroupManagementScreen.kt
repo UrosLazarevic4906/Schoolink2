@@ -7,7 +7,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,68 +15,60 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewModelScope
 import com.example.schoolink.R
+import com.example.schoolink.data.entities.relations.GroupWithProfessor
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
-import com.example.schoolink.data.mappers.StudentMapper
+import com.example.schoolink.data.mappers.GroupMapper
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.EmptyState
-import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
+import com.example.schoolink.ui.components.miscellaneous.GroupCard
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
-import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
 import com.example.schoolink.ui.screens.management.overlay.CreateNewGroupOverlay
-import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
 import com.example.schoolink.ui.theme.*
+import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
+import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
+import com.example.schoolink.ui.viewmodels.GroupViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
-import com.example.schoolink.ui.viewmodels.StudentViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun GroupManagementScreen(
     isOnMain: Boolean,
+    email: String,
     onNext: () -> Unit = {},
-    onBack: () -> Unit = {},
+    onBack: () -> Unit,
     context: Context,
-//    professorViewModel: ProfessorViewModel,
-//    studentViewModel: StudentViewModel,
-//    professorStudentViewModel: ProfessorStudentViewModel
+    professorViewModel: ProfessorViewModel,
+    professorStudentViewModel: ProfessorStudentViewModel,
+    groupViewModel: GroupViewModel,
+    groupProfessorViewModel: GroupProfessorViewModel,
+    groupStudentViewModel: GroupStudentViewModel
 ) {
     var showCreateGroupDialog by remember { mutableStateOf(false) }
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
-    var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
+    var groupsWithProfessor by remember { mutableStateOf<GroupWithProfessor?>(null) }
 
-//    LaunchedEffect(email) {
-//        professorViewModel.getProfessorByEmail(email) { prof ->
-//            prof?.let {
-//                professor = it
-//                professorStudentViewModel.getProfessorWithStudent(it.id) { data ->
-//                    professorWithStudents = data
-//                }
-//            }
-//        }
-//    }
+    LaunchedEffect(email) {
+        professorViewModel.getProfessorByEmail(email) { prof ->
+            prof?.let {
+                professor = it
+                groupProfessorViewModel.getGroupsWithProfessor(it.id) { data ->
+                    groupsWithProfessor = data
+                }
+            }
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -125,7 +116,7 @@ fun GroupManagementScreen(
                 }
 
 
-                if (professorWithStudents?.students.isNullOrEmpty()) {
+                if (groupsWithProfessor?.groups.isNullOrEmpty()) {
                     EmptyState(
                         image = painterResource(R.drawable.img_nothing_to_show),
                         title = "No groups yet",
@@ -133,11 +124,11 @@ fun GroupManagementScreen(
                     )
                 } else {
                     LazyColumn {
-                        itemsIndexed(professorWithStudents!!.students) { index, student ->
-                            StudentCardEdit(
-                                student = StudentMapper.fromEntityToModel(student),
-                                trailingIcon = painterResource(R.drawable.ic_pencil),
-                                showTopLine = index > 0
+                        itemsIndexed(groupsWithProfessor!!.groups) { index, group ->
+                            GroupCard(
+                                group = GroupMapper.fromEntityToModel(group),
+                                showTopLine = index > 0,
+                                onClick = {}
                             )
                         }
                     }
@@ -159,20 +150,22 @@ fun GroupManagementScreen(
     ) {
         CreateNewGroupOverlay(
             context = context,
+            email = email,
+            professorStudentViewModel = professorStudentViewModel,
+            professorViewModel = professorViewModel,
+            groupViewModel = groupViewModel,
+            groupProfessorViewModel = groupProfessorViewModel,
+            groupStudentViewModel = groupStudentViewModel,
             focusManager = LocalFocusManager.current,
             onDismiss = { showCreateGroupDialog = false },
-            onCreateGroup = {
+            onGroupCreated = {
+                groupProfessorViewModel.getGroupsWithProfessor(professor!!.id) { data ->
+                    groupsWithProfessor = data
+                }
+                showCreateGroupDialog = false
             }
         )
+
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun GroupManagementScreenPreview() {
-    GroupManagementScreen(
-        isOnMain = false,
-        context = LocalContext.current,
-    )
 }

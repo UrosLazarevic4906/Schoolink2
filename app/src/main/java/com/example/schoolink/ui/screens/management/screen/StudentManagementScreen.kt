@@ -45,9 +45,7 @@ import com.example.schoolink.ui.viewmodels.StudentViewModel
 
 @Composable
 fun StudentManagementScreen(
-    isOnMain: Boolean,
-    onNext: () -> Unit = {},
-    onBack: () -> Unit = {},
+    onNext: () -> Unit,
     email: String,
     context: Context,
     professorViewModel: ProfessorViewModel,
@@ -118,20 +116,11 @@ fun StudentManagementScreen(
             Column(
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
-                if(isOnMain){
-                    TitleCard(
-                        title = "Students",
-                        startIcon = painterResource(R.drawable.ic_chevron_left),
-                        onStartIcon = onBack
-                    )
-                } else {
-                    TitleCard(
-                        title = "Students",
-                        clickableText = "Next",
-                        onText = onNext
-                    )
-                }
-
+                TitleCard(
+                    title = "Students",
+                    clickableText = "Next",
+                    onText = onNext
+                )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
                     EmptyState(
