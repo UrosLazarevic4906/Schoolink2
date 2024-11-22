@@ -27,14 +27,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.GroupWithProfessor
+import com.example.schoolink.data.entities.relations.ProfessorWithStudents
+import com.example.schoolink.data.mappers.GroupMapper
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.miscellaneous.EmptyState
+import com.example.schoolink.ui.components.miscellaneous.GroupCard
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.CreateNewGroupOverlay
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
 import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
 import com.example.schoolink.ui.viewmodels.GroupViewModel
+import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
@@ -45,6 +49,7 @@ fun GroupManagementScreen(
     onBack: () -> Unit,
     context: Context,
     professorViewModel: ProfessorViewModel,
+    professorStudentViewModel: ProfessorStudentViewModel,
     groupViewModel: GroupViewModel,
     groupProfessorViewModel: GroupProfessorViewModel,
     groupStudentViewModel: GroupStudentViewModel
@@ -119,13 +124,12 @@ fun GroupManagementScreen(
                     )
                 } else {
                     LazyColumn {
-                        itemsIndexed(groupsWithProfessor!!.groups) { index, student ->
-//                            StudentCardEdit(
-//                                student = StudentMapper.fromEntityToModel(groups),
-//                                trailingIcon = painterResource(R.drawable.ic_pencil),
-//                                showTopLine = index > 0
-//                            )
-                            // TODO: napraviti grupnu karticu
+                        itemsIndexed(groupsWithProfessor!!.groups) { index, group ->
+                            GroupCard(
+                                group = GroupMapper.fromEntityToModel(group),
+                                showTopLine = index > 0,
+                                onClick = {}
+                            )
                         }
                     }
                 }
@@ -146,15 +150,22 @@ fun GroupManagementScreen(
     ) {
         CreateNewGroupOverlay(
             context = context,
-            focusManager = LocalFocusManager.current,
+            email = email,
+            professorStudentViewModel = professorStudentViewModel,
+            professorViewModel = professorViewModel,
             groupViewModel = groupViewModel,
+            groupProfessorViewModel = groupProfessorViewModel,
             groupStudentViewModel = groupStudentViewModel,
+            focusManager = LocalFocusManager.current,
             onDismiss = { showCreateGroupDialog = false },
-            onCreateGroup = {
-                // TODO: Primiti podatke napravljene grupe iz CreateNewSGroupOverlay. dodeliti grupu professoru. prikazaty u LazyList
-
+            onGroupCreated = {
+                groupProfessorViewModel.getGroupsWithProfessor(professor!!.id) { data ->
+                    groupsWithProfessor = data
+                }
+                showCreateGroupDialog = false
             }
         )
+
     }
 
 }
