@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.schoolink.domain.models.GroupModel
@@ -14,14 +15,26 @@ class GroupViewModel(
 
     var currentGroup: GroupModel? = null
 
-    fun createGroup(group: GroupModel, onGroupCreated: (Long) -> Unit){
-        viewModelScope.launch(Dispatchers.IO){
-            val groupId = withContext(Dispatchers.IO){
-                repository.createGroup(group)
+    fun createGroup(group: GroupModel, onGroupCreated: (Long) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val groupId = repository.createGroup(group)
+                withContext(Dispatchers.Main) {
+                    if (groupId > 0) {
+                        onGroupCreated(groupId)
+                    } else {
+                        throw Exception("Group creation failed, invalid ID: $groupId")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("GroupViewModel", "Error creating group", e)
+                    throw e
+                }
             }
-            onGroupCreated(groupId)
         }
     }
+
 
     fun getGroupById(groupId: Int, onResult: (GroupModel?) -> Unit){
         viewModelScope.launch {

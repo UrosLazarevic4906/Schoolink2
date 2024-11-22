@@ -262,7 +262,7 @@
                     studentViewModel = studentViewModel,
                     professorStudentViewModel = professorStudentViewModel,
                     onNext = {
-
+                        navController.navigateSingleTopTo("groupManagementScreen/${Uri.encode(email)}")
                     },
                 )
             }
@@ -288,6 +288,7 @@
                 val email = backStackEntry.arguments?.getString("email") ?: ""
 
                 val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+                val professorStudentViewModel: ProfessorStudentViewModel = viewModel(factory = professorStudentViewModelFactory)
                 val groupViewModel: GroupViewModel = viewModel(factory = groupViewModelFactory)
                 val groupProfessorViewModel: GroupProfessorViewModel = viewModel(factory = groupProfessorViewModelFactory)
                 val groupStudentViewModel: GroupStudentViewModel = viewModel(factory = groupStudentViewModelFactory)
@@ -304,7 +305,8 @@
                     professorViewModel = professorViewModel,
                     groupViewModel = groupViewModel,
                     groupProfessorViewModel = groupProfessorViewModel,
-                    groupStudentViewModel = groupStudentViewModel
+                    groupStudentViewModel = groupStudentViewModel,
+                    professorStudentViewModel = professorStudentViewModel
                 )
             }
         }
