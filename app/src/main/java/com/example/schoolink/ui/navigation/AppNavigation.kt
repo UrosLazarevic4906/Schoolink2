@@ -14,6 +14,7 @@
     import androidx.navigation.compose.composable
     import androidx.navigation.compose.rememberNavController
     import androidx.navigation.navArgument
+    import com.example.schoolink.ui.screens.LessonTestScreen
     import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
     import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
     import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
@@ -24,12 +25,14 @@
     import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
     import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
     import com.example.schoolink.ui.viewmodels.GroupViewModel
+    import com.example.schoolink.ui.viewmodels.LessonViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
     import com.example.schoolink.ui.viewmodels.ProfessorViewModel
     import com.example.schoolink.ui.viewmodels.StudentViewModel
     import com.example.schoolink.ui.viewmodels.factory.GroupProfessorViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.GroupStudentViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.GroupViewModelFactory
+    import com.example.schoolink.ui.viewmodels.factory.LessonViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.ProfessorStudentViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
     import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
@@ -41,7 +44,8 @@
         professorStudentViewModelFactory: ProfessorStudentViewModelFactory,
         groupViewModelFactory: GroupViewModelFactory,
         groupProfessorViewModelFactory: GroupProfessorViewModelFactory,
-        groupStudentViewModelFactory: GroupStudentViewModelFactory
+        groupStudentViewModelFactory: GroupStudentViewModelFactory,
+        lessonViewModelFactory: LessonViewModelFactory
     ) {
         val navController = rememberNavController()
         val context = LocalContext.current
@@ -59,11 +63,40 @@
             ) {
                 OnboardingScreen(
                     onNavigationToLogin = {
-                        navController.navigateSingleTopTo("login")
+                        navController.navigateSingleTopTo("lessons")
                     },
                     onNavigationToCreateAccount = {
                         navController.navigateSingleTopTo("createAccount")
                     }
+                )
+            }
+
+            composable(
+                route = "lessons",
+                enterTransition = {
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Left,
+                        animationSpec = tween(1000)
+                    )
+                },
+                exitTransition = {
+                    ExitTransition.None
+                },
+                popEnterTransition = {
+                    EnterTransition.None
+                },
+                popExitTransition = {
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Right,
+                        animationSpec = tween(1000)
+                    )
+                }
+            ) {
+                val viewModel: LessonViewModel = viewModel(factory = lessonViewModelFactory)
+
+                LessonTestScreen(
+                    viewModel,
+                    onLessonCreated = {}
                 )
             }
 

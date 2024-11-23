@@ -8,13 +8,16 @@ import androidx.room.TypeConverters
 import com.example.schoolink.data.dao.GroupDao
 import com.example.schoolink.data.dao.GroupProfessorDao
 import com.example.schoolink.data.dao.GroupStudentDao
+import com.example.schoolink.data.dao.LessonDao
 import com.example.schoolink.data.dao.ProfessorDao
 import com.example.schoolink.data.dao.ProfessorStudentDao
 import com.example.schoolink.data.dao.StudentDao
+import com.example.schoolink.data.database.converters.DateTimeConverters
 import com.example.schoolink.data.entities.ProfessorEntity
 import com.example.schoolink.data.entities.StudentEntity
 import com.example.schoolink.data.database.converters.GenderTypeConverter
 import com.example.schoolink.data.entities.GroupEntity
+import com.example.schoolink.data.entities.LessonEntity
 import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 import com.example.schoolink.data.entities.refference.GroupStudentCrossRef
 import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
@@ -26,12 +29,13 @@ import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
         ProfessorStudentCrossRef::class,
         GroupEntity::class,
         GroupProfessorCrossRef::class,
-        GroupStudentCrossRef::class
+        GroupStudentCrossRef::class,
+        LessonEntity::class
     ],
-    version = 2,
+    version = 1,
     exportSchema = false
 )
-@TypeConverters(GenderTypeConverter::class)
+@TypeConverters(GenderTypeConverter::class, DateTimeConverters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun professorDao(): ProfessorDao
     abstract fun studentDao(): StudentDao
@@ -39,6 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
     abstract fun groupProfessorDao(): GroupProfessorDao
     abstract fun groupStudentDao(): GroupStudentDao
+    abstract fun lessonDao(): LessonDao
 
     companion object {
         @Volatile
@@ -49,7 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "sc-db"
+                    "sc1-db"
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
