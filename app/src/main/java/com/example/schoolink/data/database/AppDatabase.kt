@@ -9,6 +9,7 @@ import com.example.schoolink.data.dao.GroupDao
 import com.example.schoolink.data.dao.GroupProfessorDao
 import com.example.schoolink.data.dao.GroupStudentDao
 import com.example.schoolink.data.dao.LessonDao
+import com.example.schoolink.data.dao.LessonProfessorDao
 import com.example.schoolink.data.dao.ProfessorDao
 import com.example.schoolink.data.dao.ProfessorStudentDao
 import com.example.schoolink.data.dao.StudentDao
@@ -20,6 +21,7 @@ import com.example.schoolink.data.entities.GroupEntity
 import com.example.schoolink.data.entities.LessonEntity
 import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 import com.example.schoolink.data.entities.refference.GroupStudentCrossRef
+import com.example.schoolink.data.entities.refference.LessonProfessorCrossRef
 import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
 
 @Database(
@@ -30,9 +32,10 @@ import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
         GroupEntity::class,
         GroupProfessorCrossRef::class,
         GroupStudentCrossRef::class,
-        LessonEntity::class
+        LessonEntity::class,
+        LessonProfessorCrossRef::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(GenderTypeConverter::class, DateTimeConverters::class)
@@ -44,6 +47,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun groupProfessorDao(): GroupProfessorDao
     abstract fun groupStudentDao(): GroupStudentDao
     abstract fun lessonDao(): LessonDao
+    abstract fun lessonProfessorDao(): LessonProfessorDao
 
     companion object {
         @Volatile

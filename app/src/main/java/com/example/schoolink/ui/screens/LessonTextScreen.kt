@@ -8,19 +8,26 @@ import androidx.compose.runtime.*
 import com.example.schoolink.domain.models.LessonModel
 import com.example.schoolink.ui.components.inputs.DatePickerField
 import com.example.schoolink.ui.components.inputs.TimePickerField
+import com.example.schoolink.ui.viewmodels.LessonProfessorViewModel
 import com.example.schoolink.ui.viewmodels.LessonViewModel
+import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 import java.time.LocalDate
 import java.time.LocalTime
 
 @Composable
 fun LessonTestScreen(
+    email: String,
+    professorViewModel: ProfessorViewModel,
     lessonViewModel: LessonViewModel,
+    lessonProfessorViewModel: LessonProfessorViewModel,
     onLessonCreated: () -> Unit
 ) {
 
     var date by remember { mutableStateOf(LocalDate.now()) }
     var startTime by remember { mutableStateOf(LocalTime.of(8, 0)) }
     var endTime by remember { mutableStateOf(LocalTime.of(10, 0)) }
+
+
     Column {
         DatePickerField(
             selectedDate = date,
@@ -41,9 +48,16 @@ fun LessonTestScreen(
                     startTime = startTime,
                     endTime = endTime
                 )
-                lessonViewModel.createLesson(lesson) {
-                    onLessonCreated()
+                professorViewModel.getProfessorByEmail(email) { professor ->
+                    lessonViewModel.createLesson(lesson) { lessonId ->
+                        if(lessonId > 0){
+                            lessonProfessorViewModel.addLessonToProfessor(lessonId.toInt(), professor!!.id)
+                        }
+
+                        onLessonCreated()
+                    }
                 }
+
             }
         ) {
             Text("Create lesson")
