@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -39,11 +38,11 @@ import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.R
 import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.domain.models.StudentModel
+import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
-import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.utils.saveImageToInternalStorage
 
@@ -94,7 +93,10 @@ fun CreateNewStudentOverlay(
             ) {
                 TitleCard(
                     startIcon = painterResource(R.drawable.ic_close),
-                    onStartIcon = onDismiss,
+                    onStartIcon = {
+                        if (!isLoading)
+                            onDismiss()
+                    },
                     title = "Create student"
                 )
             }
@@ -190,6 +192,7 @@ fun CreateNewStudentOverlay(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Button(
+                    // TODO: pravljenje studenta traje previse dugo kada ima sliku. popraviti to
                     onClick = {
                         isLoading = true
                         val student = StudentModel(

@@ -7,20 +7,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -31,20 +32,20 @@ import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.R
 import com.example.schoolink.domain.models.Gender
 import com.example.schoolink.ui.theme.*
-@Composable
-fun StudentCardEdit(
-    student: StudentModel,
-    trailingIcon: Painter? = null,
-    showTopLine: Boolean = false
-) {
 
+@Composable
+fun StudentCardBox(
+    student: StudentModel,
+    isChecked: Boolean = false,
+    showTopLine: Boolean = false,
+    onCheckChange: (Boolean) -> Unit
+) {
     Surface(
-        modifier = Modifier
-            .fillMaxWidth().clickable {  },
+        modifier = Modifier.fillMaxWidth(),
         color = White,
     ) {
         Column {
-            if(showTopLine) {
+            if (showTopLine) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth(0.85f)
@@ -54,12 +55,11 @@ fun StudentCardEdit(
                 )
             }
         }
-        Row (
+        Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(16.dp)
-        ){
-
-            val profilePicture = if(!student.profilePicturePath.isNullOrEmpty()) {
+        ) {
+            val profilePicture = if (!student.profilePicturePath.isNullOrEmpty()) {
                 rememberAsyncImagePainter(model = student.profilePicturePath)
             } else {
                 painterResource(id = R.drawable.ic_user)
@@ -67,7 +67,7 @@ fun StudentCardEdit(
 
             Image(
                 painter = profilePicture,
-                contentDescription =  "${student.studentCode} profile picture",
+                contentDescription = "${student.studentCode} profile picture",
                 modifier = Modifier
                     .size(52.dp)
                     .clip(CircleShape),
@@ -93,21 +93,18 @@ fun StudentCardEdit(
                 )
             }
 
-            trailingIcon?.let {
-                Icon(
-                    painter = it,
-                    contentDescription = "Trailing icon",
-                    tint = Black,
-                    modifier = Modifier.size(30.dp)
-                )
-            }
+            Checkbox(
+                checked = isChecked,
+                onCheckedChange = onCheckChange
+            )
         }
     }
 }
 
+
 @Preview
 @Composable
-private fun StudentCardEditPreview() {
+private fun StudentCardBoxPreview() {
 
     val dummyStudent = StudentModel(
         id = 0,
@@ -121,8 +118,9 @@ private fun StudentCardEditPreview() {
         studentCode = "A2D53AC"
     )
 
-    StudentCardEdit(
+    StudentCardBox(
         student = dummyStudent,
-        trailingIcon = painterResource(R.drawable.ic_pen)
+        isChecked = true,
+        onCheckChange = {},
     )
 }
