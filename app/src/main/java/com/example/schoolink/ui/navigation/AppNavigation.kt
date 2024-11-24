@@ -20,7 +20,6 @@ import com.example.schoolink.ui.screens.authentication.screen.AccountCreationFin
 import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
 import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
 import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
-import com.example.schoolink.ui.screens.main.HomeScreen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
@@ -218,8 +217,7 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val lessonViewModel: LessonViewModel = viewModel(factory = lessonViewModelFactory)
-            val lessonProfessorViewModel: LessonProfessorViewModel =
-                viewModel(factory = lessonProfessorViewModelFactory)
+            val lessonProfessorViewModel: LessonProfessorViewModel = viewModel(factory = lessonProfessorViewModelFactory)
             val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
             val lessonGroupViewModel: LessonGroupViewModel = viewModel(factory = lessonGroupViewModelFactory)
             val email = backStackEntry.arguments?.getString("email") ?: ""
@@ -234,45 +232,6 @@ fun AppNavigation(
             )
         }
 
-
-        composable(
-            route = "homeScreen/{email}",
-            arguments = listOf(
-                navArgument("email") { type = NavType.StringType }
-            ),
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(1000)
-                )
-            },
-            exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
-            },
-            popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
-            }
-        ) { backStackEntry ->
-
-            val viewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
-            val email = backStackEntry.arguments?.getString("email") ?: ""
-            HomeScreen(
-                email = email,
-                viewModel = viewModel
-            )
-        }
 
         composable(
             route = "studentManagementScreen/{email}",
@@ -307,7 +266,6 @@ fun AppNavigation(
                 viewModel(factory = professorStudentViewModelFactory)
 
             StudentManagementScreen(
-                //isOnMain = false,
                 email = email,
                 context = context,
                 professorViewModel = professorViewModel,

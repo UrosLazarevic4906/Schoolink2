@@ -5,51 +5,44 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.schoolink.R
+import com.example.schoolink.ui.theme.*
 
 sealed class Screen(
     val title: String,
     val description: String,
     val icon: ImageVector,
-    val backgroundColor: Color,
-    val imageRes: Int
+    val backgroundRes: Int,
+    val statuBarColor: Color
 ) {
-    object Home : Screen(
+    data object Home : Screen(
         title = "Home",
         description = "Welcome back!",
         icon = Icons.Default.Home,
-        backgroundColor = Color(0xFF00796B),
-        imageRes = R.drawable.ic_add // Replace with your resource
-    )
+        backgroundRes = R.drawable.bg_green,
+        statuBarColor = Green
+        )
 
-    object Presence : Screen(
+    data object Presence : Screen(
         title = "Presence",
         description = "Complete attendance and activity history.",
         icon = Icons.Default.Person,
-        backgroundColor = Color(0xFFFFA726),
-        imageRes = R.drawable.ic_add // Replace with your resource
+        backgroundRes = R.drawable.bg_yellow,
+        statuBarColor = Yellow
     )
 
-    object Manage : Screen(
+    data object Manage : Screen(
         title = "Management",
         description = "Manage students and groups.",
         icon = Icons.Default.Home,
-        backgroundColor = Color(0xFF29B6F6),
-        imageRes = R.drawable.ic_add // Replace with your resource
-    )
+        backgroundRes = R.drawable.bg_blue,
+        statuBarColor = Blue
+        )
 
-    object Schedule : Screen(
+    data object Schedule : Screen(
         title = "Schedule",
         description = "Keep track of your schedule.",
         icon = Icons.Default.Home,
-        backgroundColor = Color(0xFFE91E63),
-        imageRes = R.drawable.ic_add // Replace with your resource
-    )
-
-    object Messages : Screen(
-        title = "Messages",
-        description = "View and manage your messages.",
-        icon = Icons.Default.Home,
-        backgroundColor = Color(0xFFD32F2F),
-        imageRes = R.drawable.ic_add // Replace with your resource
-    )
+        backgroundRes = R.drawable.bg_pink,
+        statuBarColor = Pink
+        )
 }
