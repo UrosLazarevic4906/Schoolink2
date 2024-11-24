@@ -2,8 +2,6 @@ package com.example.schoolink.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.schoolink.data.entities.refference.GroupProfessorCrossRef
 import com.example.schoolink.data.entities.refference.LessonProfessorCrossRef
 import com.example.schoolink.data.entities.relations.LessonWithProfessor
 import com.example.schoolink.domain.repository.LessonProfessorRepository

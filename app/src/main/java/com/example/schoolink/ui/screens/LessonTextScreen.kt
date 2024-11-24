@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import com.example.schoolink.domain.models.LessonModel
 import com.example.schoolink.ui.components.inputs.DatePickerField
 import com.example.schoolink.ui.components.inputs.TimePickerField
+import com.example.schoolink.ui.viewmodels.LessonGroupViewModel
 import com.example.schoolink.ui.viewmodels.LessonProfessorViewModel
 import com.example.schoolink.ui.viewmodels.LessonViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
@@ -19,6 +20,7 @@ fun LessonTestScreen(
     email: String,
     professorViewModel: ProfessorViewModel,
     lessonViewModel: LessonViewModel,
+    lessonGroupViewModel: LessonGroupViewModel,
     lessonProfessorViewModel: LessonProfessorViewModel,
     onLessonCreated: () -> Unit
 ) {
@@ -52,6 +54,7 @@ fun LessonTestScreen(
                     lessonViewModel.createLesson(lesson) { lessonId ->
                         if(lessonId > 0){
                             lessonProfessorViewModel.addLessonToProfessor(lessonId.toInt(), professor!!.id)
+                            lessonGroupViewModel.addGroupToLesson(lessonId.toInt(), groupId = 1)
                         }
 
                         onLessonCreated()

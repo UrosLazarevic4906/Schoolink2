@@ -25,6 +25,7 @@ import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
 import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
 import com.example.schoolink.ui.viewmodels.GroupViewModel
+import com.example.schoolink.ui.viewmodels.LessonGroupViewModel
 import com.example.schoolink.ui.viewmodels.LessonProfessorViewModel
 import com.example.schoolink.ui.viewmodels.LessonViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
@@ -33,6 +34,7 @@ import com.example.schoolink.ui.viewmodels.StudentViewModel
 import com.example.schoolink.ui.viewmodels.factory.GroupProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.GroupStudentViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.GroupViewModelFactory
+import com.example.schoolink.ui.viewmodels.factory.LessonGroupViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.LessonProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.LessonViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.ProfessorStudentViewModelFactory
@@ -48,7 +50,8 @@ fun AppNavigation(
     groupProfessorViewModelFactory: GroupProfessorViewModelFactory,
     groupStudentViewModelFactory: GroupStudentViewModelFactory,
     lessonViewModelFactory: LessonViewModelFactory,
-    lessonProfessorViewModelFactory: LessonProfessorViewModelFactory
+    lessonProfessorViewModelFactory: LessonProfessorViewModelFactory,
+    lessonGroupViewModelFactory: LessonGroupViewModelFactory
 ) {
     val navController = rememberNavController()
     val context = LocalContext.current
@@ -107,7 +110,7 @@ fun AppNavigation(
                     navController.navigateSingleTopTo("createAccount")
                 },
                 onLogin = { email ->
-                    navController.navigateSingleTopTo("lessons/${Uri.encode(email)}")
+                    navController.navigateSingleTopTo("studentManagementScreen/${Uri.encode(email)}")
                 },
                 onSetupAccount = { email ->
                     navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -227,12 +230,14 @@ fun AppNavigation(
             val lessonProfessorViewModel: LessonProfessorViewModel =
                 viewModel(factory = lessonProfessorViewModelFactory)
             val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+            val lessonGroupViewModel: LessonGroupViewModel = viewModel(factory = lessonGroupViewModelFactory)
             val email = backStackEntry.arguments?.getString("email") ?: ""
 
             LessonTestScreen(
                 email = email,
                 professorViewModel = professorViewModel,
                 lessonViewModel = lessonViewModel,
+                lessonGroupViewModel = lessonGroupViewModel,
                 lessonProfessorViewModel = lessonProfessorViewModel,
                 onLessonCreated = {}
             )
@@ -352,6 +357,7 @@ fun AppNavigation(
                 email = email,
                 context = context,
                 onNext = {
+                    navController.navigateSingleTopTo("lessons/${Uri.encode(email)}")
                 },
                 onBack = {
                     navController.popBackStack()
