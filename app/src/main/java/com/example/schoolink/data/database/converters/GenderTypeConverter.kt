@@ -3,7 +3,7 @@ package com.example.schoolink.data.database.converters
 import androidx.room.TypeConverter
 import com.example.schoolink.domain.models.Gender
 
-class GenderTypeConverter {
+object GenderTypeConverter {
     @TypeConverter
     fun fromGender(gender: Gender): String {
         return gender.name

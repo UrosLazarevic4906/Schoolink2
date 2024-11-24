@@ -8,6 +8,9 @@ import com.example.schoolink.data.database.AppDatabase
 import com.example.schoolink.domain.repository.GroupProfessorRepository
 import com.example.schoolink.domain.repository.GroupRepository
 import com.example.schoolink.domain.repository.GroupStudentRepository
+import com.example.schoolink.domain.repository.LessonGroupRepository
+import com.example.schoolink.domain.repository.LessonProfessorRepository
+import com.example.schoolink.domain.repository.LessonRepository
 import com.example.schoolink.domain.repository.ProfessorRepository
 import com.example.schoolink.domain.repository.ProfessorStudentRepository
 import com.example.schoolink.domain.repository.StudentRepository
@@ -16,6 +19,9 @@ import com.example.schoolink.ui.theme.SchoolinkTheme
 import com.example.schoolink.ui.viewmodels.factory.GroupProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.GroupStudentViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.GroupViewModelFactory
+import com.example.schoolink.ui.viewmodels.factory.LessonGroupViewModelFactory
+import com.example.schoolink.ui.viewmodels.factory.LessonProfessorViewModelFactory
+import com.example.schoolink.ui.viewmodels.factory.LessonViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.ProfessorStudentViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.ProfessorViewModelFactory
 import com.example.schoolink.ui.viewmodels.factory.StudentViewModelFactory
@@ -33,7 +39,9 @@ class MainActivity : ComponentActivity() {
         val groupRepository = GroupRepository(database.groupDao())
         val groupProfessorRepository = GroupProfessorRepository(database.groupProfessorDao())
         val groupStudentRepository = GroupStudentRepository(database.groupStudentDao())
-
+        val lessonRepository = LessonRepository(database.lessonDao())
+        val lessonProfessorRepository = LessonProfessorRepository(database.lessonProfessorDao())
+        val lessonGroupRepository = LessonGroupRepository(database.lessonGroupDao())
 
         val professorViewModelFactory = ProfessorViewModelFactory(professorRepository)
         val studentViewModelFactory = StudentViewModelFactory(studentRepository)
@@ -41,6 +49,9 @@ class MainActivity : ComponentActivity() {
         val groupViewModelFactory = GroupViewModelFactory(groupRepository)
         val groupProfessorViewModelFactory = GroupProfessorViewModelFactory(groupProfessorRepository)
         val groupStudentViewModelFactory = GroupStudentViewModelFactory(groupStudentRepository)
+        val lessonViewModelFactory = LessonViewModelFactory(lessonRepository)
+        val lessonProfessorViewModelFactory = LessonProfessorViewModelFactory(lessonProfessorRepository)
+        val lessonGroupViewModelFactory = LessonGroupViewModelFactory(lessonGroupRepository)
 
         setContent {
             SchoolinkTheme {
@@ -50,7 +61,10 @@ class MainActivity : ComponentActivity() {
                     professorStudentViewModelFactory = professorStudentViewModelFactory,
                     groupViewModelFactory = groupViewModelFactory,
                     groupProfessorViewModelFactory = groupProfessorViewModelFactory,
-                    groupStudentViewModelFactory = groupStudentViewModelFactory
+                    groupStudentViewModelFactory = groupStudentViewModelFactory,
+                    lessonViewModelFactory = lessonViewModelFactory,
+                    lessonProfessorViewModelFactory = lessonProfessorViewModelFactory,
+                    lessonGroupViewModelFactory = lessonGroupViewModelFactory
                 )
             }
         }
