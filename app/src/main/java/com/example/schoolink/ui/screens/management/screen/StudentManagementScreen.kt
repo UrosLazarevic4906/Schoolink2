@@ -33,7 +33,7 @@ import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.StudentMapper
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.ui.components.miscellaneous.EmptyState
+import com.example.schoolink.ui.components.miscellaneous.ImageInformation
 import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
@@ -123,7 +123,7 @@ fun StudentManagementScreen(
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
-                    EmptyState(
+                    ImageInformation(
                         image = painterResource(R.drawable.img_nothing_to_show),
                         title = "No students yet",
                         description = "Start adding students by pressing the green button"

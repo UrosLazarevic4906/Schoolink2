@@ -15,6 +15,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.schoolink.ui.screens.LessonTestScreen
+import com.example.schoolink.ui.screens.MainScreen
+import com.example.schoolink.ui.screens.authentication.screen.AccountCreationFinishedScreen
 import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
 import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
 import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
@@ -58,7 +60,7 @@ fun AppNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = "onboarding"
+        startDestination = "mainScreen"
     ) {
         composable(
             "onboarding",
@@ -127,16 +129,10 @@ fun AppNavigation(
                 )
             },
             exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
+                ExitTransition.None
             },
             popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
+                EnterTransition.None
             },
             popExitTransition = {
                 slideOutOfContainer(
@@ -169,16 +165,10 @@ fun AppNavigation(
                 )
             },
             exitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
+                ExitTransition.None
             },
             popEnterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
+                EnterTransition.None
             },
             popExitTransition = {
                 slideOutOfContainer(
@@ -201,6 +191,7 @@ fun AppNavigation(
                 }
             )
         }
+
 
         composable(
             route = "lessons/{email}",
@@ -295,6 +286,12 @@ fun AppNavigation(
                 )
             },
             exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Right,
                     animationSpec = tween(1000)
@@ -334,6 +331,12 @@ fun AppNavigation(
                 )
             },
             exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
                 slideOutOfContainer(
                     AnimatedContentTransitionScope.SlideDirection.Right,
                     animationSpec = tween(1000)
@@ -357,7 +360,7 @@ fun AppNavigation(
                 email = email,
                 context = context,
                 onNext = {
-                    navController.navigateSingleTopTo("lessons/${Uri.encode(email)}")
+                    navController.navigateSingleTopTo("accountCreationFinished")
                 },
                 onBack = {
                     navController.popBackStack()
@@ -368,6 +371,61 @@ fun AppNavigation(
                 groupStudentViewModel = groupStudentViewModel,
                 professorStudentViewModel = professorStudentViewModel
             )
+        }
+
+        composable(
+            route = "accountCreationFinished",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
+            AccountCreationFinishedScreen(
+                onFinish = {
+
+                },
+                onNavigateBack = {
+
+                }
+            )
+        }
+
+        composable(
+            route = "mainScreen",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
+            MainScreen()
         }
     }
 

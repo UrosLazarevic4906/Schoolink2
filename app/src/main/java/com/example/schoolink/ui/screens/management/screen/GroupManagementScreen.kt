@@ -1,8 +1,6 @@
 package com.example.schoolink.ui.screens.management.screen
 
 import android.content.Context
-import android.util.Patterns
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -27,10 +25,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.GroupWithProfessor
-import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.GroupMapper
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.ui.components.miscellaneous.EmptyState
+import com.example.schoolink.ui.components.miscellaneous.ImageInformation
 import com.example.schoolink.ui.components.miscellaneous.GroupCard
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.CreateNewGroupOverlay
@@ -117,7 +114,7 @@ fun GroupManagementScreen(
 
 
                 if (groupsWithProfessor?.groups.isNullOrEmpty()) {
-                    EmptyState(
+                    ImageInformation(
                         image = painterResource(R.drawable.img_nothing_to_show),
                         title = "No groups yet",
                         description = "Start creating groups by pressing the green button"
