@@ -32,7 +32,7 @@ sealed class Screen(
 
     data object Manage : Screen(
         title = "Management",
-        description = "Manage students and groups.",
+        description = "Manage students and groups that you are heading.",
         icon = Icons.Default.Home,
         backgroundRes = R.drawable.bg_blue,
         statuBarColor = Blue
@@ -40,7 +40,7 @@ sealed class Screen(
 
     data object Schedule : Screen(
         title = "Schedule",
-        description = "Keep track of your schedule.",
+        description = "Keep track of monthly your schedule.",
         icon = Icons.Default.Home,
         backgroundRes = R.drawable.bg_pink,
         statuBarColor = Pink
