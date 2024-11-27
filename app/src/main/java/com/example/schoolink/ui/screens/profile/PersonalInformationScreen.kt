@@ -74,8 +74,8 @@ fun ProfessorInformationScreen(
     SchoolinkTheme {
         Box(
             modifier = Modifier
-                .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize()
                 .padding(horizontal = 24.dp, vertical = 32.dp)
                 .clickable(
                     onClick = { focusManager.clearFocus() },

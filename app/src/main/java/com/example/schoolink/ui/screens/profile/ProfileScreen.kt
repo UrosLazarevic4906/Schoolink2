@@ -42,9 +42,10 @@ fun ProfileScreen(
     onTermsAndConditions: () -> Unit,
     onPrivacyPolicy: () -> Unit,
     onPersonalInformation: () -> Unit,
+    onAccountDetails: () -> Unit,
     email: String,
     professorViewModel: ProfessorViewModel,
-    ) {
+) {
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
@@ -59,8 +60,9 @@ fun ProfileScreen(
     SchoolinkTheme {
         Column(
             modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
                 .fillMaxSize()
-                .background(color = MaterialTheme.colorScheme.background),
+                .padding(horizontal = 24.dp , vertical = 32.dp)
         ) {
             TitleCard(
                 title = "My profile",
@@ -121,7 +123,9 @@ fun ProfileScreen(
                     ProfileOption(
                         icon = R.drawable.ic_shield,
                         title = "Account details",
-                        onClick = {}
+                        onClick = {
+                            onAccountDetails()
+                        }
                     )
                 }
 
@@ -150,7 +154,9 @@ fun ProfileScreen(
                 }
             }
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

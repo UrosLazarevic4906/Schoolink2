@@ -26,6 +26,7 @@ import com.example.schoolink.ui.screens.main.Screen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
+import com.example.schoolink.ui.screens.profile.AccountDetailsScreen
 import com.example.schoolink.ui.screens.profile.PrivacyPolicyScreen
 import com.example.schoolink.ui.screens.profile.ProfessorInformationScreen
 import com.example.schoolink.ui.screens.profile.ProfileScreen
@@ -562,6 +563,9 @@ fun AppNavigation(
                 },
                 onPersonalInformation = {
                     navController.navigateSingleTopTo("personalInformationScreen/${Uri.encode(email)}")
+                },
+                onAccountDetails = {
+                    navController.navigateSingleTopTo("accountDetailsScreen/${Uri.encode(email)}")
                 }
             )
 
@@ -574,7 +578,7 @@ fun AppNavigation(
             ),
             enterTransition = {
                 slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    AnimatedContentTransitionScope.SlideDirection.Left,
                     animationSpec = tween(1000)
                 )
             },
@@ -586,7 +590,7 @@ fun AppNavigation(
             },
             popExitTransition = {
                 slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    AnimatedContentTransitionScope.SlideDirection.Right,
                     animationSpec = tween(1000)
                 )
             }
@@ -606,6 +610,49 @@ fun AppNavigation(
                 },
                 onSave = {
                     navController.popBackStack()
+                }
+            )
+
+        }
+
+        composable(
+            route = "accountDetailsScreen/{email}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType }
+            ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+
+            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+
+
+            AccountDetailsScreen(
+                email = email,
+                professorViewModel = professorViewModel,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onDeleteAccount = {
+
                 }
             )
 
