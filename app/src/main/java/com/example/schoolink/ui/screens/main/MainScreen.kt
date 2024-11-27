@@ -18,13 +18,14 @@ import com.example.schoolink.ui.screens.main.content.ScheduleContent
 @Composable
 fun MainScreen(
     email: String,
+    selectedTab: Screen,
     professorViewModel: ProfessorViewModel,
     onStudent: () -> Unit,
     onGroup: () -> Unit
 ) {
 
     val screens = listOf(Screen.Home, Screen.Schedule, Screen.History, Screen.Manage)
-    var selectedScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    var selectedScreen by remember { mutableStateOf(selectedTab) }
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
 

@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.schoolink.R
 import com.example.schoolink.ui.theme.*
 
+
 sealed class Screen(
     val title: String,
     val navTitle: String,
@@ -46,5 +47,15 @@ sealed class Screen(
         backgroundRes = R.drawable.bg_blue,
         )
 
-
+    companion object {
+        fun fromNavTitle(navTitle: String): Screen {
+            return when (navTitle) {
+                Home.navTitle -> Home
+                Schedule.navTitle -> Schedule
+                History.navTitle -> History
+                Manage.navTitle -> Manage
+                else -> Home
+            }
+        }
+    }
 }

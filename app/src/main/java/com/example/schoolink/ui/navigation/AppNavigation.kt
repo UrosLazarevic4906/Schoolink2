@@ -22,6 +22,7 @@ import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
 import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
 import com.example.schoolink.ui.screens.authentication.screen.StudentCreationScreen
 import com.example.schoolink.ui.screens.main.MainScreen
+import com.example.schoolink.ui.screens.main.Screen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
@@ -114,7 +115,7 @@ fun AppNavigation(
                     navController.navigateSingleTopTo("createAccount")
                 },
                 onLogin = { email ->
-                    navController.navigateSingleTopTo("mainScreen/${Uri.encode(email)}")
+                    navController.navigateSingleTopTo("mainScreen/${Uri.encode(email)}/Home")
                 },
                 onSetupAccount = { email ->
                     navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -369,15 +370,13 @@ fun AppNavigation(
         }
 
         composable(
-            route = "mainScreen/{email}",
+            route = "mainScreen/{email}/{selectedTab}",
             arguments = listOf(
-                navArgument("email") { type = NavType.StringType }
+                navArgument("email") { type = NavType.StringType },
+                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(1000)
-                )
+                EnterTransition.None
             },
             exitTransition = {
                 ExitTransition.None
@@ -386,33 +385,33 @@ fun AppNavigation(
                 EnterTransition.None
             },
             popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
+                ExitTransition.None
             }
         ) { backStackEntry ->
 
             val email = backStackEntry.arguments?.getString("email") ?: ""
+            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
+
             MainScreen(
                 email = email,
                 professorViewModel = professorViewModel,
-                onGroup = {
-                    navController.navigateSingleTopTo("groupManagementScreen/${Uri.encode(email)}")
-                },
+                selectedTab = Screen.fromNavTitle(selectedTab),
                 onStudent = {
-                    navController.navigateSingleTopTo("studentManagementScreen/${Uri.encode(email)}")
-
+                    navController.navigateSingleTopTo("studentManagementScreen/$email/Manage")
+                },
+                onGroup = {
+                    navController.navigateSingleTopTo("groupManagementScreen/$email/Manage")
                 }
             )
         }
 
         composable(
-            route = "groupManagementScreen/{email}",
+            route = "groupManagementScreen/{email}/{selectedTab}",
             arguments = listOf(
-                navArgument("email") { type = NavType.StringType }
+                navArgument("email") { type = NavType.StringType },
+                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
                 slideIntoContainer(
@@ -434,6 +433,7 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
+            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
 
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
@@ -449,7 +449,7 @@ fun AppNavigation(
                 email = email,
                 context = context,
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigateSingleTopTo("mainScreen/$email/$selectedTab")
                 },
                 professorViewModel = professorViewModel,
                 groupViewModel = groupViewModel,
@@ -460,9 +460,10 @@ fun AppNavigation(
         }
 
         composable(
-            route = "studentManagementScreen/{email}",
+            route = "studentManagementScreen/{email}/{selectedTab}",
             arguments = listOf(
-                navArgument("email") { type = NavType.StringType }
+                navArgument("email") { type = NavType.StringType },
+                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
                 slideIntoContainer(
@@ -484,6 +485,7 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
+            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
 
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
@@ -498,11 +500,10 @@ fun AppNavigation(
                 studentViewModel = studentViewModel,
                 professorStudentViewModel = professorStudentViewModel,
                 onBack = {
-                    navController.popBackStack()
+                    navController.navigateSingleTopTo("mainScreen/$email/$selectedTab")
                 }
             )
         }
-
 
 
     }
