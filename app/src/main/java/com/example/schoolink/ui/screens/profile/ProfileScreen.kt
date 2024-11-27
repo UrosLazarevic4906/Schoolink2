@@ -33,6 +33,7 @@ import com.example.schoolink.ui.theme.SchoolinkTheme
 @Composable
 fun ProfileScreen(
     onBack: () -> Unit,
+    onLogOut: () -> Unit,
 //    email: String,
 //    professorViewModel: ProfessorViewModel,
 
@@ -53,7 +54,7 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 18.dp, vertical = 24.dp)
+//                .padding(horizontal = 18.dp, vertical = 24.dp)
                 .background(color = MaterialTheme.colorScheme.background),
         ) {
             TitleCard(
@@ -83,8 +84,14 @@ fun ProfileScreen(
                         modifier = Modifier.fillMaxSize(0.3f)
                     )
                 }
+                Text(
+                    "Uros Lazarevic",
+                    style = MaterialTheme.typography.bodyLarge,
+                )
 
-                Column {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     Text(
                         text = "Profile",
                         style = MaterialTheme.typography.bodyLarge,
@@ -102,7 +109,9 @@ fun ProfileScreen(
                     )
                 }
 
-                Column {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
                     Text(
                         "Legal",
                         style = MaterialTheme.typography.bodyLarge,
@@ -127,9 +136,7 @@ fun ProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = {
-                        /*todo: dodati logout*/
-                    },
+                    onClick = onLogOut,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.background,
                         contentColor = MaterialTheme.colorScheme.onBackground,
@@ -152,5 +159,5 @@ fun ProfileScreen(
 @Preview
 @Composable
 private fun Preview() {
-    ProfileScreen(onBack = {})
+    ProfileScreen(onBack = {}, onLogOut = {})
 }

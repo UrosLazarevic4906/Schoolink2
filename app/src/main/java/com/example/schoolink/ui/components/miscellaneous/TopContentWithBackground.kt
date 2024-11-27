@@ -3,6 +3,7 @@ package com.example.schoolink.ui.components.miscellaneous
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +32,8 @@ import com.example.schoolink.ui.theme.White
 @Composable
 fun TopContentWithBackground(
     screen: Screen,
-    professor: ProfessorModel?
+    professor: ProfessorModel?,
+    onProfile: () -> Unit
 ) {
 
     Image(
@@ -51,7 +53,8 @@ fun TopContentWithBackground(
             modifier = Modifier
                 .clip(CircleShape)
                 .size(80.dp)
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = MaterialTheme.colorScheme.background)
+                .clickable { onProfile() },
             contentAlignment = Alignment.Center
         ) {
             if (professor?.profilePicturePath != null) {

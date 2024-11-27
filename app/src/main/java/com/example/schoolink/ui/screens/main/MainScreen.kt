@@ -21,7 +21,8 @@ fun MainScreen(
     selectedTab: Screen,
     professorViewModel: ProfessorViewModel,
     onStudent: () -> Unit,
-    onGroup: () -> Unit
+    onGroup: () -> Unit,
+    onProfile: () -> Unit
 ) {
 
     val screens = listOf(Screen.Home, Screen.Schedule, Screen.History, Screen.Manage)
@@ -48,7 +49,7 @@ fun MainScreen(
         content = { paddingValues ->
             Box(modifier = Modifier.padding(paddingValues)) {
                 Box(modifier = Modifier.fillMaxSize()) {
-                    TopContentWithBackground(selectedScreen, professor)
+                    TopContentWithBackground(selectedScreen, professor, onProfile)
 
                     Box(
                         modifier = Modifier

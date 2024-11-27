@@ -26,6 +26,7 @@ import com.example.schoolink.ui.screens.main.Screen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
+import com.example.schoolink.ui.screens.profile.ProfileScreen
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
 import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
 import com.example.schoolink.ui.viewmodels.GroupViewModel
@@ -403,6 +404,9 @@ fun AppNavigation(
                 },
                 onGroup = {
                     navController.navigateSingleTopTo("groupManagementScreen/$email/Manage")
+                },
+                onProfile = {
+                    navController.navigateSingleTopTo("profileScreen")
                 }
             )
         }
@@ -505,6 +509,41 @@ fun AppNavigation(
             )
         }
 
+        composable(
+            route = "profileScreen",
+            /*arguments = listOf(
+                navArgument("email") { type = NavType.StringType },
+                navArgument("selectedTab") { type = NavType.StringType }
+            ),*/
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
+            ProfileScreen(
+                onBack = {
+                    navController.popBackStack()
+                },
+                onLogOut = {
+                    navController.navigateSingleTopTo("onboarding")
+                }
+            )
+
+        }
 
     }
 

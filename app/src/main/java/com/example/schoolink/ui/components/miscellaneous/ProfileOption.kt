@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
@@ -57,7 +58,8 @@ fun ProfileOption(
 
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Light
         )
 
         Spacer(modifier = Modifier.weight(1.0f))
@@ -65,7 +67,8 @@ fun ProfileOption(
         Icon(
             painter = painterResource(R.drawable.ic_chevron_right),
             contentDescription = "Navigate to $title",
-            tint = Black
+            tint = Black,
+            modifier = Modifier.size(24.dp)
         )
     }
 
