@@ -9,40 +9,42 @@ import com.example.schoolink.ui.theme.*
 
 sealed class Screen(
     val title: String,
+    val navTitle: String,
     val description: String,
-    val icon: ImageVector,
+    val icon: Int,
     val backgroundRes: Int,
-    val statuBarColor: Color
 ) {
     data object Home : Screen(
         title = "Home",
+        navTitle = "Home",
         description = "Welcome back!",
-        icon = Icons.Default.Home,
+        icon = R.drawable.ic_home,
         backgroundRes = R.drawable.bg_green,
-        statuBarColor = Green
-        )
-
-    data object Presence : Screen(
-        title = "Presence",
-        description = "Complete attendance and activity history.",
-        icon = Icons.Default.Person,
-        backgroundRes = R.drawable.bg_yellow,
-        statuBarColor = Yellow
-    )
-
-    data object Manage : Screen(
-        title = "Management",
-        description = "Manage students and groups that you are heading.",
-        icon = Icons.Default.Home,
-        backgroundRes = R.drawable.bg_blue,
-        statuBarColor = Blue
         )
 
     data object Schedule : Screen(
         title = "Schedule",
+        navTitle = "Schedule",
         description = "Keep track of monthly your schedule.",
-        icon = Icons.Default.Home,
+        icon = R.drawable.ic_clippboard,
         backgroundRes = R.drawable.bg_pink,
-        statuBarColor = Pink
+    )
+
+    data object History : Screen(
+        title = "History",
+        navTitle = "History",
+        description = "Complete attendance and activity history.",
+        icon = R.drawable.ic_calendar,
+        backgroundRes = R.drawable.bg_yellow,
+    )
+
+    data object Manage : Screen(
+        title = "Management",
+        navTitle = "Manage",
+        description = "Manage students and groups that you are heading.",
+        icon = R.drawable.ic_group,
+        backgroundRes = R.drawable.bg_blue,
         )
+
+
 }
