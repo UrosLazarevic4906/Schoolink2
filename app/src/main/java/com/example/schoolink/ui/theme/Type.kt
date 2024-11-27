@@ -122,23 +122,3 @@ val SfProTypography = Typography(
         fontSize = 10.sp
     )
 )
-
-val bodyLargeItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Normal,
-    fontSize = 16.sp
-)
-
-val bodyMediumItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Light,
-    fontStyle = FontStyle.Italic,
-    fontSize = 14.sp
-)
-
-val bodySmallItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Thin,
-    fontStyle = FontStyle.Italic,
-    fontSize = 12.sp
-)
