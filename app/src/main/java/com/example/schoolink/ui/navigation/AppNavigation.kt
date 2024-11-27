@@ -27,6 +27,7 @@ import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
 import com.example.schoolink.ui.screens.profile.PrivacyPolicyScreen
+import com.example.schoolink.ui.screens.profile.ProfessorInformationScreen
 import com.example.schoolink.ui.screens.profile.ProfileScreen
 import com.example.schoolink.ui.screens.profile.TermsAndConditionsScreen
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
@@ -558,6 +559,53 @@ fun AppNavigation(
                 },
                 onPrivacyPolicy = {
                     navController.navigateSingleTopTo("privacyPolicy")
+                },
+                onPersonalInformation = {
+                    navController.navigateSingleTopTo("personalInformationScreen/${Uri.encode(email)}")
+                }
+            )
+
+        }
+
+        composable(
+            route = "personalInformationScreen/{email}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType }
+            ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+
+            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+
+
+            ProfessorInformationScreen(
+                email = email,
+                professorViewModel = professorViewModel,
+                context = context,
+                onBack = {
+                    navController.popBackStack()
+                },
+                onSave = {
+                    navController.popBackStack()
                 }
             )
 

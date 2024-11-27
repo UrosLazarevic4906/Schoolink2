@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
 import com.example.schoolink.R
@@ -42,6 +41,7 @@ fun ProfileScreen(
     onLogOut: () -> Unit,
     onTermsAndConditions: () -> Unit,
     onPrivacyPolicy: () -> Unit,
+    onPersonalInformation: () -> Unit,
     email: String,
     professorViewModel: ProfessorViewModel,
     ) {
@@ -114,7 +114,9 @@ fun ProfileScreen(
                     ProfileOption(
                         icon = R.drawable.ic_user,
                         title = "Personal information",
-                        onClick = {}
+                        onClick = {
+                            onPersonalInformation()
+                        }
                     )
                     ProfileOption(
                         icon = R.drawable.ic_shield,
