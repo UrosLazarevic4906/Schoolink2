@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.screens.profile
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,41 +17,44 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.rememberAsyncImagePainter
 import com.example.schoolink.R
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.miscellaneous.ProfileOption
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.theme.Ash
 import com.example.schoolink.ui.theme.Gravel
 import com.example.schoolink.ui.theme.SchoolinkTheme
+import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
 fun ProfileScreen(
     onBack: () -> Unit,
     onLogOut: () -> Unit,
     onTermsAndConditions: () -> Unit,
-    onPrivacyPolicy: () -> Unit
-//    email: String,
-//    professorViewModel: ProfessorViewModel,
+    onPrivacyPolicy: () -> Unit,
+    email: String,
+    professorViewModel: ProfessorViewModel,
+    ) {
 
-) {
+    var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
-//    var professor by remember { mutableStateOf<ProfessorModel?>(null) }
-//
-//
-//    LaunchedEffect(email) {
-//        professorViewModel.getProfessorByEmail(email) { prof ->
-//            prof?.let {
-//                professor = it
-//            }
-//        }
-//    }
+    LaunchedEffect(email) {
+        professorViewModel.getProfessorByEmail(email) { prof ->
+            prof?.let {
+                professor = it
+            }
+        }
+    }
 
     SchoolinkTheme {
         Column(
@@ -78,15 +82,24 @@ fun ProfileScreen(
                         .background(color = Gravel),
                     contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_user),
-                        contentDescription = "Default profile picture",
-                        tint = Ash,
-                        modifier = Modifier.fillMaxSize(0.3f)
-                    )
+                    if (professor?.profilePicturePath != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(professor!!.profilePicturePath),
+                            contentDescription = "${professor!!.id}' profile picture",
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    } else {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_user),
+                            contentDescription = "Default profile picture",
+                            tint = Ash,
+                            modifier = Modifier.fillMaxSize(0.5f)
+                        )
+                    }
                 }
                 Text(
-                    "Uros Lazarevic",
+                    "${professor?.firstName} ${professor?.lastName}",
                     style = MaterialTheme.typography.bodyLarge,
                 )
 
@@ -143,7 +156,7 @@ fun ProfileScreen(
                     onClick = onLogOut,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.background,
-                        contentColor = MaterialTheme.colorScheme.onBackground,
+                        contentColor = MaterialTheme.colorScheme.primary,
                     ),
                     modifier = Modifier
                         .fillMaxWidth()

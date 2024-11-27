@@ -412,7 +412,7 @@ fun AppNavigation(
                     navController.navigateSingleTopTo("groupManagementScreen/$email/Manage")
                 },
                 onProfile = {
-                    navController.navigateSingleTopTo("profileScreen")
+                    navController.navigateSingleTopTo("profileScreen/${Uri.encode(email)}")
                 }
             )
         }
@@ -516,11 +516,10 @@ fun AppNavigation(
         }
 
         composable(
-            route = "profileScreen",
-            /*arguments = listOf(
-                navArgument("email") { type = NavType.StringType },
-                navArgument("selectedTab") { type = NavType.StringType }
-            ),*/
+            route = "profileScreen/{email}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType }
+            ),
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Up,
@@ -539,8 +538,15 @@ fun AppNavigation(
                     animationSpec = tween(1000)
                 )
             }
-        ) {
+        ) {backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+
+            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+
             ProfileScreen(
+                email = email,
+                professorViewModel = professorViewModel,
                 onBack = {
                     navController.popBackStack()
                 },
