@@ -13,7 +13,10 @@ import com.example.schoolink.R
 import com.example.schoolink.ui.components.miscellaneous.ManagementCard
 
 @Composable
-fun ManagementContent() {
+fun ManagementContent(
+    onStudent: () -> Unit,
+    onGroup: () -> Unit
+) {
     Box(
         modifier = Modifier.padding(top = 200.dp)
     ) {
@@ -27,14 +30,14 @@ fun ManagementContent() {
                 icon = painterResource(R.drawable.ic_smiley_color),
                 title = "Students",
                 number = 42,
-                onClick = {}
+                onClick = onStudent
             )
 
             ManagementCard(
                 icon = painterResource(R.drawable.ic_group_color),
                 title = "Groups",
                 number = 3,
-                onClick = {}
+                onClick = onGroup
             )
         }
     }

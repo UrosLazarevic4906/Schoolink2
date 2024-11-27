@@ -1,7 +1,8 @@
-package com.example.schoolink.ui.screens.management.screen
+package com.example.schoolink.ui.screens.authentication.screen
 
 import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -44,7 +45,8 @@ import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 import com.example.schoolink.ui.viewmodels.StudentViewModel
 
 @Composable
-fun StudentManagementScreen(
+fun StudentCreationScreen(
+    onNext: () -> Unit,
     onBack: () -> Unit,
     email: String,
     context: Context,
@@ -58,6 +60,10 @@ fun StudentManagementScreen(
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
+
+    BackHandler {
+        onBack()
+    }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -118,8 +124,8 @@ fun StudentManagementScreen(
             ) {
                 TitleCard(
                     title = "Students",
-                    startIcon = painterResource(R.drawable.ic_chevron_left),
-                    onStartIcon = onBack
+                    clickableText = "Next",
+                    onText = onNext
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {

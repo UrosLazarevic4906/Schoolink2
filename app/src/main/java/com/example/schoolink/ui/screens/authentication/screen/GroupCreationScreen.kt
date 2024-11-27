@@ -1,4 +1,5 @@
-package com.example.schoolink.ui.screens.management.screen
+package com.example.schoolink.ui.screens.authentication.screen
+
 
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
@@ -39,8 +40,9 @@ import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
-fun GroupManagementScreen(
+fun GroupCreationScreen(
     email: String,
+    onNext: () -> Unit = {},
     onBack: () -> Unit,
     context: Context,
     professorViewModel: ProfessorViewModel,
@@ -97,6 +99,8 @@ fun GroupManagementScreen(
 
                 TitleCard(
                     title = "Groups",
+                    clickableText = "Next",
+                    onText = onNext,
                     startIcon = painterResource(R.drawable.ic_chevron_left),
                     onStartIcon = onBack
                 )
