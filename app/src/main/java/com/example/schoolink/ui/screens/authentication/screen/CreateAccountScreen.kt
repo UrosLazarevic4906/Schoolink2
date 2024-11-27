@@ -38,7 +38,9 @@ import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 fun CreateAccountScreen(
     viewModel: ProfessorViewModel,
     onBack: () -> Unit,
-    onCreateAccount: (String) -> Unit
+    onCreateAccount: (String) -> Unit,
+    onTermsAndConditions: () -> Unit,
+    onPrivacyPolicy: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -151,17 +153,15 @@ fun CreateAccountScreen(
                     Row {
                         InteractionText(
                             text = "Terms & Conditions",
-                            onClick = { /* TODO: Handle terms click */ }
+                            onClick = { onTermsAndConditions() }
                         )
                         Text(" and ", color = MaterialTheme.colorScheme.onBackground)
                         InteractionText(
                             text = "Privacy Policy.",
-                            onClick = { /* ToDo: Handle privacy policy click */ }
+                            onClick = { onPrivacyPolicy()}
                         )
                     }
                 }
-
-
             }
         }
     }

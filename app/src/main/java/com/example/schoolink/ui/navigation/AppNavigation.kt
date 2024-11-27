@@ -155,6 +155,12 @@ fun AppNavigation(
                 onBack = { navController.popBackStack() },
                 onCreateAccount = { email ->
                     navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
+                },
+                onTermsAndConditions = {
+                    navController.navigateSingleTopTo("termsAndConditions")
+                },
+                onPrivacyPolicy = {
+                    navController.navigateSingleTopTo("privacyPolicy")
                 }
             )
         }
@@ -198,7 +204,6 @@ fun AppNavigation(
             )
         }
 
-
         composable(
             route = "lessons/{email}",
             arguments = listOf(
@@ -241,7 +246,6 @@ fun AppNavigation(
                 onLessonCreated = {}
             )
         }
-
 
         composable(
             route = "studentCreationScreen/{email}",
