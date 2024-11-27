@@ -15,11 +15,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.schoolink.ui.screens.LessonTestScreen
-import com.example.schoolink.ui.screens.MainScreen
 import com.example.schoolink.ui.screens.authentication.screen.AccountCreationFinishedScreen
 import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
 import com.example.schoolink.ui.screens.authentication.screen.LoginScreen
 import com.example.schoolink.ui.screens.authentication.screen.ProfessorSetupScreen
+import com.example.schoolink.ui.screens.main.MainScreen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
@@ -59,7 +59,7 @@ fun AppNavigation(
 
     NavHost(
         navController = navController,
-        startDestination = "mainScreen"
+        startDestination = "onboarding"
     ) {
         composable(
             "onboarding",
@@ -74,7 +74,8 @@ fun AppNavigation(
                 },
                 onNavigationToCreateAccount = {
                     navController.navigateSingleTopTo("createAccount")
-                }
+                },
+                onNavigateBack = {}
             )
         }
 
@@ -111,7 +112,7 @@ fun AppNavigation(
                     navController.navigateSingleTopTo("createAccount")
                 },
                 onLogin = { email ->
-                    navController.navigateSingleTopTo("studentManagementScreen/${Uri.encode(email)}")
+                    navController.navigateSingleTopTo("mainScreen/${Uri.encode(email)}")
                 },
                 onSetupAccount = { email ->
                     navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -217,9 +218,12 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val lessonViewModel: LessonViewModel = viewModel(factory = lessonViewModelFactory)
-            val lessonProfessorViewModel: LessonProfessorViewModel = viewModel(factory = lessonProfessorViewModelFactory)
-            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
-            val lessonGroupViewModel: LessonGroupViewModel = viewModel(factory = lessonGroupViewModelFactory)
+            val lessonProfessorViewModel: LessonProfessorViewModel =
+                viewModel(factory = lessonProfessorViewModelFactory)
+            val professorViewModel: ProfessorViewModel =
+                viewModel(factory = professorViewModelFactory)
+            val lessonGroupViewModel: LessonGroupViewModel =
+                viewModel(factory = lessonGroupViewModelFactory)
             val email = backStackEntry.arguments?.getString("email") ?: ""
 
             LessonTestScreen(
@@ -354,7 +358,7 @@ fun AppNavigation(
         ) {
             AccountCreationFinishedScreen(
                 onFinish = {
-
+                    navController.navigateSingleTopTo("onboarding")
                 },
                 onNavigateBack = {
 
@@ -363,7 +367,10 @@ fun AppNavigation(
         }
 
         composable(
-            route = "mainScreen",
+            route = "mainScreen/{email}",
+            arguments = listOf(
+                navArgument("email") { type = NavType.StringType }
+            ),
             enterTransition = {
                 slideIntoContainer(
                     AnimatedContentTransitionScope.SlideDirection.Left,
@@ -382,8 +389,15 @@ fun AppNavigation(
                     animationSpec = tween(1000)
                 )
             }
-        ) {
-            MainScreen()
+        ) { backStackEntry ->
+
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+            val professorViewModel: ProfessorViewModel =
+                viewModel(factory = professorViewModelFactory)
+            MainScreen(
+                email = email,
+                professorViewModel = professorViewModel
+            )
         }
     }
 
