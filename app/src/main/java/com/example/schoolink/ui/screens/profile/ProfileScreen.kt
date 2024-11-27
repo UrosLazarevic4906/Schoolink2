@@ -34,7 +34,8 @@ import com.example.schoolink.ui.theme.SchoolinkTheme
 fun ProfileScreen(
     onBack: () -> Unit,
     onLogOut: () -> Unit,
-    onTermsAndConditions: () -> Unit
+    onTermsAndConditions: () -> Unit,
+    onPrivacyPolicy: () -> Unit
 //    email: String,
 //    professorViewModel: ProfessorViewModel,
 
@@ -127,7 +128,9 @@ fun ProfileScreen(
                     ProfileOption(
                         icon = R.drawable.ic_livebuoy,
                         title = "Privacy policy",
-                        onClick = {}
+                        onClick = {
+                            onPrivacyPolicy()
+                        }
                     )
                 }
             }
@@ -155,14 +158,4 @@ fun ProfileScreen(
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun Preview() {
-    ProfileScreen(
-        onBack = {},
-        onLogOut = {},
-        onTermsAndConditions = {}
-    )
 }

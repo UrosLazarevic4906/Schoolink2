@@ -26,6 +26,7 @@ import com.example.schoolink.ui.screens.main.Screen
 import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
+import com.example.schoolink.ui.screens.profile.PrivacyPolicyScreen
 import com.example.schoolink.ui.screens.profile.ProfileScreen
 import com.example.schoolink.ui.screens.profile.TermsAndConditionsScreen
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
@@ -544,6 +545,9 @@ fun AppNavigation(
                 },
                 onTermsAndConditions = {
                     navController.navigateSingleTopTo("termsAndConditions")
+                },
+                onPrivacyPolicy = {
+                    navController.navigateSingleTopTo("privacyPolicy")
                 }
             )
 
@@ -578,9 +582,36 @@ fun AppNavigation(
             )
         }
 
+        composable(
+            route = "privacyPolicy",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
+
+            PrivacyPolicyScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
     }
-
-
 }
 
 fun NavController.navigateSingleTopTo(route: String) {
