@@ -52,7 +52,7 @@ fun ProfileOption(
                 painter = painterResource(icon),
                 contentDescription = "$title icon",
                 tint = MaterialTheme.colorScheme.background,
-                modifier = Modifier.fillMaxSize(0.3f)
+                modifier = Modifier.fillMaxSize(0.5f)
             )
         }
 

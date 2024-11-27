@@ -27,6 +27,7 @@ import com.example.schoolink.ui.screens.management.screen.GroupManagementScreen
 import com.example.schoolink.ui.screens.management.screen.StudentManagementScreen
 import com.example.schoolink.ui.screens.onboarding.OnboardingScreen
 import com.example.schoolink.ui.screens.profile.ProfileScreen
+import com.example.schoolink.ui.screens.profile.TermsAndConditionsScreen
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
 import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
 import com.example.schoolink.ui.viewmodels.GroupViewModel
@@ -540,9 +541,41 @@ fun AppNavigation(
                 },
                 onLogOut = {
                     navController.navigateSingleTopTo("onboarding")
+                },
+                onTermsAndConditions = {
+                    navController.navigateSingleTopTo("termsAndConditions")
                 }
             )
 
+        }
+
+        composable(
+            route = "termsAndConditions",
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Left,
+                    animationSpec = tween(1000)
+                )
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+            popEnterTransition = {
+                EnterTransition.None
+            },
+            popExitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Right,
+                    animationSpec = tween(1000)
+                )
+            }
+        ) {
+
+            TermsAndConditionsScreen(
+                onBack = {
+                    navController.popBackStack()
+                }
+            )
         }
 
     }

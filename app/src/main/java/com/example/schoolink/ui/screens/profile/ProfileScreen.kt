@@ -34,6 +34,7 @@ import com.example.schoolink.ui.theme.SchoolinkTheme
 fun ProfileScreen(
     onBack: () -> Unit,
     onLogOut: () -> Unit,
+    onTermsAndConditions: () -> Unit
 //    email: String,
 //    professorViewModel: ProfessorViewModel,
 
@@ -54,12 +55,11 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-//                .padding(horizontal = 18.dp, vertical = 24.dp)
                 .background(color = MaterialTheme.colorScheme.background),
         ) {
             TitleCard(
                 title = "My profile",
-                startIcon = painterResource(R.drawable.ic_chevron_left),
+                startIcon = painterResource(R.drawable.ic_chevron_down),
                 onStartIcon = onBack
             )
             Column(
@@ -120,7 +120,9 @@ fun ProfileScreen(
                     ProfileOption(
                         icon = R.drawable.ic_document,
                         title = "Terms & Conditions",
-                        onClick = {}
+                        onClick = {
+                            onTermsAndConditions()
+                        }
                     )
                     ProfileOption(
                         icon = R.drawable.ic_livebuoy,
@@ -129,7 +131,6 @@ fun ProfileScreen(
                     )
                 }
             }
-
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -159,5 +160,9 @@ fun ProfileScreen(
 @Preview
 @Composable
 private fun Preview() {
-    ProfileScreen(onBack = {}, onLogOut = {})
+    ProfileScreen(
+        onBack = {},
+        onLogOut = {},
+        onTermsAndConditions = {}
+    )
 }
