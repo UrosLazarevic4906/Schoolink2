@@ -15,13 +15,13 @@ sealed class Screen(
     val icon: Int,
     val backgroundRes: Int,
 ) {
-    data object Home : Screen(
-        title = "Home",
-        navTitle = "Home",
-        description = "Welcome back!",
-        icon = R.drawable.ic_home,
-        backgroundRes = R.drawable.bg_green,
-        )
+//    data object Home : Screen(
+//        title = "Home",
+//        navTitle = "Home",
+//        description = "Welcome back!",
+//        icon = R.drawable.ic_home,
+//        backgroundRes = R.drawable.bg_green,
+//        )
 
     data object Schedule : Screen(
         title = "Schedule",
@@ -31,13 +31,13 @@ sealed class Screen(
         backgroundRes = R.drawable.bg_pink,
     )
 
-    data object History : Screen(
-        title = "History",
-        navTitle = "History",
-        description = "Complete attendance and activity history.",
-        icon = R.drawable.ic_calendar,
-        backgroundRes = R.drawable.bg_yellow,
-    )
+//    data object History : Screen(
+//        title = "History",
+//        navTitle = "History",
+//        description = "Complete attendance and activity history.",
+//        icon = R.drawable.ic_calendar,
+//        backgroundRes = R.drawable.bg_yellow,
+//    )
 
     data object Manage : Screen(
         title = "Management",
@@ -47,15 +47,15 @@ sealed class Screen(
         backgroundRes = R.drawable.bg_blue,
         )
 
-    companion object {
-        fun fromNavTitle(navTitle: String): Screen {
-            return when (navTitle) {
-                Home.navTitle -> Home
-                Schedule.navTitle -> Schedule
-                History.navTitle -> History
-                Manage.navTitle -> Manage
-                else -> Home
-            }
-        }
-    }
+//    companion object {
+//        fun fromNavTitle(navTitle: String): Screen {
+//            return when (navTitle) {
+//                Home.navTitle -> Home
+//                Schedule.navTitle -> Schedule
+////                History.navTitle -> History
+//                Manage.navTitle -> Manage
+////                else -> Home
+//            }
+//        }
+//    }
 }

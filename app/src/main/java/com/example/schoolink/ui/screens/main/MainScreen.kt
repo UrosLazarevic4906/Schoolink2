@@ -33,8 +33,8 @@ fun MainScreen(
     onProfile: () -> Unit
 ) {
 
-    val screens = listOf(Screen.Home, Screen.Schedule, Screen.History, Screen.Manage)
-    var selectedScreen by remember { mutableStateOf<Screen>(Screen.Home) }
+    val screens = listOf(Screen.Manage,Screen.Schedule)
+    var selectedScreen by remember { mutableStateOf<Screen>(Screen.Manage) }
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
     BackHandler {
@@ -67,7 +67,10 @@ fun MainScreen(
                             .fillMaxSize()
                     ) {
                         when (selectedScreen) {
-                            Screen.Home -> HomeContent()
+                            Screen.Manage -> ManagementContent(
+                                onStudent = onStudent,
+                                onGroup = onGroup
+                            )
                             Screen.Schedule -> ScheduleContent(
                                 professorViewModel = professorViewModel,
                                 groupProfessorViewModel = groupProfessorViewModel,
@@ -75,12 +78,6 @@ fun MainScreen(
                                 lessonProfessorViewModel = lessonProfessorViewModel,
                                 lessonGroupViewModel = lessonGroupViewModel
                             )
-                            Screen.History -> HistoryContent()
-                            Screen.Manage -> ManagementContent(
-                                onStudent = onStudent,
-                                onGroup = onGroup
-                            )
-
                         }
                     }
                 }
