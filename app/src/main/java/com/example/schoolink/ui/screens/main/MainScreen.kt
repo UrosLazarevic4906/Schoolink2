@@ -72,6 +72,7 @@ fun MainScreen(
                                 onGroup = onGroup
                             )
                             Screen.Schedule -> ScheduleContent(
+                                email = email,
                                 professorViewModel = professorViewModel,
                                 groupProfessorViewModel = groupProfessorViewModel,
                                 lessonViewModel = lessonViewModel,
