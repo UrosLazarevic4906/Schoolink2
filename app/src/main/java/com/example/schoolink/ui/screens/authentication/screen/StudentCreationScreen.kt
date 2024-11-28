@@ -34,11 +34,13 @@ import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.StudentMapper
 import com.example.schoolink.domain.models.ProfessorModel
+import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.ImageInformation
 import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
 import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
+import com.example.schoolink.ui.screens.management.overlay.EditExistingStudentOverlay
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
@@ -57,9 +59,12 @@ fun StudentCreationScreen(
     var showOptions by remember { mutableStateOf(false) }
     var showCreateStudentDialog by remember { mutableStateOf(false) }
     var showAddExistingStudentDialog by remember { mutableStateOf(false) }
+    var showUpdateStudentOverlay by remember { mutableStateOf(false) }
+
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
+    var selectedStudent by remember { mutableStateOf<StudentModel?>(null) }
 
     BackHandler {
         onBack()
@@ -147,7 +152,10 @@ fun StudentCreationScreen(
                                 student = StudentMapper.fromEntityToModel(student),
                                 trailingIcon = painterResource(R.drawable.ic_pencil),
                                 showTopLine = index > 0,
-                                onClick = {}
+                                onClick = {
+                                    selectedStudent = StudentMapper.fromEntityToModel(student)
+                                    showUpdateStudentOverlay = true
+                                }
                             )
                         }
                     }
@@ -169,7 +177,8 @@ fun StudentCreationScreen(
                 studentViewModel.addStudent(student) { studentId ->
                     professor?.let { prof ->
                         professorStudentViewModel.addStudentToProfessor(prof.id, studentId.toInt())
-                        Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT)
+                            .show()
                         professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                             professorWithStudents = data
                         }
@@ -191,18 +200,68 @@ fun StudentCreationScreen(
                 studentViewModel.getStudentByEmail(credentials) { existingStudent ->
                     if (existingStudent != null) {
                         professor?.let { prof ->
-                            professorStudentViewModel.addStudentToProfessor(prof.id, existingStudent.id)
-                            Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                            professorStudentViewModel.addStudentToProfessor(
+                                prof.id,
+                                existingStudent.id
+                            )
+                            Toast.makeText(
+                                context,
+                                "Student added successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                 professorWithStudents = data
                             }
                             showAddExistingStudentDialog = false
                         }
                     } else {
-                        Toast.makeText(context, "No student found with the provided email or code!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "No student found with the provided email or code!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        )
+    }
+
+    AnimatedVisibility(
+        visible = showUpdateStudentOverlay,
+        enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
+        exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
+    ) {
+        EditExistingStudentOverlay(
+            onDismiss = { showUpdateStudentOverlay = false },
+            context = context,
+            focusManager = LocalFocusManager.current,
+            student = selectedStudent,
+            studentViewMode = studentViewModel,
+            professor = professor,
+            professorStudentViewModel = professorStudentViewModel,
+            onEditStudent = { updatedStudent ->
+                updatedStudent?.let { student ->
+                    studentViewModel.updateStudentAsync(student) {
+                        professor?.let { prof ->
+                            professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                                professorWithStudents = data
+                            }
+                        }
+                        Toast.makeText(context, "Student updated successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        showUpdateStudentOverlay = false
+                    }
+                }
+            },
+            onDeleteStudent = {
+                showUpdateStudentOverlay = false
+                professor?.let { prof ->
+                    professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                        professorWithStudents = data
                     }
                 }
             }
         )
     }
 }
+
