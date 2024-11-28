@@ -7,7 +7,7 @@ object ProfessorMapper {
 
     fun fromEntityToModel(entity: ProfessorEntity): ProfessorModel {
         return ProfessorModel(
-            id = entity.id,
+            id = entity.professorId,
             email = entity.email,
             password = entity.password,
             profilePicturePath = entity.profilePicturePath,
@@ -20,7 +20,7 @@ object ProfessorMapper {
 
     fun fromModelToEntity(model: ProfessorModel): ProfessorEntity {
         return ProfessorEntity(
-            id = model.id,
+            professorId = model.id,
             email = model.email,
             password = model.password,
             profilePicturePath = model.profilePicturePath,

@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.authentication
+package com.example.schoolink.ui.screens.authentication.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,8 +25,8 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.ui.components.HeaderBack
-import com.example.schoolink.ui.components.InteractionText
+import com.example.schoolink.ui.components.header.HeaderBack
+import com.example.schoolink.ui.components.inputs.InteractionText
 import com.example.schoolink.ui.components.inputs.ConfirmPasswordInputField
 import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.PasswordInputField
@@ -38,7 +38,9 @@ import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 fun CreateAccountScreen(
     viewModel: ProfessorViewModel,
     onBack: () -> Unit,
-    onCreateAccount: (String) -> Unit
+    onCreateAccount: (String) -> Unit,
+    onTermsAndConditions: () -> Unit,
+    onPrivacyPolicy: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
@@ -84,21 +86,21 @@ fun CreateAccountScreen(
                     EmailInputField(
                         value = email,
                         isValid = { isEmailValid = it },
-                        onValueChange = { email = it })
+                        onValueChange = { email = it.trim() })
                 }
 
                 item {
                     PasswordInputField(
                         value = password,
                         isValid = { isPasswordValid = it },
-                        onValueChange = { password = it })
+                        onValueChange = { password = it.trim() })
                 }
 
                 item {
                     ConfirmPasswordInputField(
                         password = password,
                         confirmPassword = confirmPassword,
-                        onConfirmPasswordChange = { confirmPassword = it }
+                        onConfirmPasswordChange = { confirmPassword = it.trim() }
                     )
                 }
 
@@ -110,7 +112,7 @@ fun CreateAccountScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { /* TODO: Handle create account click */
+                    onClick = {
                         viewModel.getProfessorByEmail(email) { existingProfessor ->
 
                             if (existingProfessor == null) {
@@ -151,17 +153,15 @@ fun CreateAccountScreen(
                     Row {
                         InteractionText(
                             text = "Terms & Conditions",
-                            onClick = { /* TODO: Handle terms click */ }
+                            onClick = { onTermsAndConditions() }
                         )
                         Text(" and ", color = MaterialTheme.colorScheme.onBackground)
                         InteractionText(
                             text = "Privacy Policy.",
-                            onClick = { /* ToDo: Handle privacy policy click */ }
+                            onClick = { onPrivacyPolicy()}
                         )
                     }
                 }
-
-
             }
         }
     }

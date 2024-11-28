@@ -1,7 +1,9 @@
 package com.example.schoolink.domain.repository
 
 import com.example.schoolink.data.dao.StudentDao
+import com.example.schoolink.data.mappers.ProfessorMapper
 import com.example.schoolink.data.mappers.StudentMapper
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.models.StudentModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -10,26 +12,38 @@ class StudentRepository(
     private val studentDao: StudentDao
 ) {
 
-    private var nextStudentCode = 1000000
+    private val charset = ('A'..'Z') + ('0'..'9')
 
-    suspend fun insertStudent(studentModel: StudentModel) {
-        val entity = StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
-        studentDao.insertStudent(entity)
+    private suspend fun generateStudentCode(): String {
+        var newCode: String
+        do {
+            newCode = (1..8)
+                .map { charset.random() }
+                .joinToString("" )
+        } while (studentDao.studentWithCodeExists(newCode))
+        return newCode
+    }
+
+    suspend fun insertStudent(studentModel: StudentModel): Long {
+        val entity =
+            StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
+        return studentDao.insertStudent(entity)
+    }
+
+    suspend fun updateStudent(studentModel: StudentModel) {
+        val entity = StudentMapper.fromModelToEntity(studentModel)
+        studentDao.updateStudent(entity)
     }
 
     suspend fun getStudentByEmail(email: String): StudentModel? {
         val entity = studentDao.getStudentByEmail(email)
         return entity?.let { StudentMapper.fromEntityToModel(it) }
     }
+
     suspend fun getStudentByCode(code: String): StudentModel? {
         val entity = studentDao.getStudentByCode(code)
         return entity?.let { StudentMapper.fromEntityToModel(it) }
     }
 
-    private suspend fun generateStudentCode(): String {
-        return withContext(Dispatchers.IO) {
-            val currentMaxCode = studentDao.getMaxStudentCode()?.toIntOrNull() ?: (nextStudentCode - 1)
-            (currentMaxCode + 1).coerceAtMost(9999999).toString()
-        }
-    }
+
 }

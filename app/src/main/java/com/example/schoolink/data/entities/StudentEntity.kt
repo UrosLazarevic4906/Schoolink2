@@ -8,26 +8,19 @@ import com.example.schoolink.domain.models.Gender
 @Entity(
     tableName = "students",
     indices = [
-        Index(
-            value = ["email"],
-            unique = true
-        ),
-        Index(
-            value = ["studentCode"],
-            unique = true
-        )
+        Index(value = ["email"], unique = true),
+        Index(value = ["studentCode"], unique = true)
     ]
 )
 data class StudentEntity(
+    @PrimaryKey(autoGenerate = true)
+    val studentId: Int = 0,
     val email: String,
     val profilePicturePath: String?,
     val firstName: String,
     val lastName: String,
-    val gender: Gender,
+    val gender: Gender?,
     val dateOfBirth: String,
     val studentCode: String,
-    val description: String,
-
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
+    val description: String
 )

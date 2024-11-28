@@ -7,7 +7,7 @@ object StudentMapper {
 
     fun fromEntityToModel(entity: StudentEntity): StudentModel {
         return StudentModel(
-            id = entity.id,
+            id = entity.studentId,
             email = entity.email,
             firstName = entity.firstName,
             lastName = entity.lastName,
@@ -21,7 +21,7 @@ object StudentMapper {
 
     fun fromModelToEntity(model: StudentModel): StudentEntity {
         return StudentEntity(
-            id = model.id,
+            studentId = model.id,
             email = model.email,
             firstName = model.firstName,
             lastName = model.lastName,

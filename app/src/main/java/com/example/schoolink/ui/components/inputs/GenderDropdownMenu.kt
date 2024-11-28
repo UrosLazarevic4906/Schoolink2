@@ -37,7 +37,7 @@ fun GenderSelectDropdown(
                 value = selectedGender?.name ?: "",
                 onValueChange = {},
                 readOnly = true,
-                label = { Text(text = "Gender") },
+                label = { Text(text = "Gender *") },
                 trailingIcon = {
                     Icon(
                         painter = painterResource(

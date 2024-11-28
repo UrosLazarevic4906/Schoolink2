@@ -8,7 +8,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,25 +19,13 @@ fun OutlinedInputField(
     value: String,
     label: String,
     onValueChange: (String) -> Unit,
-    isValid: (Boolean) -> Unit,
-//    keyboardActions: KeyboardActions = KeyboardActions.Default,
     onDoneAction: () -> Unit = {}
 ) {
 
-    var valid by remember { mutableStateOf(true) }
-    LaunchedEffect(value) {
-        valid = value.isNotEmpty() &&
-                value[0].isUpperCase() &&
-                value.any { it.isLetter() } &&
-                value.drop(1).dropLast(1).all { it.isLowerCase() } &&
-                (value.last().isLowerCase() || value.last().isWhitespace())
-        isValid(valid)
-    }
 
     val labelColor = when {
         value.isEmpty() -> Smoke
-        valid -> Green
-        else -> Red
+        else -> Green
     }
     OutlinedTextField(
         value = value,

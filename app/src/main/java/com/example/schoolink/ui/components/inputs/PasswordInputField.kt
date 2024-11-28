@@ -43,7 +43,7 @@ fun PasswordInputField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(text = "Password", color = labelColor) },
+        label = { Text(text = "Password *", color = labelColor) },
         singleLine = true,
         modifier = modifier.fillMaxWidth(),
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),

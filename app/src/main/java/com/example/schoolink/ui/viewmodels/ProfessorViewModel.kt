@@ -1,7 +1,9 @@
 package com.example.schoolink.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.repository.ProfessorRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,5 +36,19 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
         }
     }
 
+    fun deleteProfessor(professor: ProfessorModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteProfessor(professor)
+        }
+    }
+
+    fun updateProfessorAsync(professor: ProfessorModel, onComplete: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateProfessor(professor)
+            withContext(Dispatchers.Main) {
+                onComplete()
+            }
+        }
+    }
 
 }

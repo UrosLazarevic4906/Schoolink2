@@ -19,15 +19,14 @@ val SfProFontFamily = FontFamily(
     Font(R.font.sfprodisplayultralightitalic, FontWeight.ExtraLight, FontStyle.Italic)
 )
 
-// Set of Material typography styles to start with
-val Typography = Typography(
-    bodyLarge = TextStyle(
-        fontFamily = SfProFontFamily,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
-    )
+//val Typography = Typography(
+//    bodyLarge = TextStyle(
+//        fontFamily = SfProFontFamily,
+//        fontWeight = FontWeight.Normal,
+//        fontSize = 16.sp,
+//        lineHeight = 24.sp,
+//        letterSpacing = 0.5.sp
+//    )
     /* Other default text styles to override
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
@@ -44,7 +43,7 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
-)
+//)
 
 val SfProTypography = Typography(
     displayLarge = TextStyle(
@@ -122,24 +121,4 @@ val SfProTypography = Typography(
         fontWeight = FontWeight.Light,
         fontSize = 10.sp
     )
-)
-
-val bodyLargeItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Normal,
-    fontSize = 16.sp
-)
-
-val bodyMediumItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Light,
-    fontStyle = FontStyle.Italic,
-    fontSize = 14.sp
-)
-
-val bodySmallItalic = TextStyle(
-    fontFamily = SfProFontFamily,
-    fontWeight = FontWeight.Thin,
-    fontStyle = FontStyle.Italic,
-    fontSize = 12.sp
 )
