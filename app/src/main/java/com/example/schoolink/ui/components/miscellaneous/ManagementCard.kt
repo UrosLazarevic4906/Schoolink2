@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
+import com.example.schoolink.ui.screens.main.Screen
 import com.example.schoolink.ui.theme.Ash
 import com.example.schoolink.ui.theme.Black
 import com.example.schoolink.ui.theme.White

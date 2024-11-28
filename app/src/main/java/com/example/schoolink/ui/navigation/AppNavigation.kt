@@ -120,7 +120,7 @@ fun AppNavigation(
                     navController.navigateSingleTopTo("createAccount")
                 },
                 onLogin = { email ->
-                    navController.navigateSingleTopTo("mainScreen/${Uri.encode(email)}/Home")
+                    navController.navigateSingleTopTo("mainScreen/${Uri.encode(email)}")
                 },
                 onSetupAccount = { email ->
                     navController.navigateSingleTopTo("professorSetupScreen/${Uri.encode(email)}")
@@ -379,10 +379,9 @@ fun AppNavigation(
         }
 
         composable(
-            route = "mainScreen/{email}/{selectedTab}",
+            route = "mainScreen/{email}",
             arguments = listOf(
                 navArgument("email") { type = NavType.StringType },
-                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
                 EnterTransition.None
@@ -399,14 +398,12 @@ fun AppNavigation(
         ) { backStackEntry ->
 
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
 
             MainScreen(
                 email = email,
                 professorViewModel = professorViewModel,
-                selectedTab = Screen.fromNavTitle(selectedTab),
                 onStudent = {
                     navController.navigateSingleTopTo("studentManagementScreen/$email/Manage")
                 },
@@ -420,10 +417,9 @@ fun AppNavigation(
         }
 
         composable(
-            route = "groupManagementScreen/{email}/{selectedTab}",
+            route = "groupManagementScreen/{email}",
             arguments = listOf(
                 navArgument("email") { type = NavType.StringType },
-                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
                 slideIntoContainer(
@@ -445,7 +441,6 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
 
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
@@ -461,7 +456,7 @@ fun AppNavigation(
                 email = email,
                 context = context,
                 onBack = {
-                    navController.navigateSingleTopTo("mainScreen/$email/$selectedTab")
+                    navController.navigateSingleTopTo("mainScreen/$email")
                 },
                 professorViewModel = professorViewModel,
                 groupViewModel = groupViewModel,
@@ -472,10 +467,9 @@ fun AppNavigation(
         }
 
         composable(
-            route = "studentManagementScreen/{email}/{selectedTab}",
+            route = "studentManagementScreen/{email}",
             arguments = listOf(
                 navArgument("email") { type = NavType.StringType },
-                navArgument("selectedTab") { type = NavType.StringType }
             ),
             enterTransition = {
                 slideIntoContainer(
@@ -497,7 +491,6 @@ fun AppNavigation(
             }
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            val selectedTab = backStackEntry.arguments?.getString("selectedTab") ?: "Home"
 
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
@@ -512,7 +505,7 @@ fun AppNavigation(
                 studentViewModel = studentViewModel,
                 professorStudentViewModel = professorStudentViewModel,
                 onBack = {
-                    navController.navigateSingleTopTo("mainScreen/$email/$selectedTab")
+                    navController.navigateSingleTopTo("mainScreen/$email")
                 }
             )
         }
