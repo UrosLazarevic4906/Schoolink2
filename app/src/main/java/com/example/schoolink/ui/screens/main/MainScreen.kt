@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.screens.main
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,9 @@ fun MainScreen(
     var selectedScreen by remember { mutableStateOf(selectedTab) }
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
 
+    BackHandler {
+
+    }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
