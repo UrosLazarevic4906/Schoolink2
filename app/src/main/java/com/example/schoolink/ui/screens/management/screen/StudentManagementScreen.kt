@@ -34,11 +34,13 @@ import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.ProfessorWithStudents
 import com.example.schoolink.data.mappers.StudentMapper
 import com.example.schoolink.domain.models.ProfessorModel
+import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.ImageInformation
 import com.example.schoolink.ui.components.miscellaneous.StudentCardEdit
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.AddExistingStudentOverlay
 import com.example.schoolink.ui.screens.management.overlay.CreateNewStudentOverlay
+import com.example.schoolink.ui.screens.management.overlay.EditExistingStudentOverlay
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
@@ -56,9 +58,13 @@ fun StudentManagementScreen(
     var showOptions by remember { mutableStateOf(false) }
     var showCreateStudentDialog by remember { mutableStateOf(false) }
     var showAddExistingStudentDialog by remember { mutableStateOf(false) }
+    var showUpdateStudentOverlay by remember { mutableStateOf(false) }
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
+
+    var selectedStudent by remember { mutableStateOf<StudentModel?>(null) }
+
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -141,7 +147,11 @@ fun StudentManagementScreen(
                             StudentCardEdit(
                                 student = StudentMapper.fromEntityToModel(student),
                                 trailingIcon = painterResource(R.drawable.ic_pencil),
-                                showTopLine = index > 0
+                                showTopLine = index > 0,
+                                onClick = {
+                                    selectedStudent = StudentMapper.fromEntityToModel(student)
+                                    showUpdateStudentOverlay = true
+                                }
                             )
                         }
                     }
@@ -176,7 +186,7 @@ fun StudentManagementScreen(
     }
 
     AnimatedVisibility(
-        visible = showAddExistingStudentDialog,
+          visible = showAddExistingStudentDialog,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
         exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
     ) {
@@ -208,6 +218,22 @@ fun StudentManagementScreen(
                         ).show()
                     }
                 }
+            }
+        )
+    }
+
+    AnimatedVisibility(
+        visible = showUpdateStudentOverlay,
+        enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
+        exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
+    ) {
+        EditExistingStudentOverlay(
+            onDismiss = { showUpdateStudentOverlay = false },
+            context = context,
+            focusManager = LocalFocusManager.current,
+            student = selectedStudent,
+            onEditStudent = {
+
             }
         )
     }

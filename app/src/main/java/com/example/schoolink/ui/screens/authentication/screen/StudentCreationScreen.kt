@@ -146,7 +146,8 @@ fun StudentCreationScreen(
                             StudentCardEdit(
                                 student = StudentMapper.fromEntityToModel(student),
                                 trailingIcon = painterResource(R.drawable.ic_pencil),
-                                showTopLine = index > 0
+                                showTopLine = index > 0,
+                                onClick = {}
                             )
                         }
                     }

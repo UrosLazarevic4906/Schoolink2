@@ -405,10 +405,10 @@ fun AppNavigation(
                 email = email,
                 professorViewModel = professorViewModel,
                 onStudent = {
-                    navController.navigateSingleTopTo("studentManagementScreen/$email/Manage")
+                    navController.navigateSingleTopTo("studentManagementScreen/$email")
                 },
                 onGroup = {
-                    navController.navigateSingleTopTo("groupManagementScreen/$email/Manage")
+                    navController.navigateSingleTopTo("groupManagementScreen/$email")
                 },
                 onProfile = {
                     navController.navigateSingleTopTo("profileScreen/${Uri.encode(email)}")
