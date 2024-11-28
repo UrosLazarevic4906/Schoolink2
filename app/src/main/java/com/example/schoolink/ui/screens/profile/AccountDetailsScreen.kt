@@ -1,5 +1,10 @@
 package com.example.schoolink.ui.screens.profile
 
+import android.content.Context
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,17 +32,21 @@ import com.example.schoolink.R
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.inputs.AccountDetailsInformationField
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
+import com.example.schoolink.ui.screens.profile.overlay.EditEmailOverlay
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
 fun AccountDetailsScreen(
     email: String,
     professorViewModel: ProfessorViewModel,
+    context: Context,
     onBack: () -> Unit,
-    onDeleteAccount: () -> Unit
+    onDeleteAccount: () -> Unit,
+    logOut: () -> Unit
 ) {
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
+    var showEditEmailOverlay by remember { mutableStateOf(false) }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -70,7 +80,9 @@ fun AccountDetailsScreen(
                 isPassword = false,
                 title = "Email",
                 text = professor?.email ?: "email",
-                onEdit = {}
+                onEdit = {
+                    showEditEmailOverlay = true
+                }
             )
             AccountDetailsInformationField(
                 isPassword = true,
@@ -103,6 +115,29 @@ fun AccountDetailsScreen(
                 )
             }
         }
+    }
+
+    AnimatedVisibility(
+        visible = showEditEmailOverlay,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(1000)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(1000)
+        )
+    ) {
+        EditEmailOverlay(
+            onDismis = { showEditEmailOverlay = false },
+            focusManager = LocalFocusManager.current,
+            context = context,
+            professor = professor,
+            professorViewModel = professorViewModel,
+            onEmailUpdated = {
+                logOut()
+            }
+        )
     }
 
 }

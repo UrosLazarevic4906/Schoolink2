@@ -648,12 +648,16 @@ fun AppNavigation(
             AccountDetailsScreen(
                 email = email,
                 professorViewModel = professorViewModel,
+                context = context,
                 onBack = {
                     navController.popBackStack()
                 },
+                logOut = {
+                    navController.navigateSingleTopTo("onboarding")
+                },
                 onDeleteAccount = {
 
-                }
+                },
             )
 
         }
