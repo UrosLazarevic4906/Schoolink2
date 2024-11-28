@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import java.time.LocalDate
-import java.util.Calendar
 
 @Composable
 fun DatePickerField(
@@ -20,18 +19,16 @@ fun DatePickerField(
     val context = LocalContext.current
     var displayText by remember { mutableStateOf(selectedDate.toString()) }
 
-    val calendar = Calendar.getInstance()
 
-    // Initialize DatePickerDialog with current selectedDate
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            val newDate = LocalDate.of(year, month + 1, dayOfMonth) // Months are 0-based in DatePicker
+            val newDate = LocalDate.of(year, month + 1, dayOfMonth)
             onDateSelected(newDate)
-            displayText = newDate.toString() // Update the displayed date
+            displayText = newDate.toString()
         },
         selectedDate.year,
-        selectedDate.monthValue - 1, // Months are 0-based
+        selectedDate.monthValue - 1,
         selectedDate.dayOfMonth
     )
 
@@ -43,7 +40,7 @@ fun DatePickerField(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                datePickerDialog.datePicker.maxDate = System.currentTimeMillis() // Optional: Limit to current or future dates
+                datePickerDialog.datePicker.minDate = System.currentTimeMillis()
                 datePickerDialog.show()
             }
     )

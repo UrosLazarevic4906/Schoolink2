@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.schoolink.ui.screens.LessonTestScreen
 import com.example.schoolink.ui.screens.authentication.screen.AccountCreationFinishedScreen
 import com.example.schoolink.ui.screens.authentication.screen.CreateAccountScreen
 import com.example.schoolink.ui.screens.authentication.screen.GroupCreationScreen
@@ -206,48 +205,6 @@ fun AppNavigation(
             )
         }
 
-        composable(
-            route = "lessons/{email}",
-            arguments = listOf(
-                navArgument("email") { type = NavType.StringType }
-            ),
-            enterTransition = {
-                slideIntoContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Left,
-                    animationSpec = tween(1000)
-                )
-            },
-            exitTransition = {
-                ExitTransition.None
-            },
-            popEnterTransition = {
-                EnterTransition.None
-            },
-            popExitTransition = {
-                slideOutOfContainer(
-                    AnimatedContentTransitionScope.SlideDirection.Right,
-                    animationSpec = tween(1000)
-                )
-            }
-        ) { backStackEntry ->
-            val lessonViewModel: LessonViewModel = viewModel(factory = lessonViewModelFactory)
-            val lessonProfessorViewModel: LessonProfessorViewModel =
-                viewModel(factory = lessonProfessorViewModelFactory)
-            val professorViewModel: ProfessorViewModel =
-                viewModel(factory = professorViewModelFactory)
-            val lessonGroupViewModel: LessonGroupViewModel =
-                viewModel(factory = lessonGroupViewModelFactory)
-            val email = backStackEntry.arguments?.getString("email") ?: ""
-
-            LessonTestScreen(
-                email = email,
-                professorViewModel = professorViewModel,
-                lessonViewModel = lessonViewModel,
-                lessonGroupViewModel = lessonGroupViewModel,
-                lessonProfessorViewModel = lessonProfessorViewModel,
-                onLessonCreated = {}
-            )
-        }
 
         composable(
             route = "studentCreationScreen/{email}",
@@ -400,10 +357,19 @@ fun AppNavigation(
             val email = backStackEntry.arguments?.getString("email") ?: ""
             val professorViewModel: ProfessorViewModel =
                 viewModel(factory = professorViewModelFactory)
+            val groupProfessorViewModel: GroupProfessorViewModel =
+                viewModel(factory = groupProfessorViewModelFactory)
+            val lessonViewModel: LessonViewModel = viewModel(factory = lessonViewModelFactory)
+            val lessonGroupViewModel: LessonGroupViewModel = viewModel(factory = lessonGroupViewModelFactory)
+            val lessonProfessorViewModel: LessonProfessorViewModel = viewModel(factory = lessonProfessorViewModelFactory)
 
             MainScreen(
                 email = email,
                 professorViewModel = professorViewModel,
+                groupProfessorViewModel = groupProfessorViewModel,
+                lessonViewModel = lessonViewModel,
+                lessonProfessorViewModel = lessonProfessorViewModel,
+                lessonGroupViewModel = lessonGroupViewModel,
                 onStudent = {
                     navController.navigateSingleTopTo("studentManagementScreen/$email")
                 },
@@ -533,11 +499,12 @@ fun AppNavigation(
                     animationSpec = tween(1000)
                 )
             }
-        ) {backStackEntry ->
+        ) { backStackEntry ->
 
             val email = backStackEntry.arguments?.getString("email") ?: ""
 
-            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+            val professorViewModel: ProfessorViewModel =
+                viewModel(factory = professorViewModelFactory)
 
             ProfileScreen(
                 email = email,
@@ -587,11 +554,12 @@ fun AppNavigation(
                     animationSpec = tween(1000)
                 )
             }
-        ) {backStackEntry ->
+        ) { backStackEntry ->
 
             val email = backStackEntry.arguments?.getString("email") ?: ""
 
-            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+            val professorViewModel: ProfessorViewModel =
+                viewModel(factory = professorViewModelFactory)
 
 
             ProfessorInformationScreen(
@@ -631,11 +599,12 @@ fun AppNavigation(
                     animationSpec = tween(1000)
                 )
             }
-        ) {backStackEntry ->
+        ) { backStackEntry ->
 
             val email = backStackEntry.arguments?.getString("email") ?: ""
 
-            val professorViewModel: ProfessorViewModel = viewModel(factory = professorViewModelFactory)
+            val professorViewModel: ProfessorViewModel =
+                viewModel(factory = professorViewModelFactory)
 
 
             AccountDetailsScreen(

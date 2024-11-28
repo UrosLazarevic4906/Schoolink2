@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.main.content
+package com.example.schoolink.ui.screens.management
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

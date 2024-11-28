@@ -13,13 +13,21 @@ import androidx.compose.ui.unit.dp
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.miscellaneous.TopContentWithBackground
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
-import com.example.schoolink.ui.screens.main.content.ManagementContent
-import com.example.schoolink.ui.screens.main.content.ScheduleContent
+import com.example.schoolink.ui.screens.management.ManagementContent
+import com.example.schoolink.ui.screens.schedule.ScheduleContent
+import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
+import com.example.schoolink.ui.viewmodels.LessonGroupViewModel
+import com.example.schoolink.ui.viewmodels.LessonProfessorViewModel
+import com.example.schoolink.ui.viewmodels.LessonViewModel
 
 @Composable
 fun MainScreen(
     email: String,
     professorViewModel: ProfessorViewModel,
+    groupProfessorViewModel: GroupProfessorViewModel,
+    lessonViewModel: LessonViewModel,
+    lessonProfessorViewModel: LessonProfessorViewModel,
+    lessonGroupViewModel: LessonGroupViewModel,
     onStudent: () -> Unit,
     onGroup: () -> Unit,
     onProfile: () -> Unit
@@ -60,7 +68,13 @@ fun MainScreen(
                     ) {
                         when (selectedScreen) {
                             Screen.Home -> HomeContent()
-                            Screen.Schedule -> ScheduleContent()
+                            Screen.Schedule -> ScheduleContent(
+                                professorViewModel = professorViewModel,
+                                groupProfessorViewModel = groupProfessorViewModel,
+                                lessonViewModel = lessonViewModel,
+                                lessonProfessorViewModel = lessonProfessorViewModel,
+                                lessonGroupViewModel = lessonGroupViewModel
+                            )
                             Screen.History -> HistoryContent()
                             Screen.Manage -> ManagementContent(
                                 onStudent = onStudent,

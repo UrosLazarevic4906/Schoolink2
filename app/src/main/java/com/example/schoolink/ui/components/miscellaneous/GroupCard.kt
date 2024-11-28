@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -33,15 +34,18 @@ import com.example.schoolink.ui.theme.*
 
 @Composable
 fun GroupCard(
+    modifier : Modifier = Modifier,
     group: GroupModel,
+    backgroundColor: Color = White,
     showTopLine: Boolean = false,
+    showTrailingIcon: Boolean = true,
     onClick: () -> Unit
 ) {
     Surface(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        color = White,
+        color = backgroundColor,
     ) {
         Column {
             if (showTopLine) {
@@ -92,39 +96,41 @@ fun GroupCard(
                 )
             }
 
-            Icon(
-                painter = painterResource(R.drawable.ic_chevron_right),
-                contentDescription = "Trailing icon",
-                tint = Black,
-                modifier = Modifier.size(30.dp)
-            )
+            if (showTrailingIcon) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_chevron_right),
+                    contentDescription = "Trailing icon",
+                    tint = Black,
+                    modifier = Modifier.size(30.dp)
+                )
+            }
         }
     }
 }
 
 
-@Preview
-@Composable
-private fun GroupCardPreview() {
-
-//    val dummyStudent = StudentModel(
-//        id = 0,
-//        email = "asd",
-//        firstName = "Uros",
-//        lastName = "Lazarevic",
-//        dateOfBirth = "14/12/1999",
-//        description = "description",
-//        gender = Gender.MALE,
-//        profilePicturePath = null,
-//        studentCode = "A2D53AC"
+//@Preview
+//@Composable
+//private fun GroupCardPreview() {
+//
+////    val dummyStudent = StudentModel(
+////        id = 0,
+////        email = "asd",
+////        firstName = "Uros",
+////        lastName = "Lazarevic",
+////        dateOfBirth = "14/12/1999",
+////        description = "description",
+////        gender = Gender.MALE,
+////        profilePicturePath = null,
+////        studentCode = "A2D53AC"
+////    )
+//    val dummyGroup = GroupModel(
+//        groupId = 0,
+//        groupName = "Name of group",
+//        groupType = GroupType.ADVANCED,
 //    )
-    val dummyGroup = GroupModel(
-        groupId = 0,
-        groupName = "Name of group",
-        groupType = GroupType.ADVANCED,
-    )
-    GroupCard(
-        dummyGroup,
-        onClick = {}
-    )
-}
+//    GroupCard(
+//        dummyGroup,
+//        onClick = {}
+//    )
+//}
