@@ -205,7 +205,13 @@ fun GroupCreationScreen(
                         groupsWithProfessor = data
                     }
                     showEditGroupDialog = false
-                }
+                },
+                onGroupDeleted = {
+                    groupProfessorViewModel.getGroupsWithProfessor(professor!!.id) { data ->
+                        groupsWithProfessor = data
+                    }
+                    showEditGroupDialog = false
+                },
             )
         }
     }

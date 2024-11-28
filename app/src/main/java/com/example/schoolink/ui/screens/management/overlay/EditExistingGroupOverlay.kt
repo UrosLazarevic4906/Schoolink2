@@ -18,11 +18,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -57,6 +59,7 @@ import com.example.schoolink.utils.saveImageToInternalStorage
 fun EditExistingGroupOverlay(
     onDismiss: () -> Unit,
     onGroupUpdated: () -> Unit,
+    onGroupDeleted: () -> Unit,
     group: GroupModel,
     studentsInGroup: List<StudentModel>,
     focusManager: FocusManager,
@@ -71,6 +74,8 @@ fun EditExistingGroupOverlay(
     var groupType by remember { mutableStateOf<GroupType?>(null) }
     var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
     val selectedStudents = remember { mutableStateListOf<StudentModel>() }
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
     val isFormValid = name.isNotBlank() && groupType != null
 
@@ -112,7 +117,11 @@ fun EditExistingGroupOverlay(
                 TitleCard(
                     startIcon = painterResource(R.drawable.ic_close),
                     onStartIcon = onDismiss,
-                    title = "Edit group"
+                    title = "Edit group",
+                    endIcon = painterResource(R.drawable.ic_bin),
+                    onEndIcon = {
+                        showDeleteDialog = true
+                    }
                 )
             }
 
@@ -217,7 +226,11 @@ fun EditExistingGroupOverlay(
                             )
 
                             groupViewModel.updateGroupAsync(updatedGroup) {
-                                Toast.makeText(context, "Group updated successfully!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    context,
+                                    "Group updated successfully!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 onGroupUpdated()
                             }
                         }
@@ -238,4 +251,47 @@ fun EditExistingGroupOverlay(
             }
         }
     }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = {
+                Text(
+                    text = "Delete Group",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure you want to delete this group? This action cannot be undone.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        groupViewModel.deleteGroup(group) {
+                            Toast.makeText(
+                                context,
+                                "Group deleted successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            showDeleteDialog = false
+                            onGroupDeleted()
+                        }
+                    }
+                ) {
+                    Text(text = "Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDeleteDialog = false }
+                ) {
+                    Text(text = "Cancel")
+                }
+            }
+        )
+    }
 }
+

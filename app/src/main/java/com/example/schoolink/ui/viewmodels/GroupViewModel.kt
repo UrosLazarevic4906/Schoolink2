@@ -36,9 +36,12 @@ class GroupViewModel(
         }
     }
 
-    fun deleteGroup(group: GroupModel) {
+    fun deleteGroup(group: GroupModel, onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.deleteGroup(group)
+            withContext(Dispatchers.Main) {
+                onComplete()
+            }
         }
     }
 
