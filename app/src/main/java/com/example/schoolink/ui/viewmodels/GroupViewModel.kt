@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.schoolink.domain.models.GroupModel
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.repository.GroupRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +32,21 @@ class GroupViewModel(
                     Log.e("GroupViewModel", "Error creating group", e)
                     throw e
                 }
+            }
+        }
+    }
+
+    fun deleteGroup(group: GroupModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteGroup(group)
+        }
+    }
+
+    fun updateGroupAsync(group: GroupModel, onComplete: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateGroup(group)
+            withContext(Dispatchers.Main) {
+                onComplete()
             }
         }
     }

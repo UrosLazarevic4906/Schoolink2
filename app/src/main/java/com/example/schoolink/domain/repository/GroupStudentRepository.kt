@@ -22,4 +22,8 @@ class GroupStudentRepository(
     suspend fun removeStudentFromGroup(groupId: Int, studentId: Int){
         groupStudentDao.removeStudentFromGroup(groupId, studentId)
     }
+
+    suspend fun removeAllStudentsFromGroup(groupId: Int) {
+        groupStudentDao.removeAllStudentsFromGroup(groupId)
+    }
 }

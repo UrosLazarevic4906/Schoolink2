@@ -20,4 +20,8 @@ interface GroupStudentDao {
     @Transaction
     @Query("DELETE FROM group_student WHERE groupId = :groupId AND studentId = :studentId")
     suspend fun removeStudentFromGroup(groupId: Int, studentId: Int)
+
+    @Transaction
+    @Query("DELETE FROM group_student WHERE groupId = :groupId")
+    suspend fun removeAllStudentsFromGroup(groupId: Int)
 }

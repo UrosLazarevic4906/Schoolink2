@@ -26,11 +26,15 @@ import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
 import com.example.schoolink.data.entities.relations.GroupWithProfessor
 import com.example.schoolink.data.mappers.GroupMapper
+import com.example.schoolink.data.mappers.StudentMapper
+import com.example.schoolink.domain.models.GroupModel
 import com.example.schoolink.domain.models.ProfessorModel
+import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.miscellaneous.ImageInformation
 import com.example.schoolink.ui.components.miscellaneous.GroupCard
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.management.overlay.CreateNewGroupOverlay
+import com.example.schoolink.ui.screens.management.overlay.EditExistingGroupOverlay
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.GroupProfessorViewModel
 import com.example.schoolink.ui.viewmodels.GroupStudentViewModel
@@ -50,9 +54,11 @@ fun GroupManagementScreen(
     groupStudentViewModel: GroupStudentViewModel
 ) {
     var showCreateGroupDialog by remember { mutableStateOf(false) }
+    var showEditGroupDialog by remember { mutableStateOf(false) }
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var groupsWithProfessor by remember { mutableStateOf<GroupWithProfessor?>(null) }
+    var selectedGroup by remember { mutableStateOf<GroupModel?>(null) }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -121,7 +127,10 @@ fun GroupManagementScreen(
                             GroupCard(
                                 group = GroupMapper.fromEntityToModel(group),
                                 showTopLine = index > 0,
-                                onClick = {}
+                                onClick = {
+                                    selectedGroup = GroupMapper.fromEntityToModel(group)
+                                    showEditGroupDialog = true
+                                }
                             )
                         }
                     }
@@ -158,7 +167,42 @@ fun GroupManagementScreen(
                 showCreateGroupDialog = false
             }
         )
+    }
 
+    AnimatedVisibility(
+        visible = showEditGroupDialog,
+        enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
+        exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
+    ) {
+        selectedGroup?.let { group ->
+            var studentsInGroup by remember { mutableStateOf<List<StudentModel>>(emptyList()) }
+
+            LaunchedEffect(group.groupId) {
+                groupStudentViewModel.getStudentsWithGroup(group.groupId) { groupWithStudents ->
+                    studentsInGroup = groupWithStudents?.students?.map { studentEntity ->
+                        StudentMapper.fromEntityToModel(studentEntity)
+                    } ?: emptyList()
+                }
+            }
+
+            EditExistingGroupOverlay(
+                onDismiss = { showEditGroupDialog = false },
+                group = group,
+                studentsInGroup = studentsInGroup,
+                focusManager = LocalFocusManager.current,
+                context = context,
+                professorId = professor!!.id,
+                groupViewModel = groupViewModel,
+                groupStudentViewModel = groupStudentViewModel,
+                professorStudentViewModel = professorStudentViewModel,
+                onGroupUpdated = {
+                    groupProfessorViewModel.getGroupsWithProfessor(professor!!.id) { data ->
+                        groupsWithProfessor = data
+                    }
+                    showEditGroupDialog = false
+                }
+            )
+        }
     }
 
 }
