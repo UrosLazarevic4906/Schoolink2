@@ -33,6 +33,7 @@ import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.inputs.AccountDetailsInformationField
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.screens.profile.overlay.EditEmailOverlay
+import com.example.schoolink.ui.screens.profile.overlay.EditPasswordOverlay
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
@@ -47,6 +48,7 @@ fun AccountDetailsScreen(
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var showEditEmailOverlay by remember { mutableStateOf(false) }
+    var showEditPasswordOverlay by remember { mutableStateOf(false) }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -88,7 +90,9 @@ fun AccountDetailsScreen(
                 isPassword = true,
                 title = "Password",
                 text = professor?.password ?: "password",
-                onEdit = {}
+                onEdit = {
+                    showEditPasswordOverlay = true
+                }
             )
         }
         Column(
@@ -135,6 +139,29 @@ fun AccountDetailsScreen(
             professor = professor,
             professorViewModel = professorViewModel,
             onEmailUpdated = {
+                logOut()
+            }
+        )
+    }
+
+    AnimatedVisibility(
+        visible = showEditPasswordOverlay,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(1000)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(1000)
+        )
+    ) {
+        EditPasswordOverlay(
+            onDismis = { showEditPasswordOverlay = false },
+            focusManager = LocalFocusManager.current,
+            context = context,
+            professor = professor,
+            professorViewModel = professorViewModel,
+            onPasswordUpdated = {
                 logOut()
             }
         )
