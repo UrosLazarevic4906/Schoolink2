@@ -17,13 +17,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.R
 import com.example.schoolink.domain.models.Gender
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.ui.components.inputs.CredentialsOutlinedInputField
 import com.example.schoolink.ui.components.inputs.DateOfBirthPicker
@@ -45,6 +49,7 @@ import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
 import com.example.schoolink.ui.theme.*
+import com.example.schoolink.ui.viewmodels.ProfessorStudentViewModel
 import com.example.schoolink.ui.viewmodels.StudentViewModel
 import com.example.schoolink.utils.saveImageToInternalStorage
 
@@ -53,11 +58,13 @@ fun EditExistingStudentOverlay(
     onDismiss: () -> Unit,
     student: StudentModel?,
     studentViewMode: StudentViewModel,
+    professor: ProfessorModel?,
+    professorStudentViewModel: ProfessorStudentViewModel,
     onEditStudent: (StudentModel?) -> Unit,
+    onDeleteStudent: () -> Unit,
     focusManager: FocusManager,
     context: Context
 ) {
-    // Mutable states for the fields
     var profilePictureUri by remember { mutableStateOf<Uri?>(null) }
     var email by remember { mutableStateOf("") }
     var firstName by remember { mutableStateOf("") }
@@ -70,8 +77,8 @@ fun EditExistingStudentOverlay(
     var isEmailValid by remember { mutableStateOf(false) }
 
     var isLoading by remember { mutableStateOf(false) }
+    var showDeleteDialog by remember { mutableStateOf(false) }
 
-    // Load student data when the overlay is shown
     LaunchedEffect(student) {
         profilePictureUri = student?.profilePicturePath?.let { Uri.parse(it) }
         email = student?.email ?: "email"
@@ -114,7 +121,11 @@ fun EditExistingStudentOverlay(
                         if (!isLoading)
                             onDismiss()
                     },
-                    title = "Edit student"
+                    title = "Edit student",
+                    endIcon = painterResource(R.drawable.ic_bin),
+                    onEndIcon = {
+                        showDeleteDialog = true
+                    }
                 )
             }
             LazyColumn(
@@ -257,5 +268,61 @@ fun EditExistingStudentOverlay(
                 }
             }
         }
+    }
+
+    if (showDeleteDialog) {
+        AlertDialog(
+            containerColor = MaterialTheme.colorScheme.background,
+            onDismissRequest = { showDeleteDialog = false },
+            title = {
+                Text(
+                    text = "Delete Student",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            text = {
+                Text(
+                    text = "Are you sure you want to delete this student? This action cannot be undone.",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        professor?.let { prof ->
+                            student?.let { stud ->
+                                professorStudentViewModel.removeStudentFromProfessor(prof.id, stud.id)
+                                Toast.makeText(context, "Student deleted successfully!", Toast.LENGTH_SHORT).show()
+                                showDeleteDialog = false
+                                onDeleteStudent()
+                            }
+
+                        }
+
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.background
+                    )
+                ) {
+                    Text(text = "Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showDeleteDialog = false
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = MaterialTheme.colorScheme.secondary,
+                        containerColor = MaterialTheme.colorScheme.background
+                    )
+                ) {
+                    Text(
+                        text = "Cancel"
+                    )
+                }
+            }
+        )
     }
 }

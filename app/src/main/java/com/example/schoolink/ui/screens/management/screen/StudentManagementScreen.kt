@@ -233,6 +233,8 @@ fun StudentManagementScreen(
             focusManager = LocalFocusManager.current,
             student = selectedStudent,
             studentViewMode = studentViewModel,
+            professor = professor,
+            professorStudentViewModel = professorStudentViewModel,
             onEditStudent = { updatedStudent ->
                 updatedStudent?.let { student ->
                     studentViewModel.updateStudentAsync(student) {
@@ -244,6 +246,14 @@ fun StudentManagementScreen(
                         Toast.makeText(context, "Student updated successfully!", Toast.LENGTH_SHORT)
                             .show()
                         showUpdateStudentOverlay = false
+                    }
+                }
+            },
+            onDeleteStudent = {
+                showUpdateStudentOverlay = false
+                professor?.let { prof ->
+                    professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                        professorWithStudents = data
                     }
                 }
             }
