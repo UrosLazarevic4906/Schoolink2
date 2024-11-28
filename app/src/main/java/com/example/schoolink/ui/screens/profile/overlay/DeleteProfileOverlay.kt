@@ -30,25 +30,22 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.schoolink.R
 import com.example.schoolink.domain.models.ProfessorModel
-import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.PasswordInputField
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
 import com.example.schoolink.ui.theme.*
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 
 @Composable
-fun EditEmailOverlay(
+fun DeleteProfileOverlay(
     onDismis: () -> Unit,
-    onEmailUpdated: () -> Unit,
+    onDeleteProfile: () -> Unit,
     focusManager: FocusManager,
     context: Context,
     professor: ProfessorModel?,
     professorViewModel: ProfessorViewModel
 ) {
 
-    var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var isEmailValid by remember { mutableStateOf(false) }
     var isPasswordValid by remember { mutableStateOf(false) }
 
 
@@ -56,7 +53,7 @@ fun EditEmailOverlay(
         shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 10.dp, start = 10.dp, end = 10.dp)
+            .padding(top = 200.dp, start = 10.dp, end = 10.dp)
             .imePadding()
             .clickable(
                 onClick = { focusManager.clearFocus() },
@@ -78,25 +75,22 @@ fun EditEmailOverlay(
                 TitleCard(
                     startIcon = painterResource(R.drawable.ic_close),
                     onStartIcon = onDismis,
-                    title = "Edit email adress"
+                    title = "Delete account"
                 )
 
-                Column(modifier = Modifier.padding(vertical = 24.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Column(
+                    modifier = Modifier.padding(vertical = 24.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
+                ) {
                     Text(
-                        text = "Enter your new email address and confirm the change with your password."
-                    )
-
-                    EmailInputField(
-                        value = email,
-                        isValid = { isEmailValid = it },
-                        onValueChange = { email = it.trim() }
+                        text = "Enter your password to permanently delete your account. This action cannot be undone.",
+                        color = Red
                     )
 
                     PasswordInputField(
                         value = password,
-                        onValueChange = { password = it.trim() },
-                        isValid = { isPasswordValid = it }
+                        isValid = { isPasswordValid = it },
+                        onValueChange = { password = it }
                     )
                 }
 
@@ -112,33 +106,13 @@ fun EditEmailOverlay(
                 Button(
                     onClick = {
                         if (password == professor?.password) {
-                            if (email != professor.email) {
-                                professorViewModel.getProfessorByEmail(email) { existingProfessor ->
-                                    if (existingProfessor != null) {
-                                        Toast.makeText(
-                                            context,
-                                            "Email is already in use",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                    } else {
-                                        val updatedProfessor = professor.copy(email = email)
-                                        professorViewModel.updateProfessorAsync(updatedProfessor) {
-                                            Toast.makeText(
-                                                context,
-                                                "Email updated successfully",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
-                                            onEmailUpdated()
-                                        }
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "New email cannot be the same",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                            Toast.makeText(
+                                context,
+                                "Account deleted successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            professorViewModel.deleteProfessor(professor)
+                            onDeleteProfile()
                         } else {
                             Toast.makeText(
                                 context,
@@ -156,9 +130,9 @@ fun EditEmailOverlay(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(48.dp),
-                    enabled = isEmailValid && isPasswordValid,
+                    enabled = isPasswordValid,
                 ) {
-                    Text(text = "Change email")
+                    Text(text = "Delete account")
                 }
             }
 

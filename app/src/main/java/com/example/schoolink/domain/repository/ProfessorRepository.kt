@@ -17,6 +17,11 @@ class ProfessorRepository(
         professorDao.updateProfessor(entity)
     }
 
+    suspend fun deleteProfessor(professorModel: ProfessorModel) {
+        val entity = ProfessorMapper.fromModelToEntity(professorModel)
+        professorDao.deleteProfessor(entity)
+    }
+
     suspend fun getProfessorByEmail(email: String): ProfessorModel? {
         val entity = professorDao.getProfessorByEmail(email)
         return entity?.let { ProfessorMapper.fromEntityToModel(it) }

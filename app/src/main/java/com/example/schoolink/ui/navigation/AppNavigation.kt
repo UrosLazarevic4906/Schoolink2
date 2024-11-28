@@ -655,9 +655,6 @@ fun AppNavigation(
                 logOut = {
                     navController.navigateSingleTopTo("onboarding")
                 },
-                onDeleteAccount = {
-
-                },
             )
 
         }

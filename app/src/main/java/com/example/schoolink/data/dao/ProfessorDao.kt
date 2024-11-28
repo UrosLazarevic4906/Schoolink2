@@ -12,6 +12,9 @@ interface ProfessorDao {
     @Update
     suspend fun updateProfessor(professor: ProfessorEntity)
 
+    @Delete
+    suspend fun deleteProfessor(professor: ProfessorEntity)
+
     @Query("SELECT * FROM professors WHERE email = :email")
     suspend fun getProfessorByEmail(email: String): ProfessorEntity?
 

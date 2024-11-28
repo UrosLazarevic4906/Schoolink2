@@ -32,6 +32,7 @@ import com.example.schoolink.R
 import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.ui.components.inputs.AccountDetailsInformationField
 import com.example.schoolink.ui.components.miscellaneous.TitleCard
+import com.example.schoolink.ui.screens.profile.overlay.DeleteProfileOverlay
 import com.example.schoolink.ui.screens.profile.overlay.EditEmailOverlay
 import com.example.schoolink.ui.screens.profile.overlay.EditPasswordOverlay
 import com.example.schoolink.ui.viewmodels.ProfessorViewModel
@@ -42,13 +43,13 @@ fun AccountDetailsScreen(
     professorViewModel: ProfessorViewModel,
     context: Context,
     onBack: () -> Unit,
-    onDeleteAccount: () -> Unit,
     logOut: () -> Unit
 ) {
 
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var showEditEmailOverlay by remember { mutableStateOf(false) }
     var showEditPasswordOverlay by remember { mutableStateOf(false) }
+    var showDeleteAccountOverlay by remember { mutableStateOf(false) }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -103,7 +104,9 @@ fun AccountDetailsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = onDeleteAccount,
+                onClick = {
+                    showDeleteAccountOverlay = true
+                },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.background,
                     contentColor = MaterialTheme.colorScheme.primary,
@@ -167,4 +170,26 @@ fun AccountDetailsScreen(
         )
     }
 
+    AnimatedVisibility(
+        visible = showDeleteAccountOverlay,
+        enter = slideInVertically(
+            initialOffsetY = { it },
+            animationSpec = tween(1000)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it },
+            animationSpec = tween(1000)
+        )
+    ) {
+        DeleteProfileOverlay(
+            onDismis = { showDeleteAccountOverlay = false },
+            focusManager = LocalFocusManager.current,
+            context = context,
+            professor = professor,
+            professorViewModel = professorViewModel,
+            onDeleteProfile = {
+                logOut()
+            }
+        )
+    }
 }
