@@ -2,6 +2,7 @@ package com.example.schoolink.ui.screens.management.overlay
 
 import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -44,12 +45,14 @@ import com.example.schoolink.ui.components.inputs.EmailInputField
 import com.example.schoolink.ui.components.inputs.GenderSelectDropdown
 import com.example.schoolink.ui.components.inputs.ImagePicker
 import com.example.schoolink.ui.theme.*
+import com.example.schoolink.ui.viewmodels.StudentViewModel
 import com.example.schoolink.utils.saveImageToInternalStorage
 
 @Composable
 fun EditExistingStudentOverlay(
     onDismiss: () -> Unit,
     student: StudentModel?,
+    studentViewMode: StudentViewModel,
     onEditStudent: (StudentModel?) -> Unit,
     focusManager: FocusManager,
     context: Context
@@ -202,17 +205,42 @@ fun EditExistingStudentOverlay(
                 Button(
                     onClick = {
                         isLoading = true
-                        val updatedStudent = student?.copy(
-                            email = email,
-                            firstName = firstName,
-                            lastName = lastName,
-                            gender = gender,
-                            description = description,
-                            profilePicturePath = profilePictureUri?.let { uri ->
-                                saveImageToInternalStorage(context, uri)
+                        if (email != student?.email) {
+                            studentViewMode.getStudentByEmail(email) { existingStudent ->
+                                if (existingStudent != null) {
+                                    Toast.makeText(
+                                        context,
+                                        "Email is already in use!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    isLoading = false
+                                } else {
+                                    val updatedStudent = student?.copy(
+                                        email = email,
+                                        firstName = firstName,
+                                        lastName = lastName,
+                                        gender = gender,
+                                        description = description,
+                                        profilePicturePath = profilePictureUri?.let { uri ->
+                                            saveImageToInternalStorage(context, uri)
+                                        } ?: student.profilePicturePath
+                                    )
+                                    onEditStudent(updatedStudent)
+                                }
                             }
-                        )
-                        onEditStudent(updatedStudent)
+                        } else {
+                            val updatedStudent = student.copy(
+                                email = email,
+                                firstName = firstName,
+                                lastName = lastName,
+                                gender = gender,
+                                description = description,
+                                profilePicturePath = profilePictureUri?.let { uri ->
+                                    saveImageToInternalStorage(context, uri)
+                                } ?: student.profilePicturePath
+                            )
+                            onEditStudent(updatedStudent)
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,

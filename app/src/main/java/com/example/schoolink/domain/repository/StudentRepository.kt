@@ -1,7 +1,9 @@
 package com.example.schoolink.domain.repository
 
 import com.example.schoolink.data.dao.StudentDao
+import com.example.schoolink.data.mappers.ProfessorMapper
 import com.example.schoolink.data.mappers.StudentMapper
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.models.StudentModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,6 +28,11 @@ class StudentRepository(
         val entity =
             StudentMapper.fromModelToEntity(studentModel.copy(studentCode = generateStudentCode()))
         return studentDao.insertStudent(entity)
+    }
+
+    suspend fun updateStudent(studentModel: StudentModel) {
+        val entity = StudentMapper.fromModelToEntity(studentModel)
+        studentDao.updateStudent(entity)
     }
 
     suspend fun getStudentByEmail(email: String): StudentModel? {

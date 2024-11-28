@@ -186,7 +186,7 @@ fun StudentManagementScreen(
     }
 
     AnimatedVisibility(
-          visible = showAddExistingStudentDialog,
+        visible = showAddExistingStudentDialog,
         enter = slideInVertically(initialOffsetY = { it }, animationSpec = tween(1000)),
         exit = slideOutVertically(targetOffsetY = { it }, animationSpec = tween(1000))
     ) {
@@ -232,8 +232,20 @@ fun StudentManagementScreen(
             context = context,
             focusManager = LocalFocusManager.current,
             student = selectedStudent,
-            onEditStudent = {
-
+            studentViewMode = studentViewModel,
+            onEditStudent = { updatedStudent ->
+                updatedStudent?.let { student ->
+                    studentViewModel.updateStudentAsync(student) {
+                        professor?.let { prof ->
+                            professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
+                                professorWithStudents = data
+                            }
+                        }
+                        Toast.makeText(context, "Student updated successfully!", Toast.LENGTH_SHORT)
+                            .show()
+                        showUpdateStudentOverlay = false
+                    }
+                }
             }
         )
     }
