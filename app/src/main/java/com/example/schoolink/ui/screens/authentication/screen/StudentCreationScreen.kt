@@ -129,11 +129,17 @@ fun StudentCreationScreen(
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
-                    ImageInformation(
-                        image = painterResource(R.drawable.img_nothing_to_show),
-                        title = "No students yet",
-                        description = "Start adding students by pressing the green button"
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ImageInformation(
+                            image = painterResource(R.drawable.img_nothing_to_show),
+                            title = "No students yet",
+                            description = "Start adding students by pressing the green button"
+                        )
+                    }
                 } else {
                     LazyColumn {
                         itemsIndexed(professorWithStudents!!.students) { index, student ->

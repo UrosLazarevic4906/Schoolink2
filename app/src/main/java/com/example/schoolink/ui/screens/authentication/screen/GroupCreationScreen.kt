@@ -108,11 +108,17 @@ fun GroupCreationScreen(
 
 
                 if (groupsWithProfessor?.groups.isNullOrEmpty()) {
-                    ImageInformation(
-                        image = painterResource(R.drawable.img_nothing_to_show),
-                        title = "No groups yet",
-                        description = "Start creating groups by pressing the green button"
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ImageInformation(
+                            image = painterResource(R.drawable.img_nothing_to_show),
+                            title = "No groups yet",
+                            description = "Start creating groups by pressing the green button"
+                        )
+                    }
                 } else {
                     LazyColumn {
                         itemsIndexed(groupsWithProfessor!!.groups) { index, group ->

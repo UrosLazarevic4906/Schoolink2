@@ -115,7 +115,7 @@ fun StudentManagementScreen(
                 .padding(innerPadding)
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
+                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp),
             ) {
                 TitleCard(
                     title = "Students",
@@ -124,11 +124,17 @@ fun StudentManagementScreen(
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
-                    ImageInformation(
-                        image = painterResource(R.drawable.img_nothing_to_show),
-                        title = "No students yet",
-                        description = "Start adding students by pressing the green button"
-                    )
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        ImageInformation(
+                            image = painterResource(R.drawable.img_nothing_to_show),
+                            title = "No students yet",
+                            description = "Start adding students by pressing the green button"
+                        )
+                    }
                 } else {
                     LazyColumn {
                         itemsIndexed(professorWithStudents!!.students) { index, student ->
@@ -157,7 +163,8 @@ fun StudentManagementScreen(
                 studentViewModel.addStudent(student) { studentId ->
                     professor?.let { prof ->
                         professorStudentViewModel.addStudentToProfessor(prof.id, studentId.toInt())
-                        Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT)
+                            .show()
                         professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                             professorWithStudents = data
                         }
@@ -179,15 +186,26 @@ fun StudentManagementScreen(
                 studentViewModel.getStudentByEmail(credentials) { existingStudent ->
                     if (existingStudent != null) {
                         professor?.let { prof ->
-                            professorStudentViewModel.addStudentToProfessor(prof.id, existingStudent.id)
-                            Toast.makeText(context, "Student added successfully!", Toast.LENGTH_SHORT).show()
+                            professorStudentViewModel.addStudentToProfessor(
+                                prof.id,
+                                existingStudent.id
+                            )
+                            Toast.makeText(
+                                context,
+                                "Student added successfully!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             professorStudentViewModel.getProfessorWithStudent(prof.id) { data ->
                                 professorWithStudents = data
                             }
                             showAddExistingStudentDialog = false
                         }
                     } else {
-                        Toast.makeText(context, "No student found with the provided email or code!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "No student found with the provided email or code!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
