@@ -38,7 +38,7 @@ import com.example.schoolink.data.entities.refference.ProfessorStudentCrossRef
         LessonProfessorCrossRef::class,
         LessonGroupCrossRef::class
     ],
-    version = 4,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(GenderTypeConverter::class, DateTimeConverters::class)
@@ -62,7 +62,7 @@ abstract class AppDatabase : RoomDatabase() {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
-                    "sc1-db"
+                    "schoolink"
                 ).fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
