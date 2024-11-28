@@ -1,4 +1,4 @@
-package com.example.schoolink.ui.screens.management.screen
+package com.example.schoolink.ui.screens.authentication.screen
 
 import android.content.Context
 import android.widget.Toast
@@ -47,7 +47,8 @@ import com.example.schoolink.ui.viewmodels.ProfessorViewModel
 import com.example.schoolink.ui.viewmodels.StudentViewModel
 
 @Composable
-fun StudentManagementScreen(
+fun StudentCreationScreen(
+    onNext: () -> Unit,
     onBack: () -> Unit,
     email: String,
     context: Context,
@@ -60,11 +61,14 @@ fun StudentManagementScreen(
     var showAddExistingStudentDialog by remember { mutableStateOf(false) }
     var showUpdateStudentOverlay by remember { mutableStateOf(false) }
 
+
     var professor by remember { mutableStateOf<ProfessorModel?>(null) }
     var professorWithStudents by remember { mutableStateOf<ProfessorWithStudents?>(null) }
-
     var selectedStudent by remember { mutableStateOf<StudentModel?>(null) }
 
+    BackHandler {
+        onBack()
+    }
 
     LaunchedEffect(email) {
         professorViewModel.getProfessorByEmail(email) { prof ->
@@ -121,12 +125,12 @@ fun StudentManagementScreen(
                 .padding(innerPadding)
         ) {
             Column(
-                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp),
+                modifier = Modifier.padding(horizontal = 18.dp, vertical = 24.dp)
             ) {
                 TitleCard(
                     title = "Students",
-                    startIcon = painterResource(R.drawable.ic_chevron_left),
-                    onStartIcon = onBack
+                    clickableText = "Next",
+                    onText = onNext
                 )
 
                 if (professorWithStudents?.students.isNullOrEmpty()) {
@@ -260,3 +264,4 @@ fun StudentManagementScreen(
         )
     }
 }
+

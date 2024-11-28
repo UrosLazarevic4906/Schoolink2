@@ -18,13 +18,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.schoolink.R
 import com.example.schoolink.ui.theme.Ash
 import com.example.schoolink.ui.theme.Black
+import com.example.schoolink.R
 
 @Composable
-fun EmptyState(
+fun ImageInformation(
     image: Painter,
     title: String,
     description: String
@@ -33,7 +34,7 @@ fun EmptyState(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = Modifier
-            .fillMaxSize()
+//            .fillMaxSize()
             .padding(horizontal = 24.dp)
     ) {
         Box(
@@ -50,7 +51,6 @@ fun EmptyState(
         }
         Text(
             text = title,
-//            text = "No students yet",
             style = MaterialTheme.typography.displaySmall,
             fontWeight = FontWeight.ExtraBold,
             color = Black,
@@ -59,11 +59,20 @@ fun EmptyState(
         )
         Text(
             text = description,
-//            text = "Start adding students by pressing the green button",
             style = MaterialTheme.typography.bodyLarge,
             color = Ash,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 16.dp)
         )
     }
+}
+
+@Preview
+@Composable
+private fun Img() {
+    ImageInformation(
+        image = painterResource(R.drawable.img_cat_in_box),
+        title = "Everything's set!",
+        description = "You have successfully created your account"
+    )
 }

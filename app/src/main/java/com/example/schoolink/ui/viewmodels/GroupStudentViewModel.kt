@@ -33,4 +33,13 @@ class GroupStudentViewModel(
             repository.removeStudentFromGroup(groupId, studentId)
         }
     }
+
+    fun removeAllStudentsFromGroup(groupId: Int, onComplete: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.removeAllStudentsFromGroup(groupId)
+            withContext(Dispatchers.Main) {
+                onComplete()
+            }
+        }
+    }
 }

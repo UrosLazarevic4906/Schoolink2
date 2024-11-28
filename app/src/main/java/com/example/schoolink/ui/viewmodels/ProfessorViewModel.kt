@@ -36,6 +36,12 @@ class ProfessorViewModel(private val repository: ProfessorRepository) : ViewMode
         }
     }
 
+    fun deleteProfessor(professor: ProfessorModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteProfessor(professor)
+        }
+    }
+
     fun updateProfessorAsync(professor: ProfessorModel, onComplete: () -> Unit) {
         viewModelScope.launch(Dispatchers.IO) {
             repository.updateProfessor(professor)

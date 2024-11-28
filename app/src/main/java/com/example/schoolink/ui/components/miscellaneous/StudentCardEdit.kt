@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,12 +36,15 @@ import com.example.schoolink.ui.theme.*
 fun StudentCardEdit(
     student: StudentModel,
     trailingIcon: Painter? = null,
-    showTopLine: Boolean = false
+    showTopLine: Boolean = false,
+    onClick: () -> Unit
 ) {
 
     Surface(
         modifier = Modifier
-            .fillMaxWidth().clickable {  },
+            .fillMaxWidth().clickable {
+                onClick()
+            },
         color = White,
     ) {
         Column {
@@ -123,6 +127,7 @@ private fun StudentCardEditPreview() {
 
     StudentCardEdit(
         student = dummyStudent,
-        trailingIcon = painterResource(R.drawable.ic_pen)
+        trailingIcon = painterResource(R.drawable.ic_pen),
+        onClick = {}
     )
 }

@@ -1,5 +1,6 @@
 package com.example.schoolink.ui.screens.onboarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -29,8 +30,14 @@ import com.example.schoolink.ui.theme.Black
 @Composable
 fun OnboardingScreen(
     onNavigationToLogin: () -> Unit,
-    onNavigationToCreateAccount: () -> Unit
+    onNavigationToCreateAccount: () -> Unit,
+    onNavigateBack: () -> Unit
 ) {
+
+    BackHandler {
+        onNavigateBack()
+    }
+
     val pages = listOf(
         Triple(
             R.drawable.onboarding_support_solid,
@@ -177,7 +184,8 @@ fun OnboardingScreen(
 fun PreviewOnboardingScreen() {
     OnboardingScreen(
         onNavigationToLogin = {},
-        onNavigationToCreateAccount = {}
+        onNavigationToCreateAccount = {},
+        onNavigateBack = {}
     )
 }
 

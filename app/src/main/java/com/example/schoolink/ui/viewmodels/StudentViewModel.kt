@@ -2,6 +2,7 @@ package com.example.schoolink.ui.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.schoolink.domain.models.ProfessorModel
 import com.example.schoolink.domain.models.StudentModel
 import com.example.schoolink.domain.repository.StudentRepository
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,15 @@ class StudentViewModel(private val repository: StudentRepository) : ViewModel() 
             }
             currentStudent = student
             onResult(student)
+        }
+    }
+
+    fun updateStudentAsync(student: StudentModel, onComplete: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateStudent(student)
+            withContext(Dispatchers.Main) {
+                onComplete()
+            }
         }
     }
 

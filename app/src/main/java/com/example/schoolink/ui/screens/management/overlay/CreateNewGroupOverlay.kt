@@ -121,7 +121,6 @@ fun CreateNewGroupOverlay(
                     .weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Image Picker
                 item {
                     Box(
                         modifier = Modifier
@@ -135,7 +134,6 @@ fun CreateNewGroupOverlay(
                     }
                 }
 
-                // Group Name and Type Input Fields
                 item {
                     Column(
                         modifier = Modifier.padding(vertical = 24.dp)
@@ -155,7 +153,6 @@ fun CreateNewGroupOverlay(
                     }
                 }
 
-                // Student Selection (Student Cards)
                 if (!professorWithStudents?.students.isNullOrEmpty()) {
                     item {
                         Text(
@@ -183,7 +180,6 @@ fun CreateNewGroupOverlay(
                 }
             }
 
-            // Footer Section
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -193,7 +189,6 @@ fun CreateNewGroupOverlay(
             ) {
                 Button(
                     onClick = {
-                        // Create the group
                         val group = GroupModel(
                             groupName = name,
                             groupType = groupType,
@@ -202,7 +197,6 @@ fun CreateNewGroupOverlay(
                             }
                         )
 
-                        // Handle group creation and linking
                         professorWithStudents?.let { professorWithStudentsData ->
                             val professor = professorWithStudentsData.professor
 
