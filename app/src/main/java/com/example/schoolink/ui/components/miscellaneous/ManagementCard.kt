@@ -32,7 +32,6 @@ import com.example.schoolink.ui.theme.White
 fun ManagementCard(
     icon: Painter,
     title: String,
-    number: Int,
     onClick: () -> Unit
 ) {
     Column(
@@ -68,26 +67,6 @@ fun ManagementCard(
                 modifier = Modifier.size(24.dp)
             )
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = "$number",
-                color = Black,
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier
-                    .padding(end = 20.dp)
-                    .alignByBaseline()
-            )
-            Text(
-                text = "Total",
-                color = Ash,
-                fontWeight = FontWeight.Thin,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.alignByBaseline()
-            )
-        }
     }
 }
 
@@ -97,7 +76,6 @@ private fun ManagementCardPreview() {
     ManagementCard(
         icon = painterResource(R.drawable.ic_smiley_color),
         title = "Students",
-        8,
         onClick = {}
     )
 }

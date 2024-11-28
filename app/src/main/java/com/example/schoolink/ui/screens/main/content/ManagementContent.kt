@@ -29,14 +29,12 @@ fun ManagementContent(
             ManagementCard(
                 icon = painterResource(R.drawable.ic_smiley_color),
                 title = "Students",
-                number = 42,
                 onClick = onStudent
             )
 
             ManagementCard(
                 icon = painterResource(R.drawable.ic_group_color),
                 title = "Groups",
-                number = 3,
                 onClick = onGroup
             )
         }
